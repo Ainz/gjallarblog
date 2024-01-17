@@ -1,16 +1,16 @@
 <?php
-// Chech whether we are indeed included by Piwigo.
+// Check whether we are indeed included by Piwigo.
 if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
 // Fetch the template.
 global $template, $conf, $page;
 	
-	if (isset($_POST['submit_post'])) {//äîáàâëåíèå ïîñòà // write new post in db
+	if (isset($_POST['submit_post'])) {// Write new post in db
 		$result = pwg_query("insert into ".Evil_Blog_Table." values (NULL, NOW() , '". $_POST['post_header']."', '".$_POST['post_textarea']."')");
 		array_push($page['infos'], l10n('post_is_saved'));
 		}
 		
-	if (!empty($_POST['del']))	{//óäàëåíèå ïîñòà // deleting post from db
+	if (!empty($_POST['del']))	{// Deleting post from db
 		$result = pwg_query("DELETE FROM ".Evil_Blog_Table." WHERE ".Evil_Blog_Table.".id = ".$_POST['del']." LIMIT 1");
 		array_push($page['infos'], l10n('post_is_deleted'));
 		}
@@ -28,8 +28,8 @@ global $template, $conf, $page;
 	
 		$row = pwg_db_fetch_assoc(pwg_query("SELECT COUNT(*) FROM `".Evil_Blog_Table."`"));;	
 		
-		//$pages - number of pages in all blog
-		//$npage - page on which we look
+		// $pages - number of pages in all blog
+		// $npage - page on which we look
 		if ($row["COUNT(*)"] % $post_per_page != 0) {
 			$pages = floor($row["COUNT(*)"] / $post_per_page)+1;
 			} else {$pages = floor($row["COUNT(*)"] / $post_per_page);}
@@ -53,7 +53,7 @@ global $template, $conf, $page;
 					LIMIT ".$number.",".$post_per_page;
 		$result = pwg_query($query);
 		$qwe = 0;
-		while ($row = pwg_db_fetch_assoc($result)) {//áîëåå âìåíÿåìàÿ îáðàáîòêà ðåçóëüòàòà èç áàçû, íóæíî äëÿ íîðìàëüíîé ðàáîòû SMARTY
+		while ($row = pwg_db_fetch_assoc($result)) {// UNKNOWN COMMENT
 			$row1[$qwe] = $row;
 			$qwe++;
 			}
@@ -62,7 +62,7 @@ global $template, $conf, $page;
 			}
 		$template->assign('npage', $npage);
 		$template->assign('pages', $pages);
-		for ($it=1; $it<=$pages; $it++) {//ñîçäàíèå ìàññèâà ñ íîìåðàìè ñòðàíèö //create array with numbers of pages
+		for ($it=1; $it<=$pages; $it++) {// Create array with numbers of pages
 			$pagi[$it] = $it;
 			}
 		if (!empty($pagi)) { 
@@ -70,7 +70,7 @@ global $template, $conf, $page;
 			}
 		$template->assign('blog_name', $eb_conf['blog_name']);	
 			
-		//âêëþ÷àåì FCKeditor
+		// FCKeditor
 		$FCKEA = pwg_db_fetch_assoc(pwg_query("SELECT state FROM " . PLUGINS_TABLE . " WHERE id = 'FCKEditor';"));
 		if($FCKEA['state'] == 'active') set_fckeditor_instance($areas='post_textarea', $toolbar='Full', $width='900px', $height='200px');
 			
