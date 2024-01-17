@@ -1,9 +1,9 @@
 <?php
-// Chech whether we are indeed included by Piwigo.
+// Check whether we are indeed included by Piwigo.
 if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
 		$post_per_page = $page['evil_blog']['posts_per_page'];
-		//óçíàåì êîëè÷åñòâî çàïèñåé â áëîãå
+		//UNKNOWN COMMENT
 		$row = pwg_db_fetch_assoc(pwg_query("SELECT COUNT(*) FROM `".Evil_Blog_Table."`"));
 
 		if ($row["COUNT(*)"] % $post_per_page != 0) {
@@ -29,7 +29,7 @@ if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 					LIMIT ".$number.",".$post_per_page;
 		$result = pwg_query($query);
 		$qwe = 0;
-		while ($row = pwg_db_fetch_assoc($result)) {//áîëåå âìåíÿåìàÿ îáðàáîòêà ðåçóëüòàòà èç áàçû, íóæíî äëÿ íîðìàëüíîé ðàáîòû SMARTY
+		while ($row = pwg_db_fetch_assoc($result)) {//UNKNOWN COMMENT
 			$row1[$qwe] = $row;
 			$row1[$qwe]['date'] = date($page['evil_blog']['date_format'], $row['date']); 
 			if($ExDesc['state'] == 'active') {
@@ -49,31 +49,31 @@ if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 		if (!empty($pagi)) { 
 			$template->assign('pagi', $pagi);
 			}
-		//îïðåäåëÿåì çàãîëîâîê
+		//UNKNOWN COMMENT
 		if ((($page['evil_blog']['show_on_main_page']) or ($page['evil_blog']['show_on_category_page'])) and ($tokens[0]!='blog')) {
 			$place = 'PLUGIN_INDEX_CONTENT_BEFORE';
 			$template->assign('TITLE', 
 				'<div id="content" class="content contentWithMenu"><div class="titrePage"><h2>'.$page['evil_blog']['blog_name'].
 				'<a id="blog_rss_icon" href="'.get_gallery_home_url().'?/blog/feed" title="'.l10n("Notification").'"><img src="'.get_gallery_home_url().'plugins/Evil_Blog/rss.png"></a></h2></div>');
 			$template->assign('TITLE_END', '</div>');
-			}else{//õëåáíûå êðîøêè
+			}else{//UNKNOWN COMMENT
 			$place = 'PLUGIN_INDEX_CONTENT_END';
 			$page['title'] = 
 				'<a href="'.get_gallery_home_url().'">'.l10n('Home').'</a>'.$conf['level_separator'].$page['evil_blog']['blog_name'].
 				'<a id="blog_rss_icon" href="'.get_gallery_home_url().'?/blog/feed" title="'.l10n("Notification").'"><img src="'.get_gallery_home_url().'plugins/Evil_Blog/rss.png"></a>';
 			$template->assign('TITLE_END', ' ');
 			}
-		//îòñûëàåì â ÑÌÀÐÒÈ íàñòðîéêè âíåøíåãî âèäà
+		//UNKNOWN COMMENT
 		$template->assign('show_number', $page['evil_blog']['show_number']);
 		$template->assign('show_date', $page['evil_blog']['show_date']);
 		$template->assign('show_on_main_page', $page['evil_blog']['show_on_main_page']);
 		
-		//îïðåäåëÿåì àäðåñ øàáëîíà ïëàãèíà
+		//UNKNOWN COMMENT
 		$template->set_template_dir(Evil_Blog_PATH);
 		$template->set_filename('blog', 'blog.tpl');
-		//ïîäêëþ÷åíèå ñòèëÿ
+		//UNKNOWN COMMENT
 		$template->func_combine_css(array('path' => Evil_Blog_PATH.'posts.css',));
 		
-		//îáúÿâëÿåì ãäå êîíêðåòíî íà ñòðàíèöå äîëæåí âûâåñòèñü íàø øàáëîí ïëàãèíà. Âñÿ ñóòü â 'PLUGIN_INDEX_CONTENT_BEFORE'.
+		//UNKNOWN COMMENT FOLLOWED BY 'PLUGIN_INDEX_CONTENT_BEFORE'.
 		$template->concat($place,  $template->parse('blog', true));
 ?>
