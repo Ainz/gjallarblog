@@ -1,0 +1,29 @@
+.evil_blog_posts {
+	list-style: none;
+	padding: 0px;
+}
+.evil_blog_posts li {
+	padding: 10px;
+	border-radius: 10px 10px;
+	margin-bottom: 10px;
+}
+.evil_blog_posts li .post_title {
+	border-bottom: 1px #fff dashed;
+	padding-bottom: 5px;
+}
+.evil_blog_posts li .post_description {
+	padding-top: 10px;
+}
+.evil_blog_posts li .post_header, .evil_blog_posts li .post_number {
+	font-size: 125%;
+}
+.evil_blog_posts li .post_date {
+	float: right;
+	font-size: 75%;
+}
+.evil_blog_posts li .post_description a {
+	text-decoration: none;
+}
+#blog_rss_icon {
+	float: right;
+}
