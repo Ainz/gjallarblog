@@ -1,8 +1,8 @@
 <?php
-// Chech whether we are indeed included by Piwigo.
+// Check whether we are indeed included by Piwigo.
 if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
-	//узнаем номер страницы на которой находит пост, чтобы пользователь мог к ней вернутся через ссылку
+	// We find out the page number on which the post is found so that the user can return to it through a link
 	$row = pwg_db_fetch_assoc(pwg_query("SELECT COUNT(*) FROM `".Evil_Blog_Table."`"));
 		if ($row["COUNT(*)"] % $page['evil_blog']['posts_per_page'] != 0) {
 			$pages = floor($row["COUNT(*)"] / $page['evil_blog']['posts_per_page'])+1;
@@ -23,7 +23,7 @@ if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 			}
 		$template->assign('row', $row);
 		$template->assign('npage', $npage);
-		//отсылаем в СМАРТИ настройки внешнего вида
+		// Send appearance settings to SMARTI
 		$template->assign('show_number', $page['evil_blog']['show_number']);
 		$template->assign('show_date', $page['evil_blog']['show_date']);
 		$template->assign('show_on_main_page', $page['evil_blog']['show_on_main_page']);
@@ -37,13 +37,13 @@ if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 			$conf['level_separator'].'<a href="'.get_root_url().'?/blog/id/'.$row['id'].'">'.$row['header'].'</a>'.
 			'<a id="blog_rss_icon" href="'.get_gallery_home_url().'?/blog/feed" title="'.l10n("Notification").'"><img src="'.get_gallery_home_url().'plugins/Evil_Blog/rss.png"></a>';
 		
-		//определяем адрес шаблона плагина
+		// Determine the address of the plugin template
 		$template->set_template_dir(Evil_Blog_PATH);
 		$template->set_filename('post', 'post.tpl');
-		//подключение стиля
+		// Connection to style
 		$template->func_combine_css(array('path' => Evil_Blog_PATH.'posts.css',));
 		
-		//объявляем где конкретно на странице должен вывестись наш шаблон плагина. Вся суть в 'PLUGIN_INDEX_CONTENT_BEFORE'.
+		// We declare where exactly on the page our plugin template should appear. The whole point is 'PLUGIN_INDEX_CONTENT_BEFORE'.
 		$template->concat('PLUGIN_INDEX_CONTENT_END',  $template->parse('post', true));
 	}
 ?>
