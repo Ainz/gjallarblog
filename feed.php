@@ -1,5 +1,5 @@
 <?php
-// Chech whether we are indeed included by Piwigo.
+// Check whether we are indeed included by Piwigo.
 if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
 	include_once(PHPWG_ROOT_PATH.'include/feedcreator.class.php');
