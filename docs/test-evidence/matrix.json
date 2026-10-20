@@ -1,0 +1,56 @@
+[
+  {
+    "helper_checks": 21,
+    "result": "PASS",
+    "integration_checks": 44,
+    "piwigo": "15.7.0",
+    "database": "MariaDB 11.4",
+    "php": "8.3.35",
+    "fixture": "a15"
+  },
+  {
+    "helper_checks": 21,
+    "result": "PASS",
+    "integration_checks": 44,
+    "piwigo": "16.4.0",
+    "database": "MariaDB 11.4",
+    "php": "8.4.26",
+    "fixture": "a16"
+  },
+  {
+    "helper_checks": 21,
+    "result": "PASS",
+    "integration_checks": 44,
+    "piwigo": "15.7.0",
+    "database": "MariaDB 11.4",
+    "php": "8.2.34",
+    "fixture": "a1582"
+  },
+  {
+    "helper_checks": 21,
+    "result": "PASS",
+    "integration_checks": 44,
+    "piwigo": "16.4.0",
+    "database": "MariaDB 11.4",
+    "php": "8.2.34",
+    "fixture": "a1682"
+  },
+  {
+    "helper_checks": 21,
+    "result": "PASS",
+    "integration_checks": 44,
+    "piwigo": "16.4.0",
+    "database": "MariaDB 11.4",
+    "php": "8.3.35",
+    "fixture": "a1683"
+  },
+  {
+    "helper_checks": 21,
+    "result": "PASS",
+    "integration_checks": 44,
+    "piwigo": "16.4.0",
+    "database": "MariaDB 11.4",
+    "php": "8.5.11",
+    "fixture": "a1685"
+  }
+]

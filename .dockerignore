@@ -1,0 +1,10 @@
+**
+!.dev/
+!.dev/core/
+!.dev/core/piwigo-16.4.0.zip
+!dev/
+!dev/Dockerfile
+!dev/php.ini
+
+!.dev/core/piwigo-15.7.0.zip
+!dev/Alpha.Dockerfile

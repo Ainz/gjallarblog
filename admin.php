@@ -9,16 +9,18 @@ include_once(PHPWG_ROOT_PATH.'admin/include/tabsheet.class.php');
 
 $page['tab'] = isset($_GET['tab']) ? $_GET['tab'] : 'manage';
 
-include(Evil_Blog_PATH.$page['tab'].'.inc.php');
+if (!in_array($page['tab'], ['manage','config'], true)) bad_request('Unknown blog tab');
+check_status(ACCESS_ADMINISTRATOR);
+include(Gjallarblog_PATH.$page['tab'].'.inc.php');
 
 $template->func_combine_css(array(
-        'path' => Evil_Blog_PATH.'admin.css',
+        'path' => Gjallarblog_PATH.'admin.css',
         )
       );
 
 $tabsheet = new tabsheet();
-$tabsheet->add('manage', l10n('Manage'), Evil_Blog_Admin.'-manage');
-$tabsheet->add('config', l10n('Configuration'), Evil_Blog_Admin.'-config');
+$tabsheet->add('manage', l10n('Manage'), Gjallarblog_Admin.'-manage');
+$tabsheet->add('config', l10n('Configuration'), Gjallarblog_Admin.'-config');
 $tabsheet->select($page['tab']);
 $tabsheet->assign();
 ?>

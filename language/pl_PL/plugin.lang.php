@@ -37,4 +37,4 @@ $lang['posts_per_pages'] = 'Liczba postów na stronę';
 $lang['show_date'] = 'Pokaż datę posta';
 $lang['show_number'] = 'Pokaż liczbę postów';
 $lang['show_on_main_page'] = 'Pokaż na głównej stronie';
-?>
+$lang['show_on_category_page'] = 'Pokaż na stronie kategorii';

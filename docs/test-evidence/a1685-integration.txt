@@ -1,0 +1,44 @@
+Disposable gallery starts empty
+Clean empty public view:
+Clean empty public view: ?/blog
+Clean empty public view: ?/blog/999999
+Clean empty public view: ?/blog/feed
+Reject malformed route: ?/blog/id/1%20OR%201=1
+Reject malformed route: ?/blog/abc
+Reject malformed route: ?/blog/id/0
+Reject malformed route: ?/blog/id/2147483648
+Missing post is 404
+Clean admin: manage
+Clean admin: config
+Guest mutation cannot reach editor
+Missing CSRF token rejected
+Incorrect CSRF token rejected
+Reject malformed administrative input
+Reject malformed administrative input
+Reject malformed administrative input
+Reject malformed administrative input
+Reject zero page size
+Save settings and custom menu label
+Reject unsupported configuration-table Unicode cleanly
+Permission test account is an ordinary user
+Ordinary user with valid token cannot administer the journal
+Ordinary user with valid token cannot administer the journal
+Create and escape UTF-8 title 1
+RSS round-trip and forbidden control removal 1
+Create and escape UTF-8 title 2
+RSS round-trip and forbidden control removal 2
+Create and escape UTF-8 title 3
+RSS round-trip and forbidden control removal 3
+Create and escape UTF-8 title 4
+RSS round-trip and forbidden control removal 4
+Create and escape UTF-8 title 5
+RSS round-trip and forbidden control removal 5
+Clean populated public view:
+Clean populated public view: ?/blog
+Clean populated public view: ?/blog/2
+Clean populated public view: ?/blog/id/1
+Editing persists
+Reinstall preserves menu settings
+Reinstall preserves posts
+Exactly five authorized posts; rejected requests added none
+Delete leaves clean empty journal

@@ -1,93 +1,75 @@
 <?php
 /*
-Version: 1.2.3
-Plugin Name: Evil_Blog
-Plugin URI: http://piwigo.org/ext/extension_view.php?eid=611
-Author: EvilKant
-Description: Small blog for your gallery.
+Version: 0.1.0-alpha.1
+Plugin Name: Gjallarblog
+Author: EvilKant; Ainz (Gjallarblog fork)
+Description: A small journal for your Piwigo gallery.
 Has Settings: true
 */
-
-// Check whether we are indeed included by Piwigo.
-if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
- 
+defined('PHPWG_ROOT_PATH') or die('Hacking attempt!');
 global $prefixeTable;
-// Determining the plugin directory
-define('Evil_Blog_PATH', PHPWG_PLUGINS_PATH.basename(dirname(__FILE__)).'/');
-define('Evil_Blog_Admin', get_root_url() . 'admin.php?page=plugin-' . basename(dirname(__FILE__)));
-define('Evil_Blog_Table', $prefixeTable."evil_blog");
-//Enable plugin translation
-add_event_handler('loading_lang', 'Evil_Blog_loading_lang');
-function Evil_Blog_loading_lang()
+define('Gjallarblog_PATH', PHPWG_PLUGINS_PATH.basename(__DIR__).'/');
+define('Gjallarblog_Admin', get_root_url().'admin.php?page=plugin-'.basename(__DIR__));
+define('Gjallarblog_Table', $prefixeTable.'gjallarblog');
+require_once __DIR__.'/include/functions.inc.php';
+
+add_event_handler('loading_lang', 'Gjallarblog_loading_lang');
+function Gjallarblog_loading_lang() { load_language('plugin.lang', Gjallarblog_PATH); }
+add_event_handler('blockmanager_register_blocks', 'gjallarblog_register_menu');
+add_event_handler('blockmanager_prepare_display', 'gjallarblog_position_menu');
+add_event_handler('blockmanager_apply', 'gjallarblog_add_to_menu');
+
+add_event_handler('loc_begin_index', 'Gjallarblog_main');
+function Gjallarblog_main()
 {
-  load_language('plugin.lang', Evil_Blog_PATH);
+    global $template, $tokens, $conf, $page;
+    $page['gjallarblog'] = gjallarblog_settings($conf['gjallarblog']??null);
+    $ExDesc = ['state'=>gjallarblog_extended_description_active()?'active':'inactive'];
+    if ($ExDesc['state']==='active') {
+        foreach (['blog_name','blog_description'] as $key) $page['gjallarblog'][$key]=get_user_language_desc($page['gjallarblog'][$key]);
+    }
+    $section=$tokens[0]??'';
+    if ($section==='blog' && ($tokens[1]??'')==='feed') { include __DIR__.'/feed.php'; return; }
+    if ($section==='blog' && ($tokens[1]??'')==='id') {
+        gjallarblog_id($tokens[2]??null);
+        include __DIR__.'/post.php';
+    } elseif ($section==='blog' || ($section==='' && $page['gjallarblog']['show_on_main_page']) ||
+        (in_array($section,['category','categories'],true) && $page['gjallarblog']['show_on_category_page'])) {
+        include __DIR__.'/blog.php';
+    }
 }
 
-function Evil_Blog_main () {
-	global $template, $tokens, $conf, $page;	
-		
-		// We pick out the blog settings from the database
-		$page['evil_blog'] = @unserialize($conf['evil_blog']);
-		
-		// Enable Extended Description for menu items
-		$ExDesc = pwg_db_fetch_assoc(pwg_query("SELECT state FROM " . PLUGINS_TABLE . " WHERE id = 'ExtendedDescription';"));
-		if($ExDesc['state'] == 'active') {
-			$page['evil_blog']['blog_name'] = get_user_language_desc($page['evil_blog']['blog_name']);
-			$page['evil_blog']['blog_description'] = get_user_language_desc($page['evil_blog']['blog_description']);
-			}
-		
-		// Call adding a menu item
-		add_event_handler('blockmanager_apply', 'add_blog_to_menu');
-	
-	//RSS
-		if ((!empty($tokens[1])) and ($tokens[1]=="feed")) { 
-			include_once (Evil_Blog_PATH.'feed.php');
-			}
-	
-	if (((empty($tokens[0])) and ($page['evil_blog']['show_on_main_page'])) or
-		(($tokens[0]=='categories') and ($page['evil_blog']['show_on_category_page'])) or 
-		(($tokens[0]=='blog') and ((empty($tokens[1]) or ($tokens[1]!='id'))))) {
-			include_once (Evil_Blog_PATH.'blog.php');
-		}else{
-			if ( ($tokens[0]=='blog') and (!empty($tokens[1])) and ($tokens[1]=='id') and (!empty($tokens[2])) ) {
-				include_once (Evil_Blog_PATH.'post.php');
-			}
-		}
+function gjallarblog_register_menu($refs)
+{
+    if ($refs[0]->get_id()==='menubar') $refs[0]->register_block(new RegisteredBlock('mbGjallarblog', l10n('Blog'), 'Gjallarblog'));
 }
 
-// We describe the actions during the loc_begin_index event, that is, we display the plugin on the page
-add_event_handler('loc_begin_index', 'Evil_Blog_main');
-
-// Function to add a menu item
-function add_blog_to_menu($aMenuRefArray) {
-	global $conf, $page;
-
-   // Some kind of check for the existence of a menu
-    $menu = &$aMenuRefArray[0];
-    $block_mbMenu = $menu->get_block('mbMenu');
-    if (null == $block_mbMenu) {
-      return;
-    }
-    
-    if (!isset($block_mbMenu->data['evil_blog'])) {
-      $blog_menu = array(
-          'TITLE' => $page['evil_blog']['blog_description'],
-          'NAME'  => $page['evil_blog']['blog_name'],
-          'URL'   => make_index_url(array('section' => 'blog')),
-        );
-      $block_mbMenu->data['evil_blog'] = $blog_menu;
-    }
-  }
- 
-function section_init_evil_blog() 
+function gjallarblog_position_menu($refs)
 {
-	global $page, $tokens;
-	
-	if ($tokens[0]=='blog') {
-		$page['section'] = 'blog';
-		}
-}  
-// Initiating a blog page; without this, a list with categories appears on it.
-add_event_handler('loc_end_section_init', 'section_init_evil_blog');
+    global $conf;
+    if ($refs[0]->get_id()!=='menubar') return;
+    $positions=$conf['blk_menubar']??[];
+    if (is_string($positions)) $positions=@unserialize($positions,['allowed_classes'=>false]);
+    if (!is_array($positions) || !array_key_exists('mbGjallarblog',$positions)) {
+        $albums=$refs[0]->get_block('mbCategories');
+        if ($albums!==null) $refs[0]->set_block_position('mbGjallarblog',$albums->get_position()+1);
+    }
+}
 
-?>
+function gjallarblog_add_to_menu($refs)
+{
+    global $conf;
+    if ($refs[0]->get_id()!=='menubar') return;
+    $block=$refs[0]->get_block('mbGjallarblog');
+    if ($block===null) return;
+    $settings=gjallarblog_settings($conf['gjallarblog']??null);
+    $block->data=['TITLE'=>$settings['blog_description'], 'NAME'=>$settings['menu_label'], 'URL'=>make_index_url(['section'=>'blog'])];
+    $block->template=__DIR__.'/menubar_gjallarblog.tpl';
+}
+
+add_event_handler('loc_end_section_init', 'section_init_gjallarblog');
+function section_init_gjallarblog()
+{
+    global $page,$tokens;
+    if (($tokens[0]??'')==='blog') { $page['section']='blog'; $page['body_id']='theGjallarblogPage'; }
+}

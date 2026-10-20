@@ -1,0 +1,6 @@
+*.png binary
+*.zip binary
+
+tools/*.sh text eol=lf
+dev/Dockerfile text eol=lf
+dev/Alpha.Dockerfile text eol=lf

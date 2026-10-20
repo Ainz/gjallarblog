@@ -1,40 +1,9 @@
-input[name="edit_post_id"] {
-2	        visibility: hidden;
-3	}
-4	input[name="cansel_post_form"] {
-5	        margin-left: 10px;
-6	}
-7	form[name="config_form"] fieldset table tr td:nth-child(2n) {
-8	        text-align: center;
-9	}
-10	.evil_blog_posts{
-11	        padding: 0px;
-12	}
-13	.evil_blog_posts li {
-14	        border: 1px #666 solid;
-15	        padding: 10px;
-16	        margin-bottom: 10px;
-17	        list-style-type: none;
-18	}
-19	.categoryActions {
-20	        float: right;
-21	}
-22	.categoryActions li {
-23	        border: 0px;
-24	        padding: 0px;
-25	}
-26	.categoryActions li:hover {
-27	        cursor: pointer;
-28	}
-29	.description {
-30	        border-top: 1px #666 dotted;
-31	        margin-top: 10px;
-32	}
-33	
-34	/******************************/
-35	input[name="modified"] {
-36	        visibility: hidden;
-37	}
-38	input[name="submit_config"] {
-39	        margin-top: 10px;
-40	}
+.gjallarblog-admin { max-width:980px; margin:24px auto; text-align:left; }
+.gjallarblog-admin fieldset { padding:22px; border:1px solid #8886; border-radius:8px; }
+.gjallarblog-admin label { display:block; font-weight:bold; margin:14px 0; }
+.gjallarblog-admin input[type=text],.gjallarblog-admin input:not([type]),.gjallarblog-admin textarea { display:block; box-sizing:border-box; width:100%; padding:9px; margin-top:6px; }
+.gjallarblog-admin textarea { font-family:monospace; line-height:1.5; }
+.gjallarblog-admin input[type=number] { display:block; width:90px; padding:8px; margin-top:6px; }
+.gjallarblog-admin button { padding:10px 18px; margin:12px 0; cursor:pointer; }
+.gjallarblog-edit { border:1px solid #8886; border-radius:7px; padding:18px; margin:16px 0; }
+.gjallarblog-edit summary { cursor:pointer; font-weight:bold; }
