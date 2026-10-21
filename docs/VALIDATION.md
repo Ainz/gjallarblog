@@ -1,6 +1,6 @@
 # Alpha validation — 21 October 2026
 
-Release: **0.1.0-alpha.2**. Six disposable Docker galleries passed the same **44 integration, 21 helper and 56 usability/security checks each** (726 check executions). Evidence is retained under [test-evidence](test-evidence/), with exact machine-readable results in [matrix.json](test-evidence/matrix.json).
+The six-gallery Piwigo 15/16 and PHP 8.2–8.5 compatibility baseline was recorded for **0.1.0-alpha.2**. The 0.04-alpha.1 follow-up below adds 51 integration, 21 helper and 56 usability/security checks per selected Piwigo 15/16 gallery, plus separate folder-removal lifecycle checks on a writable Piwigo 16.4 gallery. See [test evidence](test-evidence/) for exact run results.
 
 | Piwigo | PHP | Database | Result |
 |---|---|---|---|
@@ -15,11 +15,12 @@ This verifies these exact combinations, not every Piwigo 15/16 patch or arbitrar
 
 ## What was exercised
 
-- Empty/populated home, journal, pagination, single entries and RSS; malformed public routes and missing posts.
+- Empty/populated home, journal, pagination, single entries, the retired feed redirect and malformed public routes/missing posts.
 - Administrator edit/settings screens; missing and incorrect CSRF tokens; malformed IDs, arrays, title limits and zero page size.
 - Ordinary users with valid session tokens denied access to both administration tabs. Guest requests cannot create posts.
-- Create/edit/delete; apostrophes, escaped title markup, CJK characters and four-byte Unicode; RSS round trips with forbidden XML controls removed.
-- Plugin deactivation, activation, uninstall, reinstall and reactivation preserve posts and settings. Test journals return to empty after cleanup.
+- Create/edit/delete; apostrophes, escaped title markup, CJK characters and four-byte Unicode; journal settings, placement choices and feed-route retirement.
+- Plugin deactivation, activation, uninstall, reinstall and reactivation preserve posts and settings. Removal-screen checks reject missing confirmation and read-only paths.
+- On a separate writable Piwigo 16.4 gallery, the removal screen displayed the live entry count, removed the actual plugin directory, preserved and reloaded entries/settings when “keep” was selected, and erased them only after the typed confirmation. A fresh activation after erasure returned an empty journal. The temporary gallery and its database volume were deleted after the check.
 - Helper checks for configuration fallback, object deserialization rejection, valid UTF-8 truncation, bounded pagination and invalid UTF-8/array rejection.
 - Package metadata, required resources, template references, archive allowlist and 56 runtime PHP syntax checks.
 
@@ -52,11 +53,15 @@ Earlier visual evaluation covered Modus home, album, journal and editor screens 
 
 ## Alpha.2 usability and input checks
 
-The additional HTTP suite (`tools/test-usability.py PORT FIXTURE`) runs only on disposable ports 8089–8094. It checks quoted/Unicode settings, every settings field's array rejection, checkbox values, malformed title/body/action fields, invalid UTF-8/control characters, 255/256-character title boundaries, 9,998/9,999/10,000/10,001-character body boundaries, retained errors, HTML sanitation, sandboxed preview without publication, saved-entry pagination, one-time notices, confirmed deletion, RSS and accessible navigation. It cleans up its own posts. The matrix runner calls it for each fixture; Python 3 is required (`-PythonExecutable` can select its full path). It may also be run separately.
+The additional HTTP suite (`tools/test-usability.py PORT FIXTURE`) runs only on disposable ports 8089–8094. The folder-removal runner (`tools/Test-Removal.ps1`) creates a uniquely named temporary database/gallery on port 8095 and removes those temporary Docker resources when it finishes. It checks quoted/Unicode settings, every settings field's array rejection, checkbox values, malformed title/body/action fields, invalid UTF-8/control characters, 255/256-character title boundaries, 9,998/9,999/10,000/10,001-character body boundaries, retained errors, HTML sanitation, sandboxed preview without publication, saved-entry pagination, one-time notices, confirmed deletion, RSS and accessible navigation. It cleans up its own posts. The matrix runner calls it for each fixture; Python 3 is required (`-PythonExecutable` can select its full path). It may also be run separately.
 
 The existing local gallery was backed up before deployment. Its original seven posts and banner fingerprints were unchanged by the code update. Ten additive test entries alternate short and long bodies (501–10,000 source characters), including a 255-character title; test data is not packaged.
 
 Browser checks cover Modus public pages and the plugin editor at 320, 390, 768 and 1280 CSS-pixel viewport widths, plus light and dark administration. This is viewport reflow testing, not a claim of separate 400% browser-zoom or screen-reader validation. Full accessibility certification and an additional public theme remain outside this alpha's verified coverage.
+
+## 0.04-alpha.1 settings, feed and removal follow-up
+
+The settings, placement and retired-feed changes passed the updated 51 integration, 21 helper and 56 usability/security checks on Piwigo 15.7.0/PHP 8.3.35 and Piwigo 16.4.0/PHP 8.4.26. The writable removal flow passed on Piwigo 16.4.0/PHP 8.4.26, including folder absence, retained reinstall data and separately confirmed erasure. The standard compatibility matrix checks read-only removal refusal.
 
 ## 0.03-alpha.1 versioning follow-up
 

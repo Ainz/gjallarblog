@@ -8,7 +8,8 @@ function gjallarblog_defaults()
 {
     return ['blog_name'=>'Gjallarblog', 'blog_description'=>'Notes from the gallery', 'posts_per_page'=>3,
         'show_on_main_page'=>true, 'show_on_category_page'=>false, 'show_number'=>false,
-        'show_date'=>true, 'date_format'=>'j F Y', 'menu_label'=>'Blog'];
+        'show_date'=>true, 'date_format'=>'j F Y', 'menu_label'=>'Blog', 'show_menu'=>true,
+        'home_display'=>'before', 'album_display'=>'hidden'];
 }
 
 function gjallarblog_settings($stored)
@@ -28,8 +29,13 @@ function gjallarblog_settings($stored)
     if (isset($value['posts_per_page']) && is_scalar($value['posts_per_page']) && preg_match('/^[0-9]{1,3}$/D', (string)$value['posts_per_page'])) {
         $result['posts_per_page'] = max(1, min(100, (int)$value['posts_per_page']));
     }
-    foreach (['show_on_main_page','show_on_category_page','show_number','show_date'] as $key) {
+    foreach (['show_on_main_page','show_on_category_page','show_number','show_date','show_menu'] as $key) {
         if (array_key_exists($key,$value)) $result[$key] = in_array($value[$key],[true,1,'1','on'],true);
+    }
+    foreach (['home_display'=>'show_on_main_page','album_display'=>'show_on_category_page'] as $key=>$legacy) {
+        $result[$key] = isset($value[$key]) && in_array($value[$key],['hidden','before','after'],true)
+            ? $value[$key] : ($result[$legacy]?'before':'hidden');
+        $result[$legacy] = $result[$key]!=='hidden';
     }
     if (trim($result['menu_label']) === '') $result['menu_label'] = $result['blog_name'] ?: 'Blog';
     return $result;

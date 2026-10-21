@@ -3,7 +3,6 @@
     <div><span class="gjallarblog-kicker">{'Gallery journal'|translate}</span>
     {if $GB_EMBEDDED}<h2>{$GB_NAME|escape:'html':'UTF-8'}</h2>{else}<h1>{$GB_NAME|escape:'html':'UTF-8'}</h1>{/if}
     <p>{$GB_DESCRIPTION|escape:'html':'UTF-8'}</p></div>
-    <a class="gjallarblog-feed" href="{$GB_FEED|escape:'html':'UTF-8'}">{'RSS feed'|translate}</a>
   </header>
   <ul class="gjallarblog_posts">
   {foreach from=$row item=value}

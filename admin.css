@@ -3,7 +3,7 @@
 .gjallarblog-admin.gb-theme-roma { --gb-paper:#222; --gb-ink:#f5f5f5; --gb-muted:#ddd; --gb-field:#333; --gb-line:#aaa; --gb-link:#a8d4ff; --gb-primary:#245b87; --gb-danger:#ffb5b5; }
 .gjallarblog-admin fieldset, .gjallarblog-admin .gb-new-entry, .gjallarblog-admin .gjallarblog-edit { box-sizing:border-box; min-width:0; padding:20px; margin:18px 0; border:1px solid var(--gb-line); border-radius:6px; color:inherit; }
 .gjallarblog-admin label { display:block; font-weight:600; margin:16px 0 6px; color:var(--gb-ink); }
-.gjallarblog-admin input[type=text], .gjallarblog-admin input[type=number], .gjallarblog-admin textarea { box-sizing:border-box; display:block; width:100%; max-width:100%; padding:10px; margin:0; background:var(--gb-field); color:var(--gb-ink); border:1px solid var(--gb-line); border-radius:3px; font-size:16px; }
+.gjallarblog-admin select, .gjallarblog-admin input[type=text], .gjallarblog-admin input[type=number], .gjallarblog-admin textarea { box-sizing:border-box; display:block; width:100%; max-width:100%; padding:10px; margin:0; background:var(--gb-field); color:var(--gb-ink); border:1px solid var(--gb-line); border-radius:3px; font-size:16px; }
 .gjallarblog-admin input[type=number] { max-width:120px; }
 .gjallarblog-admin textarea { font-family:ui-monospace,monospace; line-height:1.55; resize:vertical; }
 .gjallarblog-admin .gb-check, .gjallarblog-admin .gb-delete-form label { font-weight:400; }
@@ -12,7 +12,7 @@
 .gjallarblog-admin button.gb-primary { background:var(--gb-primary); color:#fff; border-color:var(--gb-primary); font-weight:600; }
 .gjallarblog-admin button.gb-danger { color:var(--gb-danger); border-color:var(--gb-danger); }
 .gjallarblog-admin a { color:var(--gb-link); text-decoration:underline; }
-.gjallarblog-admin :is(a,button,input,textarea,summary):focus-visible { outline:3px solid var(--gb-link); outline-offset:3px; }
+.gjallarblog-admin :is(a,button,input,select,textarea,summary):focus-visible { outline:3px solid var(--gb-link); outline-offset:3px; }
 .gjallarblog-admin summary { cursor:pointer; padding:6px 0; font-weight:600; overflow-wrap:anywhere; }
 .gjallarblog-admin summary small { font-weight:400; color:var(--gb-muted); }
 .gjallarblog-admin h3 { text-align:left; font-size:20px; scroll-margin-top:20px; }

@@ -30,7 +30,7 @@ def create(title,body):
     status,html,url=page(manage,{'submit_post':'1','post_header':title,'post_textarea':body})
     check(status==200 and 'edit=' in url,'Create redirects to the saved entry')
     ident=urllib.parse.parse_qs(urllib.parse.urlparse(url).query)['edit'][0];ids.append(ident);return ident,html,url
-settings={'posts_per_page':'3','blog_name':'Journal 🌄 北','menu_label':'','blog_description':'é'*255,'date_format':'j F Y','show_date':'on'}
+settings={'posts_per_page':'3','blog_name':'Journal 🌄 北','menu_label':'','blog_description':'é'*255,'date_format':'j F Y','show_date':'on','show_menu':'on','home_display':'hidden','album_display':'hidden'}
 try:
     status,html,url=page(config,settings)
     check(status==200 and 'Settings saved.' in html,'Unicode settings and blank menu label save with feedback')
@@ -76,7 +76,7 @@ try:
     count_before=len(ids)
     status,html,url=page(manage,{'preview':'1','post_header':'Preview only','post_textarea':malicious})
     check(status==200 and 'sandbox=""' in html and 'Preview — not published' in html,'Preview is sandboxed and retains form data')
-    check('Preview only' not in page('?/blog/feed')[1],'Preview does not publish')
+    check('Preview only' not in page('?/blog')[1],'Preview does not publish')
     for size in [9998,9999,10000]:
         body='<p>'+('a'*(size-7))+'</p>'
         ident,html,url=create('Body length '+str(size),body)
@@ -91,16 +91,16 @@ try:
     check('Entry updated.' in html,'Redirect displays one-time success message')
     refreshed=request(urllib.parse.urlsplit(url).path.lstrip('/')+'?'+urllib.parse.urlsplit(url).query)[1]
     check('Entry updated.' not in refreshed,'Refresh is a read and consumes the success notice once')
-    before=page('?/blog/feed')[1]
+    before=page('?/blog/id/'+first)[1]
     check(page(manage,{'del':first})[0]==400,'Deletion requires explicit confirmation')
-    check(page('?/blog/feed')[1]==before,'Unconfirmed deletion changes no entries')
-    feed=page('?/blog/feed')[1]
-    check('javascript:' not in feed and 'onerror=' not in feed,'RSS uses sanitized bodies')
+    check(page('?/blog/id/'+first)[1]==before,'Unconfirmed deletion changes no entries')
+    feed=page('?/blog')[1]
+    check('javascript:' not in feed and 'onerror=' not in feed,'Journal uses sanitized bodies')
     home=page('?/blog/2')[1]
     check('aria-current="page"' in home and 'aria-label="Page 1"' in home,'Pagination exposes current page and useful names')
 finally:
     for ident in ids: page(manage,{'del':ident,'confirm_delete':'1'})
-    page(config,{'posts_per_page':'3','blog_name':'Field notes','menu_label':'Journal','blog_description':'Alpha compatibility','date_format':'j F Y','show_date':'on','show_on_main_page':'on'})
+    page(config,{'posts_per_page':'3','blog_name':'Field notes','menu_label':'Journal','blog_description':'Alpha compatibility','date_format':'j F Y','show_date':'on','show_menu':'on','home_display':'hidden','album_display':'hidden','show_on_main_page':'on'})
 out=root/'docs/test-evidence'/f'{fixture}-usability.txt'
 out.write_text('\n'.join('PASS: '+x for x in checks)+f'\nTotal: {len(checks)} checks\n',encoding='utf-8',newline='\n')
 print(f'PASS: {len(checks)} usability/security checks on {fixture}')

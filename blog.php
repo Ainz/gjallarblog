@@ -23,8 +23,12 @@ if (!$embedded) {
 $template->assign(['row'=>$rows,'npage'=>$npage,'pages'=>$pages,'pagi'=>gjallarblog_page_links($npage,$pages),
     'show_number'=>$settings['show_number'],'show_date'=>$settings['show_date'],
     'show_on_main_page'=>$settings['show_on_main_page'],'GB_EMBEDDED'=>$embedded,
-    'GB_NAME'=>$settings['blog_name'],'GB_DESCRIPTION'=>$settings['blog_description'],
-    'GB_FEED'=>get_root_url().'?/blog/feed']);
+    'GB_NAME'=>$settings['blog_name'],'GB_DESCRIPTION'=>$settings['blog_description']]);
 $template->set_filename('gjallarblog_list',__DIR__.'/blog.tpl');
 $template->func_combine_css(['path'=>Gjallarblog_PATH.'posts.css']);
-$template->concat($embedded?'PLUGIN_INDEX_CONTENT_BEFORE':'PLUGIN_INDEX_CONTENT_END',$template->parse('gjallarblog_list',true));
+$slot='PLUGIN_INDEX_CONTENT_END';
+if ($embedded) {
+    $placement=$settings[($tokens[0]??'')==='category'?'album_display':'home_display'];
+    $slot=$placement==='after'?'PLUGIN_INDEX_CONTENT_AFTER':'PLUGIN_INDEX_CONTENT_BEFORE';
+}
+$template->concat($slot,$template->parse('gjallarblog_list',true));

@@ -11,7 +11,7 @@ class gjallarblog_maintain extends PluginMaintain
     }
     function activate($plugin_version, &$errors=[]) { $this->install($plugin_version,$errors); }
     function update($old_version,$new_version,&$errors=[]) { $this->install($new_version,$errors); }
-    // Disabling/uninstalling the code preserves journal data. Purge/import is a separate future operation.
+    // Native Piwigo actions preserve journal data. Explicit verified removal can purge it afterward.
     function deactivate() {}
     function uninstall() {}
 }

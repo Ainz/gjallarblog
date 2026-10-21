@@ -1,0 +1,54 @@
+Network gjallarblog-removal-f9567235_default Creating 
+ Network gjallarblog-removal-f9567235_default Creating 
+ Volume gjallarblog-removal-f9567235_db Creating 
+ Volume gjallarblog-removal-f9567235_db Creating 
+ Volume gjallarblog-removal-f9567235_data Creating 
+ Volume gjallarblog-removal-f9567235_data Creating 
+ Volume gjallarblog-removal-f9567235_config Creating 
+ Volume gjallarblog-removal-f9567235_config Creating 
+ Volume gjallarblog-removal-f9567235_db Created 
+ Volume gjallarblog-removal-f9567235_db Created 
+ Volume gjallarblog-removal-f9567235_config Created 
+ Volume gjallarblog-removal-f9567235_config Created 
+ Volume gjallarblog-removal-f9567235_data Created 
+ Volume gjallarblog-removal-f9567235_data Created 
+ Network gjallarblog-removal-f9567235_default Created 
+ Network gjallarblog-removal-f9567235_default Created 
+ Container gjallarblog-removal-f9567235-db-1 Creating 
+ Container gjallarblog-removal-f9567235-db-1 Created 
+ Container gjallarblog-removal-f9567235-gallery-1 Creating 
+ Container gjallarblog-removal-f9567235-gallery-1 Created 
+ Container gjallarblog-removal-f9567235-db-1 Starting 
+ Container gjallarblog-removal-f9567235-db-1 Started 
+ Container gjallarblog-removal-f9567235-db-1 Waiting 
+ Container gjallarblog-removal-f9567235-db-1 Healthy 
+ Container gjallarblog-removal-f9567235-gallery-1 Starting 
+ Container gjallarblog-removal-f9567235-gallery-1 Started 
+Piwigo installation completed; no newsletter or mail requested.
+Evaluation administrator can log in; Gjallarblog installed and active.
+PASS: Removal warning names the live count and keep option
+PASS: Keep removal reports success only after the plugin folder is gone
+PASS: Fresh installation lists preserved entry one (id 1)
+PASS: Fresh installation lists preserved entry two (id 2)
+PASS: Fresh installation restores preserved journal settings
+PASS: Second removal shows the updated post count
+PASS: Permanent erasure requires the typed name
+PASS: Permanent removal drops posts and settings after verified folder removal
+PASS: Fresh installation after erasure starts with an empty journal
+PASS: writable deletion tests passed; the main evaluation gallery was not used.
+ Container gjallarblog-removal-f9567235-gallery-1 Stopping 
+ Container gjallarblog-removal-f9567235-gallery-1 Stopped 
+ Container gjallarblog-removal-f9567235-gallery-1 Removing 
+ Container gjallarblog-removal-f9567235-gallery-1 Removed 
+ Container gjallarblog-removal-f9567235-db-1 Stopping 
+ Container gjallarblog-removal-f9567235-db-1 Stopped 
+ Container gjallarblog-removal-f9567235-db-1 Removing 
+ Container gjallarblog-removal-f9567235-db-1 Removed 
+ Volume gjallarblog-removal-f9567235_db Removing 
+ Volume gjallarblog-removal-f9567235_data Removing 
+ Volume gjallarblog-removal-f9567235_config Removing 
+ Network gjallarblog-removal-f9567235_default Removing 
+ Volume gjallarblog-removal-f9567235_db Removed 
+ Volume gjallarblog-removal-f9567235_data Removed 
+ Volume gjallarblog-removal-f9567235_config Removed 
+ Network gjallarblog-removal-f9567235_default Removed

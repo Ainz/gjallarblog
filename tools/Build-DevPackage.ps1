@@ -13,7 +13,7 @@ if (Test-Path -LiteralPath $pluginRoot) {
     Remove-Item -LiteralPath $resolved -Recurse -Force
 }
 New-Item -ItemType Directory -Force $pluginRoot | Out-Null
-$runtime = @('admin.css','editor.js','admin.php','blog.php','blog.tpl','config.inc.php','config.tpl','feed.php','index.php','main.inc.php','maintain.class.php','manage.inc.php','manage.tpl','editor.tpl','menubar_gjallarblog.tpl','post.php','post.tpl','posts.css','LICENSE','COPYING.txt','LICENSE.txt','NOTICE.md','README.md','CHANGELOG.md')
+$runtime = @('admin.css','editor.js','admin.php','blog.php','blog.tpl','config.inc.php','config.tpl','remove.inc.php','remove.tpl','feed.php','index.php','main.inc.php','maintain.class.php','manage.inc.php','manage.tpl','editor.tpl','menubar_gjallarblog.tpl','post.php','post.tpl','posts.css','LICENSE','COPYING.txt','LICENSE.txt','NOTICE.md','README.md','CHANGELOG.md')
 foreach ($name in $runtime) { Copy-Item -LiteralPath (Join-Path $projectRoot $name) -Destination $pluginRoot }
 Copy-Item -LiteralPath (Join-Path $projectRoot 'language') -Destination $pluginRoot -Recurse
 Copy-Item -LiteralPath (Join-Path $projectRoot 'include') -Destination $pluginRoot -Recurse

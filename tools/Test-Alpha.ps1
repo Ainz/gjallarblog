@@ -10,16 +10,17 @@ function Assert($condition,[string]$label){if(!$condition){throw "FAIL: $label"}
 function Page([string]$path,$body=$null,$auth=$false){$args=@{Uri="$base/$path";SkipHttpErrorCheck=$true};if($auth){$args.WebSession=$session};if($null -ne $body){$args.Method='Post';$args.Body=$body};Invoke-WebRequest @args}
 $null=Api @{method='pwg.session.login';username=$credentials.username;password=$credentials.password}
 $status=Api @{method='pwg.session.getStatus'}
-$initial=[xml](Page '?/blog/feed').Content
-Assert ($initial.SelectNodes('/rss/channel/item').Count -eq 0) 'Disposable gallery starts empty'
+$initial=(Page 'admin.php?page=plugin-gjallarblog-manage' $null $true).Content
+Assert ($initial.Contains('No entries yet.')) 'Disposable gallery starts empty'
 foreach($path in @('','?/blog','?/blog/999999','?/blog/feed')){
  $r=Page $path;Assert ($r.StatusCode -eq 200 -and $r.Content -notmatch 'Warning:|Fatal error|Uncaught|Deprecated:') "Clean empty public view: $path"
 }
 foreach($path in @('?/blog/id/1%20OR%201=1','?/blog/abc','?/blog/id/0','?/blog/id/2147483648')){Assert ((Page $path).StatusCode -eq 400) "Reject malformed route: $path"}
 Assert ((Page '?/blog/id/999999').StatusCode -eq 404) 'Missing post is 404'
-foreach($tab in @('manage','config')){$r=Page "admin.php?page=plugin-gjallarblog-$tab" $null $true;Assert ($r.StatusCode -eq 200 -and $r.Content -notmatch 'Warning:|Fatal error|Uncaught|Deprecated:') "Clean admin: $tab"}
+foreach($tab in @('manage','config','remove')){$r=Page "admin.php?page=plugin-gjallarblog-$tab" $null $true;Assert ($r.StatusCode -eq 200 -and $r.Content -notmatch 'Warning:|Fatal error|Uncaught|Deprecated:') "Clean admin: $tab"}
 $manage='admin.php?page=plugin-gjallarblog-manage'
 $config='admin.php?page=plugin-gjallarblog-config'
+$remove='admin.php?page=plugin-gjallarblog-remove'
 Assert ((Page $manage @{submit_post=1;post_header='Unauthorized';post_textarea='x'}).Content -notmatch 'Post is saved') 'Guest mutation cannot reach editor'
 $r=Page $manage @{submit_post=1;post_header='No token';post_textarea='x'} $true
 Assert ($r.StatusCode -eq 400) 'Missing CSRF token rejected'
@@ -29,8 +30,17 @@ foreach($fields in @(@{del='1 OR 1=1'},@{'del[]'='1'},@{submit_post=1;'post_head
  $fields.pwg_token=$status.pwg_token;Assert ((Page $manage $fields $true).StatusCode -eq 400) 'Reject malformed administrative input'
 }
 $r=Page $config @{pwg_token=$status.pwg_token;posts_per_page=0} $true;Assert ($r.StatusCode -eq 400) 'Reject zero page size'
-$settings=@{pwg_token=$status.pwg_token;posts_per_page=3;blog_name='Field notes';blog_description='Alpha compatibility';date_format='j F Y';menu_label='Journal';show_on_main_page='on';show_date='on'}
+$settings=@{pwg_token=$status.pwg_token;posts_per_page=3;blog_name='Field notes';blog_description='Alpha compatibility';date_format='j F Y';menu_label='Journal';home_display='before';album_display='hidden';show_menu='on';show_date='on'}
 Assert ((Page $config $settings $true).StatusCode -eq 200) 'Save settings and custom menu label'
+$invalidPlacement=$settings.Clone();$invalidPlacement.home_display='sideways';Assert ((Page $config $invalidPlacement $true).StatusCode -eq 400) 'Reject invalid placement choice';$null=Page $config $settings $true
+$invalidPlacement=$settings.Clone();$invalidPlacement.'album_display[]'='before';$invalidPlacement.Remove('album_display');Assert ((Page $config $invalidPlacement $true).StatusCode -eq 400) 'Reject array-shaped placement'
+$removalPage=Page $remove $null $true
+Assert ($removalPage.Content.Contains('Stored entries:') -and $removalPage.Content.Contains('Keep journal entries and settings')) 'Removal review provides a post count and a keep choice'
+$badRemoval=Page $remove @{pwg_token=$status.pwg_token;entry_count='0';data_action='keep'} $true
+Assert ($badRemoval.StatusCode -eq 400) 'Removal needs an explicit checkbox confirmation'
+$readOnlyRemoval=Page $remove @{pwg_token=$status.pwg_token;entry_count='0';data_action='keep';confirm_remove='1'} $true
+Assert ($readOnlyRemoval.StatusCode -eq 400 -and $readOnlyRemoval.Content.Contains('read-only')) 'Read-only installations refuse removal before changing plugin state'
+Assert ((Page $config $null $true).StatusCode -eq 200) 'Read-only removal leaves plugin installed and active'
 $invalidSettings=$settings.Clone();$invalidSettings.blog_name='Emoji 🌄';Assert ((Page $config $invalidSettings $true).StatusCode -eq 200) 'Store configuration Unicode through ASCII JSON';$null=Page $config $settings $true
 $readerName='alpha-reader-'+[Guid]::NewGuid().ToString('N').Substring(0,12)
 $readerPassword=[Guid]::NewGuid().ToString('N')
@@ -54,10 +64,10 @@ try {
   $title="Alpha $n <entry> & apostrophe's — 北 🌄"
   $r=Page $manage @{pwg_token=$status.pwg_token;submit_post=1;post_header=$title;post_textarea="<p>Alpha body $n.</p>"} $true
   Assert ($r.StatusCode -eq 200 -and $r.Content.Contains('&lt;entry&gt;')) "Create and escape UTF-8 title $n"
-  $xml=[xml](Page '?/blog/feed').Content
-  $item=@($xml.rss.channel.item)|Where-Object title -eq $title
-  Assert ($null -ne $item) "RSS Unicode round-trip $n"
-  $ids.Add(([string]$item.link -split '/')[-1])
+  $null=$r.BaseResponse.RequestMessage.RequestUri.Query -match '[?&]edit=(\d+)'
+  $id=$Matches[1]
+  Assert ([Net.WebUtility]::HtmlDecode((Page "?/blog/id/$id").Content).Contains($title)) "Public Unicode round-trip $n"
+  $ids.Add($id)
  }
  foreach($path in @('','?/blog','?/blog/2',"?/blog/id/$($ids[0])")){$r=Page $path;Assert ($r.StatusCode -eq 200 -and $r.Content -notmatch 'Warning:|Fatal error|Uncaught|Deprecated:') "Clean populated public view: $path"}
  $r=Page $manage @{pwg_token=$status.pwg_token;edit_post_id=$ids[0];edit_post_header='Updated alpha';edit_post_text='<p>Edited alpha.</p>'} $true
@@ -65,9 +75,8 @@ try {
  foreach($action in @('deactivate','activate','deactivate','uninstall','install','activate')){$null=Api @{method='pwg.plugins.performAction';action=$action;plugin='gjallarblog';pwg_token=$status.pwg_token}}
  Assert ((Page $config $null $true).Content.Contains('value="Journal"')) 'Reinstall preserves menu settings'
  Assert ((Page "?/blog/id/$($ids[0])").Content.Contains('Edited alpha.')) 'Reinstall preserves posts'
- Assert (@(([xml](Page '?/blog/feed').Content).rss.channel.item).Count -eq 5) 'Exactly five authorized posts; rejected requests added none'
+ Assert ([regex]::Matches(((Page '?/blog').Content+(Page '?/blog/2').Content),'class="gjallarblog-post"').Count -eq 5) 'Exactly five authorized posts; rejected requests added none'
 } finally {foreach($id in $ids){$null=Page $manage @{pwg_token=$status.pwg_token;del=$id;confirm_delete='1'} $true}}
-$xml=[xml](Page '?/blog/feed').Content
-Assert ($xml.SelectNodes('/rss/channel/item').Count -eq 0) 'Delete leaves clean empty journal'
+Assert ((Page 'admin.php?page=plugin-gjallarblog-manage' $null $true).Content.Contains('No entries yet.')) 'Delete leaves clean empty journal'
 $results|Set-Content (Join-Path $StateDirectory 'alpha-results.txt')
 Write-Output "All $($results.Count) alpha checks passed on port $Port."

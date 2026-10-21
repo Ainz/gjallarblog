@@ -52,6 +52,6 @@ PASS: Redirect displays one-time success message
 PASS: Refresh is a read and consumes the success notice once
 PASS: Deletion requires explicit confirmation
 PASS: Unconfirmed deletion changes no entries
-PASS: RSS uses sanitized bodies
+PASS: Journal uses sanitized bodies
 PASS: Pagination exposes current page and useful names
 Total: 56 checks

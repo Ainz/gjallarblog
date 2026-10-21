@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.04-alpha.1 — 2026-10-21
+
+- Group settings with consistent controls and help; add before/after home and album placement and journal link visibility.
+- Remove journal RSS links and redirect the legacy feed address to Piwigo’s core feed.
+- Add webmaster-only removal review with entry count, explicit confirmation, optional permanent data erasure and actual folder-removal verification.
+- Preserve posts/settings for native deactivation, uninstall and delete; reject read-only removal before changing plugin state.
+
 ## 0.03-alpha.1 — 2026-10-21
 
 - Adopt Major.Minor version strings with at least two minor digits, plus explicit alpha/beta/rc identifiers.

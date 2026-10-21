@@ -2,27 +2,27 @@
 
 A journal plugin for Piwigo, maintained by Ainz and derived from **Evil_Blog by EvilKant**, with contributions from Piwigo translators. The original Git history is preserved.
 
-**0.03-alpha.1 is an experimental prerelease.** Back up your database and test on a staging gallery before deployment. It is not a release candidate or a claim of a complete security audit.
+**0.04-alpha.1 is an experimental prerelease.** Back up your database and test on a staging gallery before deployment. It is not a release candidate or a claim of a complete security audit.
 
 ## Installation
 
-1. Download `gjallarblog-0.03-alpha.1.zip` from [Releases](https://github.com/Ainz/gjallarblog/releases).
+1. Download `gjallarblog-0.04-alpha.1.zip` from [Releases](https://github.com/Ainz/gjallarblog/releases).
 2. Extract its single `gjallarblog/` directory into your gallery's `plugins/` directory. Use this release ZIP rather than GitHub's source archive.
 3. In Piwigo Administration → Plugins, install and activate **Gjallarblog**.
 4. Open the plugin settings and configure the journal name, description, menu label, page size and placement on gallery home/album pages.
-5. Create entries using the plugin's Entries tab. The journal is available at `?/blog`; RSS is at `?/blog/feed`.
+5. Create entries using the plugin's Entries tab. The journal is available at `?/blog`. RSS belongs to Piwigo; the plugin has no separate feed link.
 
-The Blog menu block uses Piwigo's menu manager. Reorder or hide it in Administration → Configuration → Menus. Presentation depends on the active theme. Renaming the journal and renaming its menu label are separate settings. A blank menu label falls back to the journal title. Use the menu manager to hide the block. The Settings tab links directly to it.
+The Blog menu block uses Piwigo's menu manager. Reorder or hide it in Administration → Configuration → Menus. Presentation depends on the active theme. Renaming the journal and renaming its menu label are separate settings. A blank menu label falls back to the journal title. Use Settings → Site navigation to show or hide the link, and the menu manager to position it. The Settings tab links directly to it.
 
 ## Versioning
 
 Versions use **Major.Minor**, with the minor displayed using at least two digits: `0.03`, `0.09`, `0.10`, eventually `1.00`. Prereleases append `-alpha.N`, `-beta.N` or `-rc.N` and are marked as prereleases on GitHub. The metadata version, tag (`v` prefix), package filename and release title share the same version string.
 
-The historical `0.1.0-alpha.1` and `0.1.0-alpha.2` releases remain unchanged. The first release under this convention is **0.03-alpha.1**, which Piwigo compares as newer than both. See [versioning and upgrade verification](docs/VERSIONING.md).
+The historical `0.1.0-alpha.1` and `0.1.0-alpha.2` releases remain unchanged. The convention was introduced in **0.03-alpha.1**; the current prerelease is **0.04-alpha.1**. Piwigo compares both as newer than the preserved legacy versions. See [versioning and upgrade verification](docs/VERSIONING.md).
 
 ## Compatibility
 
-Tested: **Piwigo 15.7.0 with PHP 8.2.34/8.3.35**, and **Piwigo 16.4.0 with PHP 8.2.34/8.3.35/8.4.26/8.5.11**. Each combination passed 44 integration, 21 helper and 56 usability/security checks on MariaDB 11.4.13.
+Tested: **Piwigo 15.7.0 with PHP 8.2.34/8.3.35**, and **Piwigo 16.4.0 with PHP 8.2.34/8.3.35/8.4.26/8.5.11**. The alpha.2 baseline passed 44 integration, 21 helper and 56 usability/security checks per combination. The 0.04 follow-up reran Piwigo 15.7.0/PHP 8.3.35 and Piwigo 16.4.0/PHP 8.4.26 with 51 integration, 21 helper and 56 usability/security checks on MariaDB 11.4.13.
 
 PHP requires `mysqli` and `mbstring`, in addition to the requirements of the selected Piwigo version. The alpha targets Piwigo 15 and 16; only exact combinations with passing results in [validation](docs/VALIDATION.md) are claimed as tested. Other combinations remain unverified. MariaDB 11.4 is the test database; MySQL and other database versions are unverified.
 
@@ -32,9 +32,9 @@ PHP 8.2–8.5 compatibility is a development target where the underlying Piwigo 
 
 Only gallery administrators can manage entries and settings. Changes require Piwigo CSRF tokens. Titles and form values are escaped; identifiers, pagination, UTF-8 and input sizes are validated.
 
-**Post bodies are filtered through an HTML allowlist on save, preview, public display and RSS.** HTML Purifier removes scripts, event attributes, inline styles, active embeds and unsupported URL schemes. Existing stored bodies are not rewritten on upgrade; their displayed output is filtered. Editing and saving an older entry persists the filtered content. Do not grant administrator access to untrusted authors. There is no public submission, dedicated author role, private-post permission model, or draft workflow. Published journal posts and RSS are public when the gallery permits public access; album restrictions do not make journal entries private.
+**Post bodies are filtered through an HTML allowlist on save, preview and public display.** HTML Purifier removes scripts, event attributes, inline styles, active embeds and unsupported URL schemes. Existing stored bodies are not rewritten on upgrade; their displayed output is filtered. Editing and saving an older entry persists the filtered content. Do not grant administrator access to untrusted authors. There is no public submission, dedicated author role, private-post permission model, or draft workflow. Published journal posts are public when the gallery permits public access; album restrictions do not make journal entries private.
 
-Disabling or uninstalling the plugin preserves its posts and settings. Reinstalling reconnects to them. Back up the `<prefix>gjallarblog` table and `gjallarblog` configuration entry. This alpha has no permanent-purge interface.
+Disabling or uninstalling the plugin preserves its posts and settings. Reinstalling reconnects to them. Back up the `<prefix>gjallarblog` table and `gjallarblog` configuration entry. Settings → Plugin removal shows the current entry count and offers verified folder removal. Keeping data is the default. Only a webmaster can remove the plugin through this screen. Erasure additionally requires typing `Gjallarblog` and checking confirmation; data is erased only after successful folder removal. Piwigo’s plugin-manager delete action preserves journal data for reinstalling. Use Settings → Plugin removal for the counted choice between keeping it or erasing it. Read-only installations must be removed by the server administrator.
 
 ## Writing entries
 
@@ -55,7 +55,7 @@ Back up the database and existing plugin folder, replace `plugins/gjallarblog/` 
 - New administration labels are English; inherited translations are retained but translation coverage is incomplete.
 - Theme evaluation focuses on the bundled Modus theme. Per-theme template overrides and broader theme validation remain future work.
 - Default `j F Y` dates use Piwigo localization. Custom PHP date formats use the server timezone and may contain English month/day names.
-- RSS includes at most the latest 50 posts. Relative URLs inside authored HTML are not rewritten for feed readers.
+- The former `?/blog/feed` redirects to Piwigo’s core `feed.php`. Journal entries are not added to the core photo feed. Piwigo’s standard feed navigation and access rules apply; hiding its menu link alone does not disable its feed endpoint.
 - ExtendedDescription integration is optional and guarded, but has not been tested as part of the alpha matrix. The old FCKEditor dependency is not required.
 - Settings are stored as ASCII-escaped JSON to preserve emoji in the core configuration table. Legacy serialized settings remain readable. Downgrading to alpha.1 after saving alpha.2 settings requires restoring the backed-up configuration entry.
 - No independent penetration test, full static-analysis certification, or guarantee covering all third-party plugins.

@@ -3,7 +3,7 @@
 $root = dirname(__DIR__);
 $errors = [];
 require_once __DIR__.'/version.php';
-$required = ['main.inc.php','maintain.class.php','admin.php','manage.inc.php','manage.tpl','menubar_gjallarblog.tpl','config.inc.php','config.tpl','blog.php','blog.tpl','post.php','post.tpl','feed.php','index.php','admin.css','editor.js','editor.tpl','posts.css','LICENSE','NOTICE.md','include/functions.inc.php','language/en_UK/plugin.lang.php'];
+$required = ['main.inc.php','maintain.class.php','admin.php','manage.inc.php','manage.tpl','menubar_gjallarblog.tpl','config.inc.php','config.tpl','remove.inc.php','remove.tpl','blog.php','blog.tpl','post.php','post.tpl','feed.php','index.php','admin.css','editor.js','editor.tpl','posts.css','LICENSE','NOTICE.md','include/functions.inc.php','language/en_UK/plugin.lang.php'];
 foreach ($required as $path) if (!is_file($root.'/'.$path)) $errors[] = 'Missing runtime file: '.$path;
 $main = file_get_contents($root.'/main.inc.php');
 if (!preg_match('/^Plugin Name: Gjallarblog$/m', $main)) $errors[] = 'Wrong plugin name';

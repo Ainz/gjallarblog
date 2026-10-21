@@ -1,6 +1,6 @@
 <?php
 /*
-Version: 0.03-alpha.1
+Version: 0.04-alpha.1
 Plugin Name: Gjallarblog
 Author: EvilKant; Ainz (Gjallarblog fork)
 Description: A small journal for your Piwigo gallery.
@@ -33,8 +33,8 @@ function Gjallarblog_main()
     if ($section==='blog' && ($tokens[1]??'')==='id') {
         gjallarblog_id($tokens[2]??null);
         include __DIR__.'/post.php';
-    } elseif ($section==='blog' || ($section==='' && $page['gjallarblog']['show_on_main_page']) ||
-        (in_array($section,['category','categories'],true) && $page['gjallarblog']['show_on_category_page'])) {
+    } elseif ($section==='blog' || (in_array($section,['','categories'],true) && $page['gjallarblog']['home_display']!=='hidden') ||
+        ($section==='category' && $page['gjallarblog']['album_display']!=='hidden')) {
         include __DIR__.'/blog.php';
     }
 }
@@ -63,6 +63,7 @@ function gjallarblog_add_to_menu($refs)
     $block=$refs[0]->get_block('mbGjallarblog');
     if ($block===null) return;
     $settings=gjallarblog_settings($conf['gjallarblog']??null);
+    if (!$settings['show_menu']) return;
     $block->data=['TITLE'=>$settings['blog_description'], 'NAME'=>$settings['menu_label'], 'URL'=>make_index_url(['section'=>'blog']), 'CURRENT'=>(($GLOBALS['page']['section']??'')==='blog')];
     $block->template=__DIR__.'/menubar_gjallarblog.tpl';
 }

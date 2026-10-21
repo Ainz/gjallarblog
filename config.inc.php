@@ -11,9 +11,14 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
     $perPage=gjallarblog_input('posts_per_page',l10n('Entries per page'),3,$errors,true);
     if (!preg_match('/^[1-9][0-9]{0,2}$/D',$perPage) || (int)$perPage>100) $errors['posts_per_page']=l10n('Entries per page must be between 1 and 100.');
     $settings['posts_per_page']=$perPage;
-    foreach (['show_on_main_page','show_on_category_page','show_number','show_date'] as $key) {
+    foreach (['show_number','show_date','show_menu'] as $key) {
         if (isset($_POST[$key]) && (!is_string($_POST[$key]) || !in_array($_POST[$key],['on','1'],true))) $errors[$key]=l10n('Choose a valid checkbox value.');
         $settings[$key]=isset($_POST[$key]);
+    }
+    foreach (['home_display'=>'show_on_main_page','album_display'=>'show_on_category_page'] as $key=>$legacy) {
+        $value=$_POST[$key]??null;
+        if (!is_string($value) || !in_array($value,['hidden','before','after'],true)) $errors[$key]=l10n('Choose Hidden, Before content or After content.');
+        else { $settings[$key]=$value; $settings[$legacy]=$value!=='hidden'; }
     }
     if (!$errors) {
         if ($settings['menu_label']==='') $settings['menu_label']=$settings['blog_name'];
@@ -24,7 +29,8 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
     }
     http_response_code(400);
 }
-gjallarblog_admin_assign(['GB_SETTINGS'=>$settings,'GB_ERRORS'=>$errors,'GB_ADMIN'=>Gjallarblog_Admin.'-config',
+[$postCount]=pwg_db_fetch_row(gjallarblog_query('SELECT COUNT(*) FROM '.Gjallarblog_Table));
+gjallarblog_admin_assign(['GB_POST_COUNT'=>(int)$postCount,'GB_REMOVE'=>Gjallarblog_Admin.'-remove','GB_CAN_REMOVE'=>is_webmaster(), 'GB_SETTINGS'=>$settings,'GB_ERRORS'=>$errors,'GB_ADMIN'=>Gjallarblog_Admin.'-config',
     'GB_MENU_SETTINGS'=>get_root_url().'admin.php?page=menubar',
     'GB_DATE_EXAMPLE'=>gjallarblog_date(time(),$settings['date_format']), 'GB_TIMEZONE'=>date_default_timezone_get()]);
 $template->set_filename('gjallarblog_config',__DIR__.'/config.tpl');

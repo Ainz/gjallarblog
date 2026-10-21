@@ -31,7 +31,11 @@ foreach($case in $cases){
  & $PythonExecutable (Join-Path $PSScriptRoot 'test-usability.py') $port $project
  if($LASTEXITCODE -ne 0){throw 'Usability/security checks failed'}
  $php=& wsl.exe -d Debian -u root --exec docker exec $container php -r 'echo PHP_VERSION;'
- $matrix+=@{piwigo=$case[2];php=($php -join '').Trim();database='MariaDB 11.4';integration_checks=44;helper_checks=21;usability_security_checks=56;result='PASS';fixture=$project}
+ $matrix+=@{piwigo=$case[2];php=($php -join '').Trim();database='MariaDB 11.4';integration_checks=51;helper_checks=21;usability_security_checks=56;result='PASS';fixture=$project}
 }
+$removalOutput=& (Join-Path $PSScriptRoot 'Test-Removal.ps1') 2>&1
+if($LASTEXITCODE -ne 0){throw 'Writable removal lifecycle checks failed'}
+[IO.File]::WriteAllText((Join-Path $evidence 'removal-lifecycle.txt'),($removalOutput -join "`n")+"`n",[Text.UTF8Encoding]::new($false))
+
 [IO.File]::WriteAllText((Join-Path $evidence 'matrix.json'), ($matrix|ConvertTo-Json -Depth 5).Replace("`r`n","`n")+"`n", [Text.UTF8Encoding]::new($false))
 Write-Output 'PASS: selected disposable alpha compatibility cases.'

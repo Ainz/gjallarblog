@@ -1,62 +1,22 @@
 [
   {
-    "php": "8.3.35",
-    "database": "MariaDB 11.4.13",
-    "piwigo": "15.7.0",
-    "helper_checks": 21,
-    "integration_checks": 44,
     "fixture": "a15",
-    "result": "PASS",
-    "usability_security_checks": 56
-  },
-  {
-    "php": "8.4.26",
-    "database": "MariaDB 11.4.13",
-    "piwigo": "16.4.0",
-    "helper_checks": 21,
-    "integration_checks": 44,
-    "fixture": "a16",
-    "result": "PASS",
-    "usability_security_checks": 56
-  },
-  {
-    "php": "8.2.34",
-    "database": "MariaDB 11.4.13",
-    "piwigo": "15.7.0",
-    "helper_checks": 21,
-    "integration_checks": 44,
-    "fixture": "a1582",
-    "result": "PASS",
-    "usability_security_checks": 56
-  },
-  {
-    "php": "8.2.34",
-    "database": "MariaDB 11.4.13",
-    "piwigo": "16.4.0",
-    "helper_checks": 21,
-    "integration_checks": 44,
-    "fixture": "a1682",
-    "result": "PASS",
-    "usability_security_checks": 56
-  },
-  {
+    "usability_security_checks": 56,
+    "database": "MariaDB 11.4",
+    "integration_checks": 51,
     "php": "8.3.35",
-    "database": "MariaDB 11.4.13",
-    "piwigo": "16.4.0",
-    "helper_checks": 21,
-    "integration_checks": 44,
-    "fixture": "a1683",
     "result": "PASS",
-    "usability_security_checks": 56
+    "helper_checks": 21,
+    "piwigo": "15.7.0"
   },
   {
-    "php": "8.5.11",
-    "database": "MariaDB 11.4.13",
-    "piwigo": "16.4.0",
-    "helper_checks": 21,
-    "integration_checks": 44,
-    "fixture": "a1685",
+    "fixture": "a16",
+    "usability_security_checks": 56,
+    "database": "MariaDB 11.4",
+    "integration_checks": 51,
+    "php": "8.4.26",
     "result": "PASS",
-    "usability_security_checks": 56
+    "helper_checks": 21,
+    "piwigo": "16.4.0"
   }
 ]
