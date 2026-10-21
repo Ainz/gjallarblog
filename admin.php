@@ -12,6 +12,7 @@ $page['tab'] = isset($_GET['tab']) ? $_GET['tab'] : 'manage';
 if (!in_array($page['tab'], ['manage','config'], true)) bad_request('Unknown blog tab');
 check_status(ACCESS_ADMINISTRATOR);
 include(Gjallarblog_PATH.$page['tab'].'.inc.php');
+$template->func_combine_script(['id'=>'gjallarblog-editor', 'load'=>'footer', 'path'=>Gjallarblog_PATH.'editor.js']);
 
 $template->func_combine_css(array(
         'path' => Gjallarblog_PATH.'admin.css',
@@ -19,8 +20,8 @@ $template->func_combine_css(array(
       );
 
 $tabsheet = new tabsheet();
-$tabsheet->add('manage', l10n('Manage'), Gjallarblog_Admin.'-manage');
-$tabsheet->add('config', l10n('Configuration'), Gjallarblog_Admin.'-config');
+$tabsheet->add('manage', l10n('Entries'), Gjallarblog_Admin.'-manage');
+$tabsheet->add('config', l10n('Settings'), Gjallarblog_Admin.'-config');
 $tabsheet->select($page['tab']);
 $tabsheet->assign();
 ?>

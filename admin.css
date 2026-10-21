@@ -1,9 +1,56 @@
-.gjallarblog-admin { max-width:980px; margin:24px auto; text-align:left; }
-.gjallarblog-admin fieldset { padding:22px; border:1px solid #8886; border-radius:8px; }
-.gjallarblog-admin label { display:block; font-weight:bold; margin:14px 0; }
-.gjallarblog-admin input[type=text],.gjallarblog-admin input:not([type]),.gjallarblog-admin textarea { display:block; box-sizing:border-box; width:100%; padding:9px; margin-top:6px; }
-.gjallarblog-admin textarea { font-family:monospace; line-height:1.5; }
-.gjallarblog-admin input[type=number] { display:block; width:90px; padding:8px; margin-top:6px; }
-.gjallarblog-admin button { padding:10px 18px; margin:12px 0; cursor:pointer; }
-.gjallarblog-edit { border:1px solid #8886; border-radius:7px; padding:18px; margin:16px 0; }
-.gjallarblog-edit summary { cursor:pointer; font-weight:bold; }
+.gjallarblog-admin { --gb-paper:#fff; --gb-ink:#242424; --gb-muted:#4b4b4b; --gb-field:#fff; --gb-line:#858585; --gb-link:#185485; --gb-primary:#185485; --gb-danger:#9b2020; max-width:980px; margin:24px 0; padding:0 20px; box-sizing:border-box; text-align:left; color:var(--gb-ink); font-size:15px; line-height:1.55; background:var(--gb-paper); }
+/* Piwigo switches its administration color stylesheet; inherit that choice. */
+.gjallarblog-admin.gb-theme-roma { --gb-paper:#222; --gb-ink:#f5f5f5; --gb-muted:#ddd; --gb-field:#333; --gb-line:#aaa; --gb-link:#a8d4ff; --gb-primary:#245b87; --gb-danger:#ffb5b5; }
+.gjallarblog-admin fieldset, .gjallarblog-admin .gb-new-entry, .gjallarblog-admin .gjallarblog-edit { box-sizing:border-box; min-width:0; padding:20px; margin:18px 0; border:1px solid var(--gb-line); border-radius:6px; color:inherit; }
+.gjallarblog-admin label { display:block; font-weight:600; margin:16px 0 6px; color:var(--gb-ink); }
+.gjallarblog-admin input[type=text], .gjallarblog-admin input[type=number], .gjallarblog-admin textarea { box-sizing:border-box; display:block; width:100%; max-width:100%; padding:10px; margin:0; background:var(--gb-field); color:var(--gb-ink); border:1px solid var(--gb-line); border-radius:3px; font-size:16px; }
+.gjallarblog-admin input[type=number] { max-width:120px; }
+.gjallarblog-admin textarea { font-family:ui-monospace,monospace; line-height:1.55; resize:vertical; }
+.gjallarblog-admin .gb-check, .gjallarblog-admin .gb-delete-form label { font-weight:400; }
+.gjallarblog-admin input[type=checkbox] { margin-right:8px; }
+.gjallarblog-admin button { display:inline-block; padding:9px 15px; margin:6px 0; min-height:40px; font:inherit; cursor:pointer; color:var(--gb-ink); background:var(--gb-field); border:1px solid var(--gb-line); border-radius:4px; }
+.gjallarblog-admin button.gb-primary { background:var(--gb-primary); color:#fff; border-color:var(--gb-primary); font-weight:600; }
+.gjallarblog-admin button.gb-danger { color:var(--gb-danger); border-color:var(--gb-danger); }
+.gjallarblog-admin a { color:var(--gb-link); text-decoration:underline; }
+.gjallarblog-admin :is(a,button,input,textarea,summary):focus-visible { outline:3px solid var(--gb-link); outline-offset:3px; }
+.gjallarblog-admin summary { cursor:pointer; padding:6px 0; font-weight:600; overflow-wrap:anywhere; }
+.gjallarblog-admin summary small { font-weight:400; color:var(--gb-muted); }
+.gjallarblog-admin h3 { text-align:left; font-size:20px; scroll-margin-top:20px; }
+.gjallarblog-admin .gb-help { font-size:14px; color:var(--gb-muted); margin:6px 0 14px; }
+.gjallarblog-admin .gb-counter { display:block; text-align:right; font-size:13px; color:var(--gb-muted); padding:3px 0; }
+.gjallarblog-admin .gb-error, .gjallarblog-admin .gb-over-limit { color:var(--gb-danger); font-weight:600; }
+.gjallarblog-admin [aria-invalid=true] { border:2px solid var(--gb-danger); }
+.gjallarblog-admin .gb-error-summary, .gjallarblog-admin .gb-notice { padding:14px; border:2px solid currentColor; }
+.gjallarblog-admin .gb-error-summary { color:var(--gb-danger); }
+.gjallarblog-admin .gb-actions, .gjallarblog-admin .gb-format-tools { display:flex; align-items:center; flex-wrap:wrap; gap:10px; }
+.gjallarblog-admin .gb-format-tools[hidden] { display:none; }
+.gjallarblog-admin .gb-format-tools button { padding:5px 10px; min-height:34px; font-size:14px; }
+.gjallarblog-admin .gb-delete-form { border-top:1px solid var(--gb-line); margin-top:24px; padding-top:12px; }
+.gjallarblog-admin .gb-preview iframe { width:100%; min-height:440px; border:1px solid var(--gb-line); background:#fff; }
+.gjallarblog-admin pre { max-width:100%; white-space:pre-wrap; overflow-wrap:anywhere; }
+#content .gjallarblog-admin .gjallarblog-pagination { display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin:20px 0; }
+#content .gjallarblog-admin .gjallarblog-pagination > * { box-sizing:border-box; display:inline-flex; align-items:center; justify-content:center; min-width:36px; min-height:36px; padding:6px 10px; }
+.gjallarblog-admin [aria-current=page] { outline:2px solid currentColor; font-weight:bold; }
+@media(max-width:600px) { .gjallarblog-admin { padding:0 10px; margin:12px 0; } .gjallarblog-admin fieldset, .gjallarblog-admin .gb-new-entry, .gjallarblog-admin .gjallarblog-edit { padding:12px; } }
+
+@media(max-width:700px) {
+  body.gb-admin-page #menubar { position:relative; float:none; width:auto; height:auto; min-height:0; margin:0; padding:8px; display:flex; flex-wrap:wrap; gap:8px; }
+  body.gb-admin-page #menubar > dl { flex:0 1 auto; }
+  body.gb-admin-page #menubar .big-icon, body.gb-admin-page #menubar .piwigo-logo { display:none; }
+  body.gb-admin-page #content { margin-left:0; width:auto; min-width:0; }
+  body.gb-admin-page .gjallarblog-admin { width:100%; min-width:0; }
+  body.gb-admin-page .gb-preview iframe { box-sizing:border-box; min-width:0; }
+}
+
+@media(max-width:700px) {
+  body#theAdminPage.gb-admin-page { min-width:0; }
+  body.gb-admin-page #menubar { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); }
+  body.gb-admin-page #menubar > dl, body.gb-admin-page #menubar #adminHome { width:auto; margin:0; min-width:0; }
+  body.gb-admin-page #menubar dt { width:auto; }
+  body.gb-admin-page #content > h2 { display:block; font-size:22px; margin:16px 10px; padding:0; }
+  body#theAdminPage.gb-admin-page #footer { display:none; }
+}
+
+.gjallarblog-admin .gb-help { text-align:left; }
+body.gb-admin-page:has(.gb-theme-roma) #tabsheet a { color:#f5f5f5; background:#333; }
+body.gb-admin-page:has(.gb-theme-roma) #tabsheet .selected_tab a { background:#222; }

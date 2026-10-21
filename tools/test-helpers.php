@@ -13,7 +13,7 @@ foreach ([0, -1, '01', '1 OR 1=1', '2147483648', [], null, '1.0'] as $id) {
 verify(gjallarblog_settings('broken') === gjallarblog_defaults(), 'Malformed configuration fallback');
 verify(gjallarblog_settings(serialize((object) ['blog_name'=>'wrong'])) === gjallarblog_defaults(), 'Objects are not configuration arrays');
 $settings = gjallarblog_settings(['blog_name'=>str_repeat('北', 100), 'posts_per_page'=>999]);
-verify(mb_check_encoding($settings['blog_name'], 'UTF-8') && strlen($settings['blog_name']) <= 255, 'UTF-8 truncation remains valid');
+verify(mb_check_encoding($settings['blog_name'], 'UTF-8') && mb_strlen($settings['blog_name'],'UTF-8') <= 255, 'UTF-8 truncation remains valid');
 verify($settings['posts_per_page'] === 100, 'Page size bounded');
 verify(gjallarblog_escape('<script>"&') === '&lt;script&gt;&quot;&amp;', 'HTML context escaped');
 verify(gjallarblog_xml_escape("A\x01B\tC") === "AB\tC", 'Invalid XML controls removed');

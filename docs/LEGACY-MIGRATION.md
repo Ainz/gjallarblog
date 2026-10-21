@@ -11,7 +11,7 @@ Inspected source: Evil_Blog SVN revision 32706 / official 1.2.4 and Ainz/evilebl
 3. Require an empty destination for the first importer, preserving IDs and dates so existing `?/blog/id/N` links resolve. Refuse collisions rather than overwrite.
 4. Copy and validate posts into utf8mb4. Stop on malformed or ambiguous encoding instead of silently losing characters. Validate totals and representative checksums.
 5. Deserialize only arrays with `allowed_classes=false`; map supported configuration fields explicitly. Add the new menu-label default independently.
-6. Audit copied administrator HTML and embedded resource links. Legacy HTML remains trusted HTML; migration must not imply that it becomes safe for untrusted authors.
+6. Audit copied administrator HTML and embedded resource links. Alpha.2 filters legacy HTML on display and save; a dry run must report removed markup and entries above the 10,000-character editing limit. Migration must not imply safety for untrusted authors.
 7. Keep source tables and settings intact. Record an import marker and make repeat runs refuse duplicates. Support a rollback of the newly imported destination only.
 8. Disable the old plugin before enabling Gjallarblog, because both use `?/blog` routes. Retain a database backup and staged upgrade test.
 

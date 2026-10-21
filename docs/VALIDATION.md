@@ -1,6 +1,6 @@
-# Alpha validation — 20 October 2026
+# Alpha validation — 21 October 2026
 
-Release: **0.1.0-alpha.1**. Six disposable Docker galleries passed the same **44 integration checks and 21 helper checks each** (390 check executions). Evidence is retained under [test-evidence](test-evidence/), with exact machine-readable results in [matrix.json](test-evidence/matrix.json).
+Release: **0.1.0-alpha.2**. Six disposable Docker galleries passed the same **44 integration, 21 helper and 56 usability/security checks each** (726 check executions). Evidence is retained under [test-evidence](test-evidence/), with exact machine-readable results in [matrix.json](test-evidence/matrix.json).
 
 | Piwigo | PHP | Database | Result |
 |---|---|---|---|
@@ -23,7 +23,7 @@ This verifies these exact combinations, not every Piwigo 15/16 patch or arbitrar
 - Helper checks for configuration fallback, object deserialization rejection, valid UTF-8 truncation, bounded pagination and invalid UTF-8/array rejection.
 - Package metadata, required resources, template references, archive allowlist and 56 runtime PHP syntax checks.
 
-The tests exposed an actual four-byte Unicode insertion failure caused by the core's default utf8 connection. Plugin table queries now scope utf8mb4 to the query and restore the previous connection charset. Core configuration fields reject unsupported four-byte characters with a controlled error rather than a database failure.
+The tests exposed an actual four-byte Unicode insertion failure caused by the core's default utf8 connection. Plugin table queries now scope utf8mb4 to the query and restore the previous connection charset. Alpha.2 stores configuration as ASCII-escaped JSON, with SQL escaping through the core callback, so four-byte characters, quotes and backslashes round-trip safely. The insert ID is captured before charset restoration, which otherwise resets it.
 
 ## Reproduction
 
@@ -46,6 +46,14 @@ Official core downloads are pinned by SHA-256:
 
 ## Limits
 
-This is an alpha, not an exhaustive security audit. MySQL, older/newer core patches, other themes, subdirectory/rewrite modes, optional ExtendedDescription integration, complete translations, and legacy migration remain unverified. Trusted administrator HTML is intentionally not sanitized. Full static analysis and broader accessibility/theming work remain before an RC.
+This is an alpha, not an exhaustive security audit. MySQL, older/newer core patches, other themes, subdirectory/rewrite modes, optional ExtendedDescription integration, complete translations, and legacy migration remain unverified. Entry HTML is now allowlist-filtered on every output path and when saved; this does not establish immunity to every future sanitizer or integration defect. Broader static analysis and accessibility/theming work remain before an RC.
 
 Earlier visual evaluation covered Modus home, album, journal and editor screens on the port-8088 gallery. Its banner is site configuration and demonstration artwork, not a plugin theme requirement. User-added evaluation content was excluded from the disposable matrix.
+
+## Alpha.2 usability and input checks
+
+The additional HTTP suite (`tools/test-usability.py PORT FIXTURE`) runs only on disposable ports 8089–8094. It checks quoted/Unicode settings, every settings field's array rejection, checkbox values, malformed title/body/action fields, invalid UTF-8/control characters, 255/256-character title boundaries, 9,998/9,999/10,000/10,001-character body boundaries, retained errors, HTML sanitation, sandboxed preview without publication, saved-entry pagination, one-time notices, confirmed deletion, RSS and accessible navigation. It cleans up its own posts. The matrix runner calls it for each fixture; Python 3 is required (`-PythonExecutable` can select its full path). It may also be run separately.
+
+The existing local gallery was backed up before deployment. Its original seven posts and banner fingerprints were unchanged by the code update. Ten additive test entries alternate short and long bodies (501–10,000 source characters), including a 255-character title; test data is not packaged.
+
+Browser checks cover Modus public pages and the plugin editor at 320, 390, 768 and 1280 CSS-pixel viewport widths, plus light and dark administration. This is viewport reflow testing, not a claim of separate 400% browser-zoom or screen-reader validation. Full accessibility certification and an additional public theme remain outside this alpha's verified coverage.

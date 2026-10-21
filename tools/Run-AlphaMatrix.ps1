@@ -1,5 +1,5 @@
 [CmdletBinding()]
-param([switch]$SkipBuild, [string[]]$Fixtures = @())
+param([switch]$SkipBuild, [string[]]$Fixtures = @(), [string]$PythonExecutable = 'python')
 $ErrorActionPreference='Stop'
 $root=Split-Path $PSScriptRoot -Parent
 $helper=if($env:GJALLARBLOG_WSL_HELPER){$env:GJALLARBLOG_WSL_HELPER}else{Join-Path $env:USERPROFILE 'Documents/ChatGPT/Development - GIT/Wsl-Session.ps1'}
@@ -24,12 +24,14 @@ foreach($case in $cases){
  & wsl.exe -d Debian -u root --exec docker cp /mnt/d/Development/gjallarblog/tools/test-helpers.php "${container}:/tmp/test-helpers.php"
  $helperResult=& wsl.exe -d Debian -u root --exec docker exec $container php /tmp/test-helpers.php /var/www/html/plugins/gjallarblog
  if($LASTEXITCODE -ne 0){throw 'Helper checks failed'}
- $helperResult|Set-Content (Join-Path $evidence "$project-helpers.txt")
+ [IO.File]::WriteAllText((Join-Path $evidence "$project-helpers.txt"), ($helperResult -join "`n").Trim()+"`n", [Text.UTF8Encoding]::new($false))
  & (Join-Path $PSScriptRoot 'Test-Alpha.ps1') -Port $port -StateDirectory $state
  $lines=Get-Content (Join-Path $state 'alpha-results.txt')|ForEach-Object {$_.TrimEnd()}
  [IO.File]::WriteAllText((Join-Path $evidence "$project-integration.txt"), ($lines -join "`n")+"`n", [Text.UTF8Encoding]::new($false))
+ & $PythonExecutable (Join-Path $PSScriptRoot 'test-usability.py') $port $project
+ if($LASTEXITCODE -ne 0){throw 'Usability/security checks failed'}
  $php=& wsl.exe -d Debian -u root --exec docker exec $container php -r 'echo PHP_VERSION;'
- $matrix+=@{piwigo=$case[2];php=($php -join '').Trim();database='MariaDB 11.4';integration_checks=44;helper_checks=21;result='PASS';fixture=$project}
+ $matrix+=@{piwigo=$case[2];php=($php -join '').Trim();database='MariaDB 11.4';integration_checks=44;helper_checks=21;usability_security_checks=56;result='PASS';fixture=$project}
 }
 [IO.File]::WriteAllText((Join-Path $evidence 'matrix.json'), ($matrix|ConvertTo-Json -Depth 5).Replace("`r`n","`n")+"`n", [Text.UTF8Encoding]::new($false))
 Write-Output 'PASS: selected disposable alpha compatibility cases.'

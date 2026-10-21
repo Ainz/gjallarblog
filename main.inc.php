@@ -1,6 +1,6 @@
 <?php
 /*
-Version: 0.1.0-alpha.1
+Version: 0.1.0-alpha.2
 Plugin Name: Gjallarblog
 Author: EvilKant; Ainz (Gjallarblog fork)
 Description: A small journal for your Piwigo gallery.
@@ -63,7 +63,7 @@ function gjallarblog_add_to_menu($refs)
     $block=$refs[0]->get_block('mbGjallarblog');
     if ($block===null) return;
     $settings=gjallarblog_settings($conf['gjallarblog']??null);
-    $block->data=['TITLE'=>$settings['blog_description'], 'NAME'=>$settings['menu_label'], 'URL'=>make_index_url(['section'=>'blog'])];
+    $block->data=['TITLE'=>$settings['blog_description'], 'NAME'=>$settings['menu_label'], 'URL'=>make_index_url(['section'=>'blog']), 'CURRENT'=>(($GLOBALS['page']['section']??'')==='blog')];
     $block->template=__DIR__.'/menubar_gjallarblog.tpl';
 }
 
@@ -71,5 +71,5 @@ add_event_handler('loc_end_section_init', 'section_init_gjallarblog');
 function section_init_gjallarblog()
 {
     global $page,$tokens;
-    if (($tokens[0]??'')==='blog') { $page['section']='blog'; $page['body_id']='theGjallarblogPage'; }
+    if (($tokens[0]??'')==='blog') { $page['section']='blog'; $page['body_id']='theGjallarblogPage'; $page['is_external']=true; }
 }

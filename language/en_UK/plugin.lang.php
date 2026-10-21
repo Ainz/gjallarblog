@@ -9,7 +9,7 @@
 	$lang['post_is_deleted'] = 'Post is deleted';
 	$lang['post_modified'] = 'Post modified';
 	$lang['post_is_saved'] = 'Post is saved';
-	
+
 // version 1.1.0.
 	$lang['blog_description'] = 'Blog description';
 	$lang['show_on_main_page'] = 'Show on main page';
@@ -17,8 +17,95 @@
 	$lang['show_number'] = 'Show number of post';
 	$lang['show_date'] = 'Show date of post';
 	$lang['date_format'] = 'Date format';
-	
+
 // version 1.2.0.
 	$lang['back'] = 'Back';
 	$lang['show_on_category_page'] = 'Show on category page';
-	?>
+
+// Gjallarblog 0.1.0-alpha.2 interface strings.
+$lang['%s is required.'] = '%s is required.';
+$lang['%s: enter a text value.'] = '%s: enter a text value.';
+$lang['%s: remove unsupported control characters.'] = '%s: remove unsupported control characters.';
+$lang['%s: the submitted text is too large.'] = '%s: the submitted text is too large.';
+$lang['%s: use no more than %s characters.'] = '%s: use no more than %s characters.';
+$lang['%s: use valid Unicode text.'] = '%s: use valid Unicode text.';
+$lang['A paragraph of text.'] = 'A paragraph of text.';
+$lang['Back to %s'] = 'Back to %s';
+$lang['Blog'] = 'Blog';
+$lang['Bold'] = 'Bold';
+$lang['Browse albums'] = 'Browse albums';
+$lang['Characters include HTML markup. Blank lines alone do not create paragraphs. Scripts, embedded frames and unsupported markup are removed.'] = 'Characters include HTML markup. Blank lines alone do not create paragraphs. Scripts, embedded frames and unsupported markup are removed.';
+$lang['Choose a valid checkbox value.'] = 'Choose a valid checkbox value.';
+$lang['Content'] = 'Content';
+$lang['Content (HTML)'] = 'Content (HTML)';
+$lang['Content must contain text or an image after unsupported markup is removed.'] = 'Content must contain text or an image after unsupported markup is removed.';
+$lang['Content preview; the gallery theme supplies the final page styling.'] = 'Content preview; the gallery theme supplies the final page styling.';
+$lang['Date format'] = 'Date format';
+$lang['Delete entry permanently'] = 'Delete entry permanently';
+$lang['Describe the image'] = 'Describe the image';
+$lang['Description'] = 'Description';
+$lang['Edit'] = 'Edit';
+$lang['Entries'] = 'Entries';
+$lang['Entries per page'] = 'Entries per page';
+$lang['Entries per page must be between 1 and 100.'] = 'Entries per page must be between 1 and 100.';
+$lang['Entry'] = 'Entry';
+$lang['Entry deleted.'] = 'Entry deleted.';
+$lang['Entry list pages'] = 'Entry list pages';
+$lang['Entry numbers are permanent identifiers, not a reading order.'] = 'Entry numbers are permanent identifiers, not a reading order.';
+$lang['Entry preview'] = 'Entry preview';
+$lang['Entry published.'] = 'Entry published.';
+$lang['Entry updated.'] = 'Entry updated.';
+$lang['Example:'] = 'Example:';
+$lang['Formatting help'] = 'Formatting help';
+$lang['Full entries appear before the photos or albums. Long entries increase scrolling. These options do not hide the Blog menu item.'] = 'Full entries appear before the photos or albums. Long entries increase scrolling. These options do not hide the Blog menu item.';
+$lang['Gallery journal'] = 'Gallery journal';
+$lang['Heading'] = 'Heading';
+$lang['Home'] = 'Home';
+$lang['I understand that deletion is permanent.'] = 'I understand that deletion is permanent.';
+$lang['Insert formatting'] = 'Insert formatting';
+$lang['Italic'] = 'Italic';
+$lang['Journal'] = 'Journal';
+$lang['Journal administration'] = 'Journal administration';
+$lang['Journal pages'] = 'Journal pages';
+$lang['Journal title'] = 'Journal title';
+$lang['Jump to published entries'] = 'Jump to published entries';
+$lang['Link'] = 'Link';
+$lang['Link address (https://… or a gallery path)'] = 'Link address (https://… or a gallery path)';
+$lang['List'] = 'List';
+$lang['Menu label'] = 'Menu label';
+$lang['Move or hide the Blog menu item in Configuration → Menus.'] = 'Move or hide the Blog menu item in Configuration → Menus.';
+$lang['New journal entry'] = 'New journal entry';
+$lang['No entries yet.'] = 'No entries yet.';
+$lang['No journal entries have been published yet.'] = 'No journal entries have been published yet.';
+$lang['Open entry'] = 'Open entry';
+$lang['Open entry: %s'] = 'Open entry: %s';
+$lang['Page'] = 'Page';
+$lang['Paragraph'] = 'Paragraph';
+$lang['Permanently delete “%s”? This cannot be undone.'] = 'Permanently delete “%s”? This cannot be undone.';
+$lang['Please correct the highlighted fields. Your text has been kept.'] = 'Please correct the highlighted fields. Your text has been kept.';
+$lang['Preview'] = 'Preview';
+$lang['Preview — not published'] = 'Preview — not published';
+$lang['Published entries'] = 'Published entries';
+$lang['Publishing or saving makes these changes visible immediately.'] = 'Publishing or saving makes these changes visible immediately.';
+$lang['Quote'] = 'Quote';
+$lang['RSS feed'] = 'RSS feed';
+$lang['Save settings'] = 'Save settings';
+$lang['Select text and use a formatting button, or write HTML. Preview checks the result without publishing. There are no drafts in this alpha.'] = 'Select text and use a formatting button, or write HTML. Preview checks the result without publishing. There are no drafts in this alpha.';
+$lang['Settings'] = 'Settings';
+$lang['Settings saved.'] = 'Settings saved.';
+$lang['Show dates'] = 'Show dates';
+$lang['Show entry numbers'] = 'Show entry numbers';
+$lang['Show recent entries above album content'] = 'Show recent entries above album content';
+$lang['Show recent entries above the gallery home content'] = 'Show recent entries above the gallery home content';
+$lang['Shown at the top of the journal. Up to 255 characters.'] = 'Shown at the top of the journal. Up to 255 characters.';
+$lang['Shown below the journal title. Up to 255 characters.'] = 'Shown below the journal title. Up to 255 characters.';
+$lang['Shown in gallery navigation. Leave blank to use the journal title.'] = 'Shown in gallery navigation. Leave blank to use the journal title.';
+$lang['This journal entry does not exist.'] = 'This journal entry does not exist.';
+$lang['Times use the gallery server timezone:'] = 'Times use the gallery server timezone:';
+$lang['Timezone:'] = 'Timezone:';
+$lang['Title'] = 'Title';
+$lang['Use j F Y for a localized date, or Y-m-d for a numeric date.'] = 'Use j F Y for a localized date, or Y-m-d for a numeric date.';
+$lang['Use no more than %s characters.'] = 'Use no more than %s characters.';
+$lang['View journal'] = 'View journal';
+$lang['View published entry'] = 'View published entry';
+$lang['You have unsaved changes.'] = 'You have unsaved changes.';

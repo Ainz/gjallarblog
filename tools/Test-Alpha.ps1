@@ -31,7 +31,7 @@ foreach($fields in @(@{del='1 OR 1=1'},@{'del[]'='1'},@{submit_post=1;'post_head
 $r=Page $config @{pwg_token=$status.pwg_token;posts_per_page=0} $true;Assert ($r.StatusCode -eq 400) 'Reject zero page size'
 $settings=@{pwg_token=$status.pwg_token;posts_per_page=3;blog_name='Field notes';blog_description='Alpha compatibility';date_format='j F Y';menu_label='Journal';show_on_main_page='on';show_date='on'}
 Assert ((Page $config $settings $true).StatusCode -eq 200) 'Save settings and custom menu label'
-$invalidSettings=$settings.Clone();$invalidSettings.blog_name='Emoji 🌄';Assert ((Page $config $invalidSettings $true).StatusCode -eq 400) 'Reject unsupported configuration-table Unicode cleanly'
+$invalidSettings=$settings.Clone();$invalidSettings.blog_name='Emoji 🌄';Assert ((Page $config $invalidSettings $true).StatusCode -eq 200) 'Store configuration Unicode through ASCII JSON';$null=Page $config $settings $true
 $readerName='alpha-reader-'+[Guid]::NewGuid().ToString('N').Substring(0,12)
 $readerPassword=[Guid]::NewGuid().ToString('N')
 $readerResult=Api @{method='pwg.users.add';username=$readerName;password=$readerPassword;password_confirm=$readerPassword;email='reader@example.test';pwg_token=$status.pwg_token}
@@ -52,11 +52,11 @@ $ids=[Collections.Generic.List[string]]::new()
 try {
  foreach($n in 1..5){
   $title="Alpha $n <entry> & apostrophe's — 北 🌄"
-  $r=Page $manage @{pwg_token=$status.pwg_token;submit_post=1;post_header=$title;post_textarea=("<p>Alpha body $n.</p>"+[char]1)} $true
+  $r=Page $manage @{pwg_token=$status.pwg_token;submit_post=1;post_header=$title;post_textarea="<p>Alpha body $n.</p>"} $true
   Assert ($r.StatusCode -eq 200 -and $r.Content.Contains('&lt;entry&gt;')) "Create and escape UTF-8 title $n"
   $xml=[xml](Page '?/blog/feed').Content
   $item=@($xml.rss.channel.item)|Where-Object title -eq $title
-  Assert ($null -ne $item) "RSS round-trip and forbidden control removal $n"
+  Assert ($null -ne $item) "RSS Unicode round-trip $n"
   $ids.Add(([string]$item.link -split '/')[-1])
  }
  foreach($path in @('','?/blog','?/blog/2',"?/blog/id/$($ids[0])")){$r=Page $path;Assert ($r.StatusCode -eq 200 -and $r.Content -notmatch 'Warning:|Fatal error|Uncaught|Deprecated:') "Clean populated public view: $path"}
@@ -66,7 +66,7 @@ try {
  Assert ((Page $config $null $true).Content.Contains('value="Journal"')) 'Reinstall preserves menu settings'
  Assert ((Page "?/blog/id/$($ids[0])").Content.Contains('Edited alpha.')) 'Reinstall preserves posts'
  Assert (@(([xml](Page '?/blog/feed').Content).rss.channel.item).Count -eq 5) 'Exactly five authorized posts; rejected requests added none'
-} finally {foreach($id in $ids){$null=Page $manage @{pwg_token=$status.pwg_token;del=$id} $true}}
+} finally {foreach($id in $ids){$null=Page $manage @{pwg_token=$status.pwg_token;del=$id;confirm_delete='1'} $true}}
 $xml=[xml](Page '?/blog/feed').Content
 Assert ($xml.SelectNodes('/rss/channel/item').Count -eq 0) 'Delete leaves clean empty journal'
 $results|Set-Content (Join-Path $StateDirectory 'alpha-results.txt')

@@ -19,24 +19,24 @@ Reject malformed administrative input
 Reject malformed administrative input
 Reject zero page size
 Save settings and custom menu label
-Reject unsupported configuration-table Unicode cleanly
+Store configuration Unicode through ASCII JSON
 Permission test account is an ordinary user
 Ordinary user with valid token cannot administer the journal
 Ordinary user with valid token cannot administer the journal
 Create and escape UTF-8 title 1
-RSS round-trip and forbidden control removal 1
+RSS Unicode round-trip 1
 Create and escape UTF-8 title 2
-RSS round-trip and forbidden control removal 2
+RSS Unicode round-trip 2
 Create and escape UTF-8 title 3
-RSS round-trip and forbidden control removal 3
+RSS Unicode round-trip 3
 Create and escape UTF-8 title 4
-RSS round-trip and forbidden control removal 4
+RSS Unicode round-trip 4
 Create and escape UTF-8 title 5
-RSS round-trip and forbidden control removal 5
+RSS Unicode round-trip 5
 Clean populated public view:
 Clean populated public view: ?/blog
 Clean populated public view: ?/blog/2
-Clean populated public view: ?/blog/id/6
+Clean populated public view: ?/blog/id/11
 Editing persists
 Reinstall preserves menu settings
 Reinstall preserves posts
