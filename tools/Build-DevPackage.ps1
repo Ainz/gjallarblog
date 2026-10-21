@@ -2,6 +2,8 @@ $ErrorActionPreference = 'Stop'
 $projectRoot = Split-Path $PSScriptRoot -Parent
 & php (Join-Path $PSScriptRoot 'check-package.php')
 if ($LASTEXITCODE -ne 0) { throw 'Package checks failed' }
+$version = (& php (Join-Path $PSScriptRoot 'version.php')).Trim()
+if ($LASTEXITCODE -ne 0 -or !$version) { throw 'Cannot read release version' }
 $stageRoot = Join-Path $projectRoot '.dev/package'
 $pluginRoot = Join-Path $stageRoot 'gjallarblog'
 if (Test-Path -LiteralPath $pluginRoot) {
@@ -16,11 +18,11 @@ foreach ($name in $runtime) { Copy-Item -LiteralPath (Join-Path $projectRoot $na
 Copy-Item -LiteralPath (Join-Path $projectRoot 'language') -Destination $pluginRoot -Recurse
 Copy-Item -LiteralPath (Join-Path $projectRoot 'include') -Destination $pluginRoot -Recurse
 New-Item -ItemType Directory -Force (Join-Path $pluginRoot 'docs') | Out-Null
-foreach ($name in @('VALIDATION.md','LEGACY-MIGRATION.md','UPSTREAM.md','UI-CORRECTIONS.md')) { Copy-Item -LiteralPath (Join-Path $projectRoot ('docs/'+$name)) -Destination (Join-Path $pluginRoot 'docs') }
+foreach ($name in @('VALIDATION.md','LEGACY-MIGRATION.md','UPSTREAM.md','UI-CORRECTIONS.md','VERSIONING.md')) { Copy-Item -LiteralPath (Join-Path $projectRoot ('docs/'+$name)) -Destination (Join-Path $pluginRoot 'docs') }
 Copy-Item -LiteralPath (Join-Path $projectRoot 'docs/test-evidence') -Destination (Join-Path $pluginRoot 'docs') -Recurse
 $dist = Join-Path $projectRoot 'dist'
 New-Item -ItemType Directory -Force $dist | Out-Null
-$archive = Join-Path $dist 'gjallarblog-0.1.0-alpha.2.zip'
+$archive = Join-Path $dist ("gjallarblog-$version.zip")
 Compress-Archive -LiteralPath $pluginRoot -DestinationPath $archive -Force
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 $zip = [IO.Compression.ZipFile]::OpenRead($archive)
@@ -31,4 +33,6 @@ try {
     }
     Write-Output ('PASS: development ZIP, '+$zip.Entries.Count+' entries under gjallarblog/.')
 } finally { $zip.Dispose() }
-Get-FileHash -LiteralPath $archive -Algorithm SHA256
+$hash = Get-FileHash -LiteralPath $archive -Algorithm SHA256
+[IO.File]::WriteAllText((Join-Path $dist 'SHA256SUMS.txt'), $hash.Hash.ToLowerInvariant()+"  gjallarblog-$version.zip`n", [Text.UTF8Encoding]::new($false))
+$hash

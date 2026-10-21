@@ -1,6 +1,6 @@
 <?php
 /*
-Version: 0.1.0-alpha.2
+Version: 0.03-alpha.1
 Plugin Name: Gjallarblog
 Author: EvilKant; Ainz (Gjallarblog fork)
 Description: A small journal for your Piwigo gallery.

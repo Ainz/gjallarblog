@@ -2,11 +2,18 @@
 // Static validation; never loads plugin code.
 $root = dirname(__DIR__);
 $errors = [];
+require_once __DIR__.'/version.php';
 $required = ['main.inc.php','maintain.class.php','admin.php','manage.inc.php','manage.tpl','menubar_gjallarblog.tpl','config.inc.php','config.tpl','blog.php','blog.tpl','post.php','post.tpl','feed.php','index.php','admin.css','editor.js','editor.tpl','posts.css','LICENSE','NOTICE.md','include/functions.inc.php','language/en_UK/plugin.lang.php'];
 foreach ($required as $path) if (!is_file($root.'/'.$path)) $errors[] = 'Missing runtime file: '.$path;
 $main = file_get_contents($root.'/main.inc.php');
 if (!preg_match('/^Plugin Name: Gjallarblog$/m', $main)) $errors[] = 'Wrong plugin name';
-if (!preg_match('/^Version: 0\.1\.0-alpha\.2$/m', $main)) $errors[] = 'Unexpected alpha version';
+try {
+    $version = gjallarblog_release_version($root);
+    foreach (['README.md','docs/RELEASE-NOTES.md'] as $doc) {
+        if (!str_contains(file_get_contents($root.'/'.$doc), $version)) $errors[] = 'Current version missing from '.$doc;
+    }
+    if (!str_contains(file_get_contents($root.'/CHANGELOG.md'), '## '.$version.' —')) $errors[] = 'Current changelog entry missing';
+} catch (RuntimeException $error) { $errors[] = $error->getMessage(); }
 if (str_contains($main, 'eid=611')) $errors[] = 'Original plugin update identity remains';
 if (preg_match('/^\d+\t/m', file_get_contents($root.'/admin.css'))) $errors[] = 'Copied CSS line numbers';
 $phpFiles = [];

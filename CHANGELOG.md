@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.03-alpha.1 — 2026-10-21
+
+- Adopt Major.Minor version strings with at least two minor digits, plus explicit alpha/beta/rc identifiers.
+- Preserve both published 0.1.0 alpha releases, tags and assets. New version sorts above both under Piwigo's own comparator.
+- Derive package and publishing identifiers from main.inc.php; reject three-component numeric versions and inconsistent release metadata.
+- Document Piwigo update behavior and test real core upgrade handling with preserved data. Journal/editor behavior remains as tested in 0.1.0-alpha.2.
+
 ## 0.1.0-alpha.2 — 2026-10-21
 
 - Correct all sixteen findings from the first interface review: journal-only navigation, pagination targets, administration contrast, post-save redirects, inline errors, menu guidance, localized default dates, preview/help, action hierarchy, entry-list access, uncropped images, breadcrumbs, accessible link/state names, consistent translated labels, placement guidance and reading/sample-copy polish.

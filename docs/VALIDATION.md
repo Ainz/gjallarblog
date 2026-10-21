@@ -57,3 +57,9 @@ The additional HTTP suite (`tools/test-usability.py PORT FIXTURE`) runs only on 
 The existing local gallery was backed up before deployment. Its original seven posts and banner fingerprints were unchanged by the code update. Ten additive test entries alternate short and long bodies (501–10,000 source characters), including a 255-character title; test data is not packaged.
 
 Browser checks cover Modus public pages and the plugin editor at 320, 390, 768 and 1280 CSS-pixel viewport widths, plus light and dark administration. This is viewport reflow testing, not a claim of separate 400% browser-zoom or screen-reader validation. Full accessibility certification and an additional public theme remain outside this alpha's verified coverage.
+
+## 0.03-alpha.1 versioning follow-up
+
+The runtime change from 0.1.0-alpha.2 is its metadata version only. Version ordering and actual core autoupdate were exercised separately on Piwigo 15.7.0 and 16.4.0, including both legacy source versions, repeated checks and preservation of posts/settings. See VERSIONING.md and the versioning evidence files. The six-combination application matrix above remains the alpha.2 baseline, not a newly relabeled run.
+
+Verification result: **39 core versioning/upgrade checks passed on each of Piwigo 15.7.0 / PHP 8.3.35 and Piwigo 16.4.0 / PHP 8.4.26 (78 total)**. Both historical release transitions preserved a real post fixture and Unicode/quoted settings. The release-format validator separately passed 22 valid/invalid syntax cases.

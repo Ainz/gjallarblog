@@ -2,17 +2,23 @@
 
 A journal plugin for Piwigo, maintained by Ainz and derived from **Evil_Blog by EvilKant**, with contributions from Piwigo translators. The original Git history is preserved.
 
-**0.1.0-alpha.2 is an experimental prerelease.** Back up your database and test on a staging gallery before deployment. It is not a release candidate or a claim of a complete security audit.
+**0.03-alpha.1 is an experimental prerelease.** Back up your database and test on a staging gallery before deployment. It is not a release candidate or a claim of a complete security audit.
 
 ## Installation
 
-1. Download `gjallarblog-0.1.0-alpha.2.zip` from [Releases](https://github.com/Ainz/gjallarblog/releases).
+1. Download `gjallarblog-0.03-alpha.1.zip` from [Releases](https://github.com/Ainz/gjallarblog/releases).
 2. Extract its single `gjallarblog/` directory into your gallery's `plugins/` directory. Use this release ZIP rather than GitHub's source archive.
 3. In Piwigo Administration → Plugins, install and activate **Gjallarblog**.
 4. Open the plugin settings and configure the journal name, description, menu label, page size and placement on gallery home/album pages.
 5. Create entries using the plugin's Entries tab. The journal is available at `?/blog`; RSS is at `?/blog/feed`.
 
 The Blog menu block uses Piwigo's menu manager. Reorder or hide it in Administration → Configuration → Menus. Presentation depends on the active theme. Renaming the journal and renaming its menu label are separate settings. A blank menu label falls back to the journal title. Use the menu manager to hide the block. The Settings tab links directly to it.
+
+## Versioning
+
+Versions use **Major.Minor**, with the minor displayed using at least two digits: `0.03`, `0.09`, `0.10`, eventually `1.00`. Prereleases append `-alpha.N`, `-beta.N` or `-rc.N` and are marked as prereleases on GitHub. The metadata version, tag (`v` prefix), package filename and release title share the same version string.
+
+The historical `0.1.0-alpha.1` and `0.1.0-alpha.2` releases remain unchanged. The first release under this convention is **0.03-alpha.1**, which Piwigo compares as newer than both. See [versioning and upgrade verification](docs/VERSIONING.md).
 
 ## Compatibility
 

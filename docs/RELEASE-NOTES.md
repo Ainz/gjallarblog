@@ -1,22 +1,11 @@
-Gjallarblog **0.1.0-alpha.2** improves the editor, input safety and journal navigation. It remains an experimental alpha.
+Gjallarblog **0.03-alpha.1** adopts the requested **Major.Minor** convention. The minor is displayed with at least two digits; alpha/beta/rc status stays explicit in both the identifier and GitHub prerelease flag.
 
-- Corrects the sixteen interface-review findings, including pagination, readable fields, save/refresh behavior, menu settings guidance, image proportions and accessible navigation.
-- Adds compact HTML formatting buttons, an unpublished sandboxed preview, and live character counters: **255 for titles, 10,000 for HTML source**.
-- Filters entry HTML with HTML Purifier on save and display; preserves Unicode and quoted settings; rejects malformed input and retains text on ordinary validation errors.
-- Improves mobile layout and light/dark administration styling.
+This is a versioning/tooling release with the journal and editor functionality from **0.1.0-alpha.2**. Both historical releases and their tags/assets remain intact. Do not rename an installed or published old version to 0.01: Piwigo would consider that a downgrade. `0.03-alpha.1` compares newer than both published versions.
 
-All six combinations passed **44 integration + 21 helper + 56 usability/security checks each (726 check executions)**:
+Download **gjallarblog-0.03-alpha.1.zip**, verify **SHA256SUMS.txt**, back up your gallery and replace `plugins/gjallarblog/`. Piwigo detects the higher filesystem version and updates its stored plugin version through the existing maintenance hook. Posts and normalized settings are preserved.
 
-- Piwigo 15.7.0: PHP 8.2.34 and 8.3.35.
-- Piwigo 16.4.0: PHP 8.2.34, 8.3.35, 8.4.26 and 8.5.11.
-- Database: MariaDB 11.4.13.
+Version ordering and actual upgrade handling passed **78 focused checks** across Piwigo 15.7.0 and 16.4.0. The release-format validator passed **22 syntax cases**. The unchanged application baseline previously passed 726 integration/helper/usability checks across six Piwigo/PHP combinations. See the versioning report for the additional focused evidence.
 
-Download **gjallarblog-0.1.0-alpha.2.zip**, verify **SHA256SUMS.txt**, and extract `gjallarblog/` into Piwigo's `plugins/` directory. Back up first. The automatic GitHub source archives are not the installable package.
+This remains an experimental alpha. GitHub prerelease status does not create a Piwigo Extensions Manager update channel; this fork has no PEM extension identity yet. No release was submitted under the old Evil_Blog identity.
 
-**Upgrade note:** older HTML is filtered when displayed, without rewriting stored posts until saved. Scripts, inline styles and embeds no longer display. Existing over-limit posts remain readable but must be shortened to save. Settings saved by alpha.2 use JSON; restore the backed-up configuration if downgrading to alpha.1.
-
-Known limitations include incomplete translations/theme coverage, no full visual editor or drafts, no automatic Evil_Blog migration and no independent security certification. The local demonstration banner and fixture posts are excluded from the package.
-
-Original Evil_Blog attribution and history remain intact; HTML Purifier's LGPL notices and source are included. The repository is now [Ainz/gjallarblog](https://github.com/Ainz/gjallarblog).
-
-See [installation and limitations](https://github.com/Ainz/gjallarblog/blob/main/README.md), [validation](https://github.com/Ainz/gjallarblog/blob/main/docs/VALIDATION.md), [review corrections](https://github.com/Ainz/gjallarblog/blob/main/docs/UI-CORRECTIONS.md), [changelog](https://github.com/Ainz/gjallarblog/blob/main/CHANGELOG.md) and [licensing](https://github.com/Ainz/gjallarblog/blob/main/NOTICE.md).
+See [versioning](https://github.com/Ainz/gjallarblog/blob/main/docs/VERSIONING.md), [installation and limitations](https://github.com/Ainz/gjallarblog/blob/main/README.md), [validation](https://github.com/Ainz/gjallarblog/blob/main/docs/VALIDATION.md), and [changelog](https://github.com/Ainz/gjallarblog/blob/main/CHANGELOG.md).
