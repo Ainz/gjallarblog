@@ -37,10 +37,11 @@ The source version **0.06-beta.1** is merged into GitHub `main`. It has no tag o
 
 1. Update `plugin/main.inc.php`, current README/release notes and append the changelog; preserve historical version references.
 2. Run `php tools/check-package.php` and `python tools/build-package.py`. The package builder reads the version from `plugin/main.inc.php`, writes a ZIP with the required `gjallarblog/` install folder, and creates its SHA-256 file. It excludes local test evidence and the unused RSS image.
-3. Test version ordering and core upgrade behavior on disposable Piwigo 15/16 galleries with `tools/test-versioning.php --upgrade` and `GJALLARBLOG_DISPOSABLE=1`. Keep result files under `docs/test-evidence/`.
+3. Test version ordering and core upgrade behavior on disposable Piwigo 15/16 galleries with `tools/test-versioning.php --upgrade` and `GJALLARBLOG_DISPOSABLE=1`. Keep raw results in the ignored local `docs/test-evidence/` folder; summarize outcomes in `docs/VALIDATION.md`.
 4. Commit, push and create a new `v<version>` tag at the exact tested commit. `python tools/publish-release.py publish` verifies this tag, metadata, archive contents, checksum and clean working tree before creating the GitHub release. It derives prerelease status from the suffix.
 5. Run `python tools/publish-release.py verify` to download published assets again and verify their hashes and metadata. Preserve older releases.
 
 The Piwigo updater can compare the installed version with revisions advertised by PEM. The normal update-notification screen cannot discover this source version until Gjallarblog has a PEM extension identity and published revision. GitHub prerelease status alone is not queried by Piwigo. See the official [extension publishing guide](https://github.com/Piwigo/Piwigo/wiki/Publishing-an-extension).
 
-Version-order and autoupdate results are listed by release in [validation](VALIDATION.md). For the current source version, see `test-evidence/a15-versioning.txt` and `a16-versioning.txt`.
+Version-order and autoupdate results are summarized by release in [validation](VALIDATION.md). Raw gallery logs are local maintainer files and are not part of the GitHub repository.
+
