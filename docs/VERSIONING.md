@@ -33,14 +33,14 @@ Official source references: [Piwigo 16 core updater](https://github.com/Piwigo/P
 
 ## Release process
 
-The current local candidate is **0.06-beta.1**: metadata `Version: 0.06-beta.1`, planned tag `v0.06-beta.1`, package `gjallarblog-0.06-beta.1.zip`, and GitHub release status `prerelease`. This increments the prerelease counter from the prior local 0.06-beta candidate. The package is local; no tag, GitHub release or Piwigo Extension Manager revision has been created.
+The source version **0.06-beta.1** is merged into GitHub `main`. It has no tag or downloadable GitHub release; the latest packaged release remains **0.04-alpha.1**. Do not treat a commit on `main` as a release. The next published version must use a new, unused version and matching tag, package name and release metadata.
 
 1. Update `main.inc.php`, current README/release notes and append the changelog; preserve historical version references.
-2. Run package validation. `tools/version.php` validates the canonical version syntax; the builder derives the filename and checksum from it.
+2. Run package validation. The portable `tools/version.php` validates the canonical version syntax. The installable archive builder is maintainer-local and derives the filename and checksum from the plugin metadata.
 3. Test version ordering and core upgrade behavior on disposable Piwigo 15/16 galleries with `tools/test-versioning.php --upgrade` and `GJALLARBLOG_DISPOSABLE=1`. Keep result files under `docs/test-evidence/`.
 4. Commit, push and create a new `v<version>` tag at the exact tested commit. `python tools/publish-release.py publish` verifies this tag, metadata, archive contents, checksum and clean working tree before creating the GitHub release. It derives prerelease status from the suffix.
 5. Run `python tools/publish-release.py verify` to download published assets again and verify their hashes and metadata. Preserve older releases.
 
-The Piwigo updater can compare the installed version with revisions advertised by PEM. The local package can exercise core version comparison and upgrade handling, but the normal update-notification screen cannot discover it until Gjallarblog has a PEM extension identity and published revision. GitHub prerelease status alone is not queried by Piwigo. See the official [extension publishing guide](https://github.com/Piwigo/Piwigo/wiki/Publishing-an-extension).
+The Piwigo updater can compare the installed version with revisions advertised by PEM. The normal update-notification screen cannot discover this source version until Gjallarblog has a PEM extension identity and published revision. GitHub prerelease status alone is not queried by Piwigo. See the official [extension publishing guide](https://github.com/Piwigo/Piwigo/wiki/Publishing-an-extension).
 
-The previous `0.05-beta.1` candidate passed 43 core versioning/upgrade checks on each of Piwigo 15.7.0 / PHP 8.3.36 and Piwigo 16.4.0 / PHP 8.4.27. The `0.06-beta` run passed 51 core comparison/autoupdate checks on each of those Piwigo/PHP combinations. The `0.06-beta.1` follow-up adds an explicit comparison and upgrade from `0.06-beta`; the refreshed evidence is in `test-evidence/a15-versioning.txt` and `a16-versioning.txt`.
+Version-order and autoupdate results are listed by release in [validation](VALIDATION.md). For the current source version, see `test-evidence/a15-versioning.txt` and `a16-versioning.txt`.

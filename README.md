@@ -2,11 +2,11 @@
 
 A journal plugin for Piwigo, maintained by Ainz and derived from **Evil_Blog by EvilKant**, with contributions from Piwigo translators. The original Git history is preserved.
 
-**0.06-beta.1 is a local beta prerelease candidate; the latest published release remains 0.04-alpha.1.** Back up your database and test on a staging gallery before deployment. It is not a release candidate or a claim of a complete security audit.
+**Version 0.06-beta.1 is merged into the GitHub `main` branch, but has not been tagged or published as a downloadable release.** The latest packaged release remains 0.04-alpha.1. Treat `main` as development source; use a staging gallery and back up your database before testing it.
 
 ## Installation
 
-1. For normal installation, download the latest published package from [Releases](https://github.com/Ainz/gjallarblog/releases). The 0.06-beta.1 candidate is available in the local `dist/` folder for evaluation.
+1. For normal installation, download the latest published package from [Releases](https://github.com/Ainz/gjallarblog/releases). Version 0.06-beta.1 is source code only; it is not packaged for installation yet.
 2. Extract its single `gjallarblog/` directory into your gallery's `plugins/` directory. Use this release ZIP rather than GitHub's source archive.
 3. In Piwigo Administration → Plugins, install and activate **Gjallarblog**.
 4. Open the plugin settings and configure the journal name, description, page size and placement on gallery home/album pages.
@@ -18,7 +18,7 @@ The Blog menu block uses Piwigo's menu manager. Reorder or hide it in Administra
 
 Versions use **Major.Minor**, with the minor displayed using at least two digits: `0.03`, `0.09`, `0.10`, eventually `1.00`. Prereleases append `-alpha.N`, `-beta.N` or `-rc.N` and are marked as prereleases on GitHub. The metadata version, tag (`v` prefix), package filename and release title share the same version string.
 
-The historical `0.1.0-alpha.1` and `0.1.0-alpha.2` releases remain unchanged. The convention was introduced in **0.03-alpha.1**; the current local candidate is **0.06-beta.1**, following **0.06-beta**. See [versioning and upgrade verification](docs/VERSIONING.md).
+The historical `0.1.0-alpha.1` and `0.1.0-alpha.2` releases remain unchanged. The convention was introduced in **0.03-alpha.1**. The current source version is **0.06-beta.1**, following **0.06-beta**. See [versioning and upgrade verification](docs/VERSIONING.md).
 
 ## Compatibility
 
@@ -64,10 +64,13 @@ Back up the database and existing plugin folder, replace `plugins/gjallarblog/` 
 
 ## Development and packaging
 
-On the original Windows/WSL development environment, `tools/Start-TestGallery.ps1` uses the shared Failover WSL lease helper and starts a localhost-only evaluation gallery on port 8088. Its location can be overridden with `GJALLARBLOG_WSL_HELPER`. It never shuts down WSL globally.
-
-`tools/start-alpha.sh` creates separate disposable Docker galleries for the Piwigo 15/16 matrix on ports 8089-8094. It currently assumes this project's Windows location at `/mnt/d/Development/gjallarblog`. See [validation](docs/VALIDATION.md) for the exact commands. Credentials and runtime data are ignored under `.dev/`; do not commit them.
-
-Run `php tools/check-package.php`, then `tools/Build-DevPackage.ps1` from PowerShell to produce the installable ZIP under `dist/`. The ZIP excludes development tooling, generated gallery assets and secrets. Repository source includes development tooling; it is not the installable package.
+Portable PHP/Python validators are in `tools/`. The Windows/WSL gallery setup, seeding, packaging and end-to-end runner scripts are maintainer-local and intentionally excluded from GitHub. The compatibility matrix and its limits are summarized in [validation](docs/VALIDATION.md); these local scripts are not required to install the plugin.
 
 See [changelog](CHANGELOG.md), [attribution/licensing](NOTICE.md), and [source provenance](docs/UPSTREAM.md). Report defects through [GitHub issues](https://github.com/Ainz/gjallarblog/issues); report sensitive security details privately to the maintainer before posting publicly.
+
+## Documentation guide
+
+- Gallery owners: this README covers installation, use, compatibility and limitations.
+- Test results: [validation](docs/VALIDATION.md) summarizes the current version first, followed by earlier versions in release order.
+- Maintainers: [versioning](docs/VERSIONING.md) covers tags and Piwigo updates; [legacy migration](docs/LEGACY-MIGRATION.md) records the Evil_Blog assessment; [upstream provenance](docs/UPSTREAM.md) records attribution and lineage.
+- Release preparation: [release notes](docs/RELEASE-NOTES.md) and [changelog](CHANGELOG.md) describe candidate changes and version history. Development automation stays on the maintainer's machine.
