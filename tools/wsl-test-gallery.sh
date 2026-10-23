@@ -3,7 +3,7 @@ set -euo pipefail
 action=${1:?Start, Status or Stop required}
 source_root=${2:?Windows project mounted path required}
 runtime=/var/lib/gjallarblog-dev
-[[ $source_root == /mnt/?/* && -f $source_root/main.inc.php ]] || { echo 'Invalid project source path' >&2; exit 64; }
+[[ $source_root == /mnt/?/* && -f $source_root/plugin/main.inc.php ]] || { echo 'Invalid project source path' >&2; exit 64; }
 command -v docker >/dev/null || { echo 'Docker Engine is missing in Debian' >&2; exit 69; }
 case "$action" in
   Start)

@@ -40,5 +40,5 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
 gjallarblog_admin_assign(['GB_POST_COUNT'=>(int)$postCount,'GB_REMOVE'=>Gjallarblog_Admin.'-remove','GB_CAN_REMOVE'=>is_webmaster(), 'GB_SETTINGS'=>$settings,'GB_ERRORS'=>$errors,'GB_ADMIN'=>Gjallarblog_Admin.'-config',
     'GB_MENU_SETTINGS'=>get_root_url().'admin.php?page=menubar',
     'GB_DATE_EXAMPLE'=>gjallarblog_date(time(),$settings['date_format']), 'GB_TIMEZONE'=>date_default_timezone_get()]);
-$template->set_filename('gjallarblog_config',__DIR__.'/config.tpl');
+$template->set_filename('gjallarblog_config',__DIR__.'/template/config.tpl');
 $template->assign_var_from_handle('ADMIN_CONTENT','gjallarblog_config');

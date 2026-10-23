@@ -25,7 +25,7 @@ $template->assign(['row'=>$rows,'npage'=>$npage,'pages'=>$pages,'pagi'=>gjallarb
     'show_date'=>$settings['show_date'],
     'show_on_main_page'=>$settings['show_on_main_page'],'GB_EMBEDDED'=>$embedded,
     'GB_NAME'=>$settings['blog_name'],'GB_DESCRIPTION'=>$settings['blog_description']]);
-$template->set_filename('gjallarblog_list',__DIR__.'/blog.tpl');
+$template->set_filename('gjallarblog_list',__DIR__.'/template/blog.tpl');
 $template->func_combine_css(['path'=>Gjallarblog_PATH.'posts.css']);
 $slot='PLUGIN_INDEX_CONTENT_END';
 if ($embedded) {

@@ -46,5 +46,5 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
     http_response_code(400);
 }
 gjallarblog_admin_assign(['GB_POST_COUNT'=>(int)$postCount,'GB_MEDIA_COUNT'=>$mediaCount,'GB_ERRORS'=>$errors,'GB_DATA_ACTION'=>is_string($mode)?$mode:'keep','GB_ADMIN'=>Gjallarblog_Admin.'-remove','GB_SETTINGS_URL'=>Gjallarblog_Admin.'-config']);
-$template->set_filename('gjallarblog_remove',__DIR__.'/remove.tpl');
+$template->set_filename('gjallarblog_remove',__DIR__.'/template/remove.tpl');
 $template->assign_var_from_handle('ADMIN_CONTENT','gjallarblog_remove');

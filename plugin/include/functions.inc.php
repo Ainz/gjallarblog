@@ -172,7 +172,7 @@ function gjallarblog_admin_assign($values)
     $template->assign(array_merge(['GB_NOTICE'=>$notice,'GB_ERRORS'=>[], 'GB_PREVIEW'=>'',
         'GB_ADMIN_THEME'=>userprefs_get_param('admin_theme','clear')==='roma'?'roma':'clear',
         'GB_TITLE_LIMIT'=>GJALLARBLOG_TITLE_LIMIT, 'GB_BODY_LIMIT'=>GJALLARBLOG_BODY_LIMIT, 'GB_NOW'=>date('Y-m-d\\TH:i'),
-        'GB_EDITOR_TEMPLATE'=>__DIR__.'/../editor.tpl','PWG_TOKEN'=>get_pwg_token()], $values));
+        'GB_EDITOR_TEMPLATE'=>__DIR__.'/../template/editor.tpl','PWG_TOKEN'=>get_pwg_token()], $values));
 }
 
 function gjallarblog_preview_document($title, $body)

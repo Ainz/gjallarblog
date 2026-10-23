@@ -67,7 +67,7 @@ function gjallarblog_add_to_menu($refs)
     $settings=gjallarblog_settings($conf['gjallarblog']??null);
     if (!$settings['show_menu']) return;
     $block->data=['NAME'=>$settings['blog_name'], 'URL'=>make_index_url(['section'=>'blog'])];
-    $block->template=__DIR__.'/menubar_gjallarblog.tpl';
+    $block->template=__DIR__.'/template/menubar_gjallarblog.tpl';
 }
 
 add_event_handler('loc_end_section_init', 'section_init_gjallarblog');

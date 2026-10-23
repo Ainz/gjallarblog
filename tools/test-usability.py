@@ -2,6 +2,7 @@
 import urllib.request, urllib.parse, urllib.error, http.cookiejar, json, pathlib, sys, re, struct, zlib, binascii, uuid
 sys.stdout.reconfigure(encoding='utf-8')
 root=pathlib.Path(__file__).resolve().parents[1]
+plugin=root/'plugin'
 port=int(sys.argv[1]); fixture=sys.argv[2]
 assert port in range(8089,8095)
 base=f'http://127.0.0.1:{port}/'
@@ -54,7 +55,7 @@ try:
     journal_html=page('?/blog')[1]
     check(journal_html.count('Journal 🌄 北')>=2,'One journal name appears in both heading and menu navigation')
     check('<dt><a href="' in journal_html and 'gjallarblog-menu-item' not in journal_html,'Journal menu link uses the same theme-native markup as other menu items')
-    check('menu.css' not in (root/'main.inc.php').read_text(encoding='utf-8') and not (root/'menu.css').exists(),'No Gjallarblog-specific menu styling overrides theme settings')
+    check('menu.css' not in (plugin/'main.inc.php').read_text(encoding='utf-8') and not (plugin/'menu.css').exists(),'No Gjallarblog-specific menu styling overrides theme settings')
     quoted="Journal ' \" & <tag> \\ 🌄"
     status,html,url=page(config,{**settings,'blog_name':quoted})
     import html as html_lib

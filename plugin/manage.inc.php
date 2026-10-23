@@ -82,5 +82,5 @@ gjallarblog_admin_assign(['GB_ERRORS'=>$errors,'GB_PREVIEW'=>$preview,'GB_NEW'=>
     'GB_POSTS'=>$rows,'GB_PAGES'=>gjallarblog_page_links($npage,$pages),'GB_PAGE'=>$npage,'GB_PAGE_COUNT'=>$pages,
     'GB_ADMIN'=>Gjallarblog_Admin.'-manage&npage='.$npage,'GB_NEW_OPEN'=>($npage===1||(!$editingId&&$_SERVER['REQUEST_METHOD']==='POST')),
     'GB_JOURNAL'=>get_root_url().'index.php?/blog','GB_TIMEZONE'=>date_default_timezone_get()]);
-$template->set_filename('gjallarblog_manage',__DIR__.'/manage.tpl');
+$template->set_filename('gjallarblog_manage',__DIR__.'/template/manage.tpl');
 $template->assign_var_from_handle('ADMIN_CONTENT','gjallarblog_manage');
