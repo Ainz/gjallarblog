@@ -1,5 +1,15 @@
+# Local Piwigo/WSL test environment and generated package files.
 /.dev/
+/dev/
 /dist/
-/dev/.env
+/docs/test-evidence/
+/.dockerignore
 *.log
+
+# Maintainer-specific gallery startup and fixture tools stay in the checkout.
+/tools/start-alpha.sh
+/tools/seed-test-gallery.sh
+/tools/seed-length-entries.py
+/tools/wsl-test-gallery.sh
 /tools/*.ps1
+

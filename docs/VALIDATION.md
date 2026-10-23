@@ -1,6 +1,6 @@
 # Validation record
 
-Latest tested source version: **0.06-beta.1** (validated 22 October 2026 and merged into GitHub `main` on 23 October). It has no release tag or downloadable package; 0.04-alpha.1 remains the latest packaged release. This validation covers the menu, entry-number, Restore, recent-entry and date-format updates. All six Piwigo/PHP matrix combinations passed 51 integration, 30 helper and 84 usability/security checks per combination. Piwigo 15.7.0 and 16.4.0 each passed 57 version comparison/autoupdate checks, including the upgrade from 0.06-beta. A disposable removal lifecycle check confirmed Restore and reinstall preserve posts, settings and images, while explicit erase removes them after the plugin folder is gone. Earlier version results follow below in release order; raw test output is retained in `test-evidence/` for maintainers.
+Latest tested source version: **0.06-beta.1** (validated 22 October 2026 and merged into GitHub `main` on 23 October). It has no release tag or downloadable package; 0.04-alpha.1 remains the latest packaged release. This validation covers the menu, entry-number, Restore, recent-entry and date-format updates. All six Piwigo/PHP matrix combinations passed 51 integration, 30 helper and 84 usability/security checks per combination. Piwigo 15.7.0 and 16.4.0 each passed 57 version comparison/autoupdate checks, including the upgrade from 0.06-beta. A disposable removal lifecycle check confirmed Restore and reinstall preserve posts, settings and images, while explicit erase removes them after the plugin folder is gone. Earlier version results follow below in release order; raw test output and local gallery infrastructure are omitted from GitHub.
 
 | Piwigo | PHP | Database | Result |
 |---|---|---|---|
@@ -28,7 +28,7 @@ The tests exposed an actual four-byte Unicode insertion failure caused by the co
 
 ## Reproduction
 
-The six-gallery matrix was run on the maintainer's Windows/WSL2 development environment with Docker Engine in Debian. The setup and orchestration scripts are local-only and are intentionally excluded from GitHub, so the exact environment cannot be recreated from this repository alone. Portable individual PHP/Python checks remain in `tools/`. Runtime and credentials were kept outside the repository; none are included in the published source.
+The six-gallery matrix was run on the maintainer's Windows/WSL2 development environment with Docker Engine in Debian. The Docker setup, orchestration scripts, runtime archives, credentials and raw results stay local, so the exact environment cannot be recreated from this repository alone. Public source checks and focused tests remain in `tools/`. Runtime and credentials are not included in GitHub.
 
 Official core downloads are pinned by SHA-256:
 
@@ -45,7 +45,7 @@ Earlier visual evaluation covered Modus home, album, journal and editor screens 
 
 ## 0.1.0-alpha.2 usability and input checks
 
-The additional HTTP usability/security suite checks quoted/Unicode settings, array rejection, malformed title/body/action fields, invalid UTF-8/control characters, title sanitization and character boundaries, 9,998/9,999/10,000/10,001-character body boundaries, retained errors, HTML sanitation, preview without publication, saved-entry pagination, confirmed deletion, RSS, theme-native menu markup, date-format choices, five-entry limits and entry navigation. The matrix summary records 84 checks per tested gallery for beta.1. The local runner and its disposable gallery lifecycle are not included in the public repository.
+The additional HTTP usability/security suite checks quoted/Unicode settings, array rejection, malformed title/body/action fields, invalid UTF-8/control characters, title sanitization and character boundaries, 9,998/9,999/10,000/10,001-character body boundaries, retained errors, HTML sanitation, preview without publication, saved-entry pagination, confirmed deletion, RSS, theme-native menu markup, date-format choices, five-entry limits and entry navigation. The matrix summary records 84 checks per tested gallery for beta.1. The local runner, disposable gallery lifecycle and raw logs are kept out of GitHub.
 
 The existing local gallery was backed up before deployment. Its original seven posts and banner fingerprints were unchanged by the code update. Ten additive test entries alternate short and long bodies (501–10,000 source characters), including a 255-character title; test data is not packaged.
 
@@ -72,3 +72,4 @@ The 0.06-beta matrix passed six Piwigo/PHP combinations at 51 integration, 28 he
 ## 0.06-beta.1 follow-up
 
 The replacement candidate was retested for native-theme menu markup, absence of public database IDs, Restore/removal descriptions, a strict five-entry limit, placement guidance against Piwigo's template slots, and three safe date-format choices. Current compatibility and lifecycle evidence is summarized at the top and in the refreshed evidence files.
+

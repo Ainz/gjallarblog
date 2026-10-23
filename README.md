@@ -68,7 +68,7 @@ Back up the database and existing plugin folder, replace `plugins/gjallarblog/` 
 
 ## Development and packaging
 
-Portable PHP/Python checks and the package builder are in `tools/` and use the source under `plugin/`. Run `python tools/build-package.py` to create `dist/gjallarblog-<version>.zip`; the archive contains the plugin under `gjallarblog/` and excludes local test evidence. The Windows/WSL gallery setup, seeding and end-to-end runner scripts remain maintainer-local. The compatibility matrix and its limits are summarized in [validation](docs/VALIDATION.md).
+The public `tools/` folder contains source checks, focused tests, and the package/release utilities. Run `python tools/build-package.py` to create `dist/gjallarblog-<version>.zip`; the archive contains the plugin under `gjallarblog/`. The Docker/WSL gallery setup, fixture seeding, local credentials and raw test logs stay in the maintainer's checkout and are ignored by Git. The compatibility matrix and its limits are summarized in [validation](docs/VALIDATION.md).
 
 See [changelog](CHANGELOG.md), [attribution/licensing](NOTICE.md), and [source provenance](docs/UPSTREAM.md). Report defects through [GitHub issues](https://github.com/Ainz/gjallarblog/issues); report sensitive security details privately to the maintainer before posting publicly.
 
@@ -78,3 +78,4 @@ See [changelog](CHANGELOG.md), [attribution/licensing](NOTICE.md), and [source p
 - Test results: [validation](docs/VALIDATION.md) summarizes the current version first, followed by earlier versions in release order.
 - Maintainers: [versioning](docs/VERSIONING.md) covers tags and Piwigo updates; [legacy migration](docs/LEGACY-MIGRATION.md) records the Evil_Blog assessment; [upstream provenance](docs/UPSTREAM.md) records attribution and lineage.
 - Release preparation: [release notes](docs/RELEASE-NOTES.md) and [changelog](CHANGELOG.md) describe candidate changes and version history. Development automation stays on the maintainer's machine.
+
