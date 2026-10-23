@@ -16,6 +16,6 @@ $page['title']=gjallarblog_escape($row['header']);
 $page['section_title']='<a href="'.gjallarblog_escape(get_gallery_home_url()).'">'.gjallarblog_escape(l10n('Home')).'</a> / <a href="'.gjallarblog_escape(get_root_url().'?/blog').'">'.gjallarblog_escape($settings['blog_name']).'</a>';
 $template->assign(['row'=>$row,'npage'=>$npage,'older'=>$older,'newer'=>$newer,'show_date'=>$settings['show_date'],'show_on_main_page'=>false,
     'GB_BACK_LABEL'=>l10n('Back to %s',$settings['blog_name'])]);
-$template->set_filename('gjallarblog_post',__DIR__.'/post.tpl');
+$template->set_filename('gjallarblog_post',__DIR__.'/template/post.tpl');
 $template->func_combine_css(['path'=>Gjallarblog_PATH.'posts.css']);
 $template->concat('PLUGIN_INDEX_CONTENT_END',$template->parse('gjallarblog_post',true));

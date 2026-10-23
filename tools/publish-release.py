@@ -21,11 +21,13 @@ def validate_package(version):
             relative = pathlib.PurePosixPath(item.filename)
             if relative.parts[0] != 'gjallarblog' or any(p in relative.parts for p in ['..','.git','.dev','dev','tools','dist']):
                 raise RuntimeError('Unexpected archive path: '+item.filename)
-            source = ROOT.joinpath(*relative.parts[1:])
+            repository_docs = ['LICENSE','NOTICE.md','README.md','CHANGELOG.md']
+            source = ROOT if relative.parts[1] in repository_docs else ROOT/'plugin'
+            source = source.joinpath(*relative.parts[1:])
             if package.read(item) != source.read_bytes():
                 raise RuntimeError('Stale archive file: '+item.filename)
         metadata = package.read('gjallarblog/main.inc.php').decode('utf-8')
-        if f'Version: {version}\n' not in metadata:
+        if f'Version: {version}' not in metadata.splitlines():
             raise RuntimeError('Archive metadata disagrees with version')
     checksum = hashlib.sha256(archive.read_bytes()).hexdigest()
     if (ROOT/'dist/SHA256SUMS.txt').read_text(encoding='ascii').strip() != f'{checksum}  {name}':

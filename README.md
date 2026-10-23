@@ -6,13 +6,17 @@ A journal plugin for Piwigo, maintained by Ainz and derived from **Evil_Blog by 
 
 ## Installation
 
-1. For normal installation, download the latest published package from [Releases](https://github.com/Ainz/gjallarblog/releases). Version 0.06-beta.1 is source code only; it is not packaged for installation yet.
+1. For normal installation, download the latest published package from [Releases](https://github.com/Ainz/gjallarblog/releases). Version 0.06-beta.1 is not a published release package.
 2. Extract its single `gjallarblog/` directory into your gallery's `plugins/` directory. Use this release ZIP rather than GitHub's source archive.
 3. In Piwigo Administration → Plugins, install and activate **Gjallarblog**.
 4. Open the plugin settings and configure the journal name, description, page size and placement on gallery home/album pages.
 5. Create entries using the plugin's Entries tab. The journal is available at `?/blog`. RSS belongs to Piwigo; the plugin has no separate feed link.
 
 The Blog menu block uses Piwigo's menu manager. Reorder or hide it in Administration → Configuration → Menus. One plain-text Journal name controls the menu item, journal heading and entry return links; the active theme styles those labels. Use Settings → Site navigation to show or hide the link, and the menu manager to position it. Removal options have a separate tab.
+
+## Repository layout
+
+The installable plugin source is in [`plugin/`](plugin/). Its contents mirror the inside of Piwigo's `plugins/gjallarblog/` directory: `main.inc.php`, plugin PHP files, and `include/`, `language/` and `template/` directories. This follows Piwigo's [plugin development guide](https://github.com/Piwigo/Piwigo/wiki/Plugin-developpement) and [Skeleton plugin structure](https://github.com/Piwigo/Piwigo-Skeleton), which describe the plugin root and its common subfolders. Piwigo's [plugin documentation](https://doc.piwigo.org/piwigo-plugins/) explains installation, activation and configuration for gallery owners. Repository documentation and portable development checks stay outside `plugin/`. GitHub's source archive is not an installable plugin package; a release package places these source files under one `gjallarblog/` directory.
 
 ## Versioning
 
@@ -64,7 +68,7 @@ Back up the database and existing plugin folder, replace `plugins/gjallarblog/` 
 
 ## Development and packaging
 
-Portable PHP/Python validators are in `tools/`. The Windows/WSL gallery setup, seeding, packaging and end-to-end runner scripts are maintainer-local and intentionally excluded from GitHub. The compatibility matrix and its limits are summarized in [validation](docs/VALIDATION.md); these local scripts are not required to install the plugin.
+Portable PHP/Python checks and the package builder are in `tools/` and use the source under `plugin/`. Run `python tools/build-package.py` to create `dist/gjallarblog-<version>.zip`; the archive contains the plugin under `gjallarblog/` and excludes local test evidence. The Windows/WSL gallery setup, seeding and end-to-end runner scripts remain maintainer-local. The compatibility matrix and its limits are summarized in [validation](docs/VALIDATION.md).
 
 See [changelog](CHANGELOG.md), [attribution/licensing](NOTICE.md), and [source provenance](docs/UPSTREAM.md). Report defects through [GitHub issues](https://github.com/Ainz/gjallarblog/issues); report sensitive security details privately to the maintainer before posting publicly.
 
