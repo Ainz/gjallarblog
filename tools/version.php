@@ -6,7 +6,7 @@ function gjallarblog_valid_release_version($version)
 }
 function gjallarblog_release_version($root)
 {
-    preg_match('/^Version: ([^\r\n]+)$/m', file_get_contents($root.'/main.inc.php'), $match);
+    preg_match('/^Version: ([^\r\n]+)\r?$/m', file_get_contents($root.'/main.inc.php'), $match);
     $version = $match[1] ?? '';
     if (!gjallarblog_valid_release_version($version)) throw new RuntimeException('Expected Major.Minor with a two-digit minimum minor, optionally -alpha, -beta or -rc with a positive sequence number');
     return $version;

@@ -16,9 +16,9 @@ All 79 private baseline files matched their Git blob hashes. All 47 common PHP f
 
 Initial restoration: restore manage.tpl from SVN 33315 (identical to the release); remove copied line numbers in admin.css; refresh he_IL/is_IS/ko_KR/zh_TW and Polish; rename runtime symbols, CSS/assets, metadata and storage to Gjallarblog; retain credits/license; add validation, package builder and isolated test setup. No automatic mutation/import of old Evil_Blog storage.
 
-CSV files describe untouched baseline comparisons, not this renamed/restored working tree. Their left side is the named upstream snapshot; right side is the Ainz baseline.
+The original line-by-line CSV comparison sheets are historical audit working files. They are not needed to install, maintain or test the plugin and are kept in the local audit archive rather than this GitHub repository. The summary above records the findings that matter for provenance.
 
 Test core: https://piwigo.org/download/dlcounter.php?code=16.4.0
 SHA-256: 72c58a337a1a0639b6ad8dc8f5900a2781fc19091b60ae157eb2ee58c5431c17
 
-Integration follow-up (20 October 2026): replaced the legacy lifecycle with data-preserving PluginMaintain, validated input/CSRF-protected admin mutations, escaped output/editor controls, fixed public routing/pagination/empty views and replaced the legacy RSS dependency. See VALIDATION.md for current evidence; initial comparison CSVs remain historical baseline records.
+Integration follow-up (20 October 2026): replaced the legacy lifecycle with data-preserving PluginMaintain, validated input/CSRF-protected admin mutations, escaped output/editor controls, fixed public routing/pagination/empty views and replaced the legacy RSS dependency. See VALIDATION.md for current evidence.
