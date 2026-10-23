@@ -2,11 +2,19 @@
 defined('PHPWG_ROOT_PATH') or die('Hacking attempt!');
 check_status(ACCESS_ADMINISTRATOR);
 $settings=gjallarblog_settings($conf['gjallarblog']??null);
-$errors=[]; $preview=''; $new=['header'=>'','text'=>'']; $editingId=0; $submitted=null;
+$errors=[]; $preview=''; $new=['header'=>'','text'=>'','input_date'=>date('Y-m-d\\TH:i')]; $editingId=0; $submitted=null;
 $openId=isset($_GET['edit'])?gjallarblog_id($_GET['edit']):0;
 $requested=gjallarblog_id($_GET['npage']??1);
 if ($_SERVER['REQUEST_METHOD']==='POST') {
     check_pwg_token();
+    if (isset($_POST['upload_image'])) {
+        header('Content-Type: application/json; charset=UTF-8');
+        header('Cache-Control: no-store');
+        if ($_POST['upload_image']!=='1' || isset($_POST['submit_post']) || isset($_POST['preview']) || isset($_POST['edit_post_id'])) { http_response_code(400); echo json_encode(['error'=>l10n('Invalid image upload request.')]); exit; }
+        try { echo json_encode(['url'=>gjallarblog_media_url(gjallarblog_insert_media($_FILES['image']??null))],JSON_THROW_ON_ERROR); }
+        catch (Throwable $error) { http_response_code(400); echo json_encode(['error'=>$error instanceof RuntimeException?$error->getMessage():l10n('The image could not be uploaded.')],JSON_INVALID_UTF8_SUBSTITUTE); }
+        exit;
+    }
     foreach (['submit_post','preview'] as $flag) if (isset($_POST[$flag]) && $_POST[$flag]!=='1') bad_request('Invalid journal action');
     $actions=(int)isset($_POST['del'])+(int)(isset($_POST['submit_post'])||isset($_POST['edit_post_id'])||isset($_POST['preview']));
     if ($actions!==1) bad_request('Invalid journal action');
@@ -14,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
         $id=gjallarblog_id($_POST['del']);
         if (($_POST['confirm_delete']??null)!=='1') bad_request('Deletion requires explicit confirmation');
         gjallarblog_query('DELETE FROM '.Gjallarblog_Table.' WHERE id='.$id);
+        gjallarblog_cleanup_orphan_media();
         gjallarblog_flash_redirect(l10n('Entry deleted.'), Gjallarblog_Admin.'-manage&npage='.$requested.'#published-entries');
     }
     $editingId=isset($_POST['edit_post_id'])?gjallarblog_id($_POST['edit_post_id']):0;
@@ -22,9 +31,14 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
     }
     $titleKey=$editingId?'edit_post_header':'post_header';
     $bodyKey=$editingId?'edit_post_text':'post_textarea';
-    $header=gjallarblog_input($titleKey,l10n('Title'),GJALLARBLOG_TITLE_LIMIT,$errors,true);
+    $header=gjallarblog_plain_title(gjallarblog_input($titleKey,l10n('Title'),GJALLARBLOG_TITLE_LIMIT,$errors,true));
+    if ($header==='') $errors[$titleKey]=l10n('%s is required.',l10n('Title'));
     $body=gjallarblog_input($bodyKey,l10n('Content'),GJALLARBLOG_BODY_LIMIT,$errors,true,true);
-    $submitted=['header'=>$header,'text'=>$body];
+    $dateKey=$editingId?'edit_post_date':'post_date';
+    $dateValue=gjallarblog_input($dateKey,l10n('Publication date and time'),16,$errors,true);
+    $postDate=gjallarblog_parse_post_date($dateValue);
+    if ($postDate===false && !isset($errors[$dateKey])) $errors[$dateKey]=l10n('Choose a valid date and time no later than now, using the gallery timezone.');
+    $submitted=['header'=>$header,'text'=>$body,'input_date'=>$dateValue];
     if ($editingId) { $openId=$editingId; $requested=gjallarblog_entry_page($editingId,$settings['posts_per_page']); }
     else $new=$submitted;
     if (!$errors) {
@@ -37,11 +51,14 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
             $escapedTitle=pwg_db_real_escape_string($header);
             $escapedBody=pwg_db_real_escape_string($safeBody);
             if ($editingId) {
-                gjallarblog_query("UPDATE ".Gjallarblog_Table." SET header='$escapedTitle',text='$escapedBody' WHERE id=$editingId");
+                $escapedDate=pwg_db_real_escape_string($postDate);
+                gjallarblog_query("UPDATE ".Gjallarblog_Table." SET date='$escapedDate',header='$escapedTitle',text='$escapedBody' WHERE id=$editingId");
                 $id=$editingId;
             } else {
-                gjallarblog_query("INSERT INTO ".Gjallarblog_Table." (date,header,text) VALUES (NOW(),'$escapedTitle','$escapedBody')",$id);
+                $escapedDate=pwg_db_real_escape_string($postDate);
+                gjallarblog_query("INSERT INTO ".Gjallarblog_Table." (date,header,text) VALUES ('$escapedDate','$escapedTitle','$escapedBody')",$id);
             }
+            gjallarblog_cleanup_orphan_media();
             gjallarblog_flash_redirect(l10n($editingId?'Entry updated.':'Entry published.'), Gjallarblog_Admin.'-manage&npage='.gjallarblog_entry_page($id,$settings['posts_per_page']).'&edit='.$id.'#entry-'.$id);
         }
     }
@@ -54,7 +71,9 @@ $offset=($npage-1)*$settings['posts_per_page'];
 $result=gjallarblog_query('SELECT * FROM '.Gjallarblog_Table.' ORDER BY date DESC,id DESC LIMIT '.$offset.','.$settings['posts_per_page']);
 $rows=[];
 while ($row=pwg_db_fetch_assoc($result)) {
+    $row['header']=gjallarblog_plain_title($row['header']);
     if ((int)$row['id']===$editingId && $submitted!==null) $row=array_merge($row,$submitted);
+    if (!isset($row['input_date'])) $row['input_date']=date('Y-m-d\\TH:i',strtotime($row['date']));
     $row['display_date']=gjallarblog_date(strtotime($row['date'])).', '.date('H:i',strtotime($row['date']));
     $row['delete_confirm']=l10n('Permanently delete “%s”? This cannot be undone.',$row['header']);
     $rows[]=$row;

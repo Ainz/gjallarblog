@@ -1,7 +1,10 @@
 <article class="gjallarblog-journal gjallarblog-post gjallarblog-single">
-  <a class="gjallarblog-back" href="{$ROOT_URL}?/blog/{$npage}">← {$GB_BACK_LABEL|escape:'html':'UTF-8'}</a>
-  {if $show_number||$show_date}<div class="gjallarblog-meta">{if $show_number}{'Entry'|translate} {$row.id}{if $show_date} · {/if}{/if}{if $show_date}{$row.date|escape:'html':'UTF-8'}{/if}</div>{/if}
+  {if $show_date}<div class="gjallarblog-meta">{$row.date|escape:'html':'UTF-8'}</div>{/if}
   <h1>{$row.header|escape:'html':'UTF-8'}</h1>
   <div class="post_description">{$row.text}</div>
-  <a class="gjallarblog-permalink" href="{$ROOT_URL}?/blog/{$npage}">← {$GB_BACK_LABEL|escape:'html':'UTF-8'}</a>
+  <nav class="gjallarblog-entry-navigation" aria-label="{'Entry navigation'|translate|escape}">
+    {if $older}<a rel="prev" href="{$ROOT_URL}?/blog/id/{$older.id}">← {'Previous entry'|translate}</a>{else}<span></span>{/if}
+    <a class="gjallarblog-back" href="{$ROOT_URL}?/blog/{$npage}">{$GB_BACK_LABEL|escape:'html':'UTF-8'}</a>
+    {if $newer}<a rel="next" href="{$ROOT_URL}?/blog/id/{$newer.id}">{'Next entry'|translate} →</a>{else}<span></span>{/if}
+  </nav>
 </article>

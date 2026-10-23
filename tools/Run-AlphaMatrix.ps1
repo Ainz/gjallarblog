@@ -28,14 +28,29 @@ foreach($case in $cases){
  & (Join-Path $PSScriptRoot 'Test-Alpha.ps1') -Port $port -StateDirectory $state
  $lines=Get-Content (Join-Path $state 'alpha-results.txt')|ForEach-Object {$_.TrimEnd()}
  [IO.File]::WriteAllText((Join-Path $evidence "$project-integration.txt"), ($lines -join "`n")+"`n", [Text.UTF8Encoding]::new($false))
- & $PythonExecutable (Join-Path $PSScriptRoot 'test-usability.py') $port $project
+ if($PythonExecutable -eq 'python'){
+  & wsl.exe -d Debian --exec python3 "/mnt/d/Development/gjallarblog/tools/test-usability.py" "$port" "$project"
+ } else {
+  & $PythonExecutable (Join-Path $PSScriptRoot 'test-usability.py') $port $project
+ }
  if($LASTEXITCODE -ne 0){throw 'Usability/security checks failed'}
+ if($project -in @('a15','a16')){
+  & wsl.exe -d Debian -u root --exec docker cp /mnt/d/Development/gjallarblog/tools/test-versioning.php "${container}:/tmp/test-versioning.php"
+  if($LASTEXITCODE -ne 0){throw 'Versioning suite copy failed'}
+  $versionOutput=& wsl.exe -d Debian -u root --exec docker exec -e GJALLARBLOG_DISPOSABLE=1 $container php /tmp/test-versioning.php --upgrade
+  if($LASTEXITCODE -ne 0){throw 'Piwigo version comparison/autoupdate checks failed'}
+  [IO.File]::WriteAllText((Join-Path $evidence "$project-versioning.txt"),($versionOutput -join "`n").Trim()+"`n",[Text.UTF8Encoding]::new($false))
+ }
  $php=& wsl.exe -d Debian -u root --exec docker exec $container php -r 'echo PHP_VERSION;'
- $matrix+=@{piwigo=$case[2];php=($php -join '').Trim();database='MariaDB 11.4';integration_checks=51;helper_checks=21;usability_security_checks=56;result='PASS';fixture=$project}
+ $helperCount=[int]([regex]::Match(($helperResult -join "`n"),'PASS: (\d+) helper checks').Groups[1].Value)
+ $usabilityFile=Join-Path $evidence "$project-usability.txt"
+ $usabilityCount=[int]([regex]::Match((Get-Content $usabilityFile -Raw),'Total: (\d+) checks').Groups[1].Value)
+ $matrix+=@{piwigo=$case[2];php=($php -join '').Trim();database='MariaDB 11.4';integration_checks=51;helper_checks=$helperCount;usability_security_checks=$usabilityCount;result='PASS';fixture=$project}
 }
 $removalOutput=& (Join-Path $PSScriptRoot 'Test-Removal.ps1') 2>&1
 if($LASTEXITCODE -ne 0){throw 'Writable removal lifecycle checks failed'}
-[IO.File]::WriteAllText((Join-Path $evidence 'removal-lifecycle.txt'),($removalOutput -join "`n")+"`n",[Text.UTF8Encoding]::new($false))
+$removalLines=@($removalOutput | ForEach-Object { "$_".TrimEnd() })
+[IO.File]::WriteAllText((Join-Path $evidence 'removal-lifecycle.txt'),($removalLines -join "`n")+"`n",[Text.UTF8Encoding]::new($false))
 
 [IO.File]::WriteAllText((Join-Path $evidence 'matrix.json'), ($matrix|ConvertTo-Json -Depth 5).Replace("`r`n","`n")+"`n", [Text.UTF8Encoding]::new($false))
 Write-Output 'PASS: selected disposable alpha compatibility cases.'

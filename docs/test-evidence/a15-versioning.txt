@@ -24,17 +24,35 @@ PASS: 0.03-rc.2 < 0.03
 PASS: update completion: 0.03 >= 0.03-rc.2
 PASS: 0.03 < 0.04-alpha.1
 PASS: update completion: 0.04-alpha.1 >= 0.03
+PASS: 0.05-alpha.1 < 0.05-beta.1
+PASS: update completion: 0.05-beta.1 >= 0.05-alpha.1
+PASS: 0.05-beta.1 < 0.06-beta
+PASS: update completion: 0.06-beta >= 0.05-beta.1
+PASS: 0.06-beta < 0.06-beta.1
+PASS: update completion: 0.06-beta.1 >= 0.06-beta
 PASS: 0.1.0-alpha.1 < 0.03-alpha.1
 PASS: update completion: 0.03-alpha.1 >= 0.1.0-alpha.1
 PASS: 0.1.0-alpha.2 < 0.03-alpha.1
 PASS: update completion: 0.03-alpha.1 >= 0.1.0-alpha.2
+PASS: 0.1.0-alpha.2 < 0.06-beta.1
+PASS: update completion: 0.06-beta.1 >= 0.1.0-alpha.2
 PASS: Padding is presentation: 0.01 equals 0.1
 PASS: Do not restart at 0.01: it precedes the published legacy version
 PASS: Core-compatible metadata parser reads exact padded version
-PASS: Core autoupdate migrates 0.1.0-alpha.1 to 0.03-alpha.1
-PASS: Upgrade preserves posts and normalized settings
+PASS: Core autoupdate migrates 0.1.0-alpha.1 to 0.06-beta.1
+PASS: Upgrade preserves existing posts
+PASS: Upgrade preserves normalized settings
 PASS: Equal version is stable on a repeated update check
-PASS: Core autoupdate migrates 0.1.0-alpha.2 to 0.03-alpha.1
-PASS: Upgrade preserves posts and normalized settings
+PASS: Core autoupdate migrates 0.1.0-alpha.2 to 0.06-beta.1
+PASS: Upgrade preserves existing posts
+PASS: Upgrade preserves normalized settings
 PASS: Equal version is stable on a repeated update check
-Total: 39 versioning checks; Piwigo 15.7.0; PHP 8.3.35
+PASS: Core autoupdate migrates 0.05-beta.1 to 0.06-beta.1
+PASS: Upgrade preserves existing posts
+PASS: Upgrade preserves normalized settings
+PASS: Equal version is stable on a repeated update check
+PASS: Core autoupdate migrates 0.06-beta to 0.06-beta.1
+PASS: Upgrade preserves existing posts
+PASS: Upgrade preserves normalized settings
+PASS: Equal version is stable on a repeated update check
+Total: 57 versioning checks; Piwigo 15.7.0; PHP 8.3.36

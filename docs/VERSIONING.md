@@ -5,7 +5,7 @@ Adopted 21 October 2026. Versions are strings, never decimal numbers or strict t
 ## Convention
 
 - Numeric base: `Major.Minor`. Major has no padding; minor is an integer displayed with a minimum of two digits. Examples: `0.01`, `0.02`, `0.09`, `0.10`, `0.11`, `1.00`. After `0.99`, `0.100` is valid if a major bump is not warranted. Avoid redundant leading zeros beyond the two-digit minimum.
-- Testing stages: `0.03-alpha.1`, `0.03-alpha.2`, `0.03-beta.1`, `0.03-rc.1`; stable: `0.03`. Use lowercase `alpha`, `beta`, `rc` and a positive build counter. Increment the counter for a replacement prerelease; never overwrite a published tag or asset.
+- Testing stages: `0.03-alpha.1`, `0.03-alpha.2`, `0.03-beta.1`, `0.03-rc.1`; stable: `0.03`. Use lowercase `alpha`, `beta`, `rc`. A sequence number may be omitted when advancing to a new numeric base (for example `0.06-beta`); increment it for a replacement prerelease on the same base. Never overwrite a published tag or asset.
 - Every stage sorts before the final version of the same numeric base. A subsequent minor's alpha sorts after the previous minor's final version.
 - Git tag: `v0.03-alpha.1`; release title: `Gjallarblog 0.03-alpha.1`; package: `gjallarblog-0.03-alpha.1.zip`; plugin header: `Version: 0.03-alpha.1`. The `v` is only a tag prefix.
 - GitHub `prerelease=true` for alpha/beta/rc and `false` for stable. The first stable `1.00` remains a future readiness decision.
@@ -33,12 +33,14 @@ Official source references: [Piwigo 16 core updater](https://github.com/Piwigo/P
 
 ## Release process
 
+The current local candidate is **0.06-beta.1**: metadata `Version: 0.06-beta.1`, planned tag `v0.06-beta.1`, package `gjallarblog-0.06-beta.1.zip`, and GitHub release status `prerelease`. This increments the prerelease counter from the prior local 0.06-beta candidate. The package is local; no tag, GitHub release or Piwigo Extension Manager revision has been created.
+
 1. Update `main.inc.php`, current README/release notes and append the changelog; preserve historical version references.
 2. Run package validation. `tools/version.php` validates the canonical version syntax; the builder derives the filename and checksum from it.
 3. Test version ordering and core upgrade behavior on disposable Piwigo 15/16 galleries with `tools/test-versioning.php --upgrade` and `GJALLARBLOG_DISPOSABLE=1`. Keep result files under `docs/test-evidence/`.
 4. Commit, push and create a new `v<version>` tag at the exact tested commit. `python tools/publish-release.py publish` verifies this tag, metadata, archive contents, checksum and clean working tree before creating the GitHub release. It derives prerelease status from the suffix.
 5. Run `python tools/publish-release.py verify` to download published assets again and verify their hashes and metadata. Preserve older releases.
 
-Focused test results are recorded in `test-evidence/a15-versioning.txt` and `test-evidence/a16-versioning.txt`. Application compatibility evidence from alpha.2 remains historically labeled; a versioning change does not relabel old test runs.
+The Piwigo updater can compare the installed version with revisions advertised by PEM. The local package can exercise core version comparison and upgrade handling, but the normal update-notification screen cannot discover it until Gjallarblog has a PEM extension identity and published revision. GitHub prerelease status alone is not queried by Piwigo. See the official [extension publishing guide](https://github.com/Piwigo/Piwigo/wiki/Publishing-an-extension).
 
-Verification result: **39 core versioning/upgrade checks passed on each of Piwigo 15.7.0 / PHP 8.3.35 and Piwigo 16.4.0 / PHP 8.4.26 (78 total)**. Both historical release transitions preserved a real post fixture and Unicode/quoted settings. The release-format validator separately passed 22 valid/invalid syntax cases.
+The previous `0.05-beta.1` candidate passed 43 core versioning/upgrade checks on each of Piwigo 15.7.0 / PHP 8.3.36 and Piwigo 16.4.0 / PHP 8.4.27. The `0.06-beta` run passed 51 core comparison/autoupdate checks on each of those Piwigo/PHP combinations. The `0.06-beta.1` follow-up adds an explicit comparison and upgrade from `0.06-beta`; the refreshed evidence is in `test-evidence/a15-versioning.txt` and `a16-versioning.txt`.

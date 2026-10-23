@@ -12,7 +12,7 @@ if (!(Test-Path -LiteralPath $credentialFile)) {
 $credentials = Get-Content -LiteralPath $credentialFile -Raw | ConvertFrom-Json
 $dbPassword = (Get-Content -LiteralPath (Join-Path $StateDirectory 'gallery.env') -Raw).Trim().Substring('DB_PASSWORD='.Length)
 $session = [Microsoft.PowerShell.Commands.WebRequestSession]::new()
-$response = Invoke-WebRequest "$base/install.php?language=en_UK" -WebSession $session
+$response = Invoke-WebRequest "$base/install.php?language=en_UK" -WebSession $session -UseBasicParsing
 if ($response.Content -notmatch 'Piwigo is already installed') {
     $response = Invoke-WebRequest "$base/install.php?language=en_UK" -Method Post -WebSession $session -Body @{
         install='Install'; dbhost='db'; dbuser='piwigo'; dbpasswd=$dbPassword; dbname='piwigo'; prefix='piwigo_';

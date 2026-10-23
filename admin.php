@@ -23,6 +23,7 @@ $template->func_combine_css(array(
 $tabsheet = new tabsheet();
 $tabsheet->add('manage', l10n('Entries'), Gjallarblog_Admin.'-manage');
 $tabsheet->add('config', l10n('Settings'), Gjallarblog_Admin.'-config');
-$tabsheet->select($page['tab']==='remove'?'config':$page['tab']);
+$tabsheet->add('remove', l10n('Removal'), Gjallarblog_Admin.'-remove');
+$tabsheet->select($page['tab']);
 $tabsheet->assign();
 ?>

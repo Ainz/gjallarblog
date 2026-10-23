@@ -2,12 +2,12 @@
 <div class="gjallarblog-admin gb-theme-{$GB_ADMIN_THEME}">
   {if $GB_NOTICE}<p class="gb-notice" role="status">{$GB_NOTICE|escape}</p>{/if}
   {if $GB_ERRORS}<div class="gb-error-summary" role="alert" tabindex="-1"><p>{'Please correct the highlighted fields. Your text has been kept.'|translate}</p><ul>{foreach from=$GB_ERRORS item=error}<li>{$error|escape}</li>{/foreach}</ul></div>{/if}
-  <nav class="gb-shortcuts" aria-label="{'Journal administration'|translate|escape}"><a href="#published-entries">{'Jump to published entries'|translate}</a> · <a href="{$GB_JOURNAL|escape}">{'View journal'|translate}</a></nav>
+  <nav class="gb-shortcuts" aria-label="{'Journal administration'|translate|escape}"><a class="gb-shortcut" href="#published-entries">{'Published entries'|translate}</a><a class="gb-shortcut" href="{$GB_JOURNAL|escape}">{'Open journal'|translate}</a></nav>
   <details class="gb-new-entry" {if $GB_NEW_OPEN}open{/if}>
     <summary>{'New journal entry'|translate}</summary>
-    <form method="post" action="{$GB_ADMIN|escape}" data-gb-form>
+    <form method="post" action="{$GB_ADMIN|escape}" data-gb-form data-upload-url="{$GB_ADMIN|escape}">
       <input type="hidden" name="pwg_token" value="{$PWG_TOKEN|escape}">
-      {include file=$GB_EDITOR_TEMPLATE editor=$GB_NEW editor_id=0 title_name='post_header' body_name='post_textarea' submit_label='Publish entry'|translate}
+        {include file=$GB_EDITOR_TEMPLATE editor=$GB_NEW editor_id=0 title_name='post_header' body_name='post_textarea' date_name='post_date' submit_label='Publish entry'|translate}
     </form>
   </details>
   {if $GB_PREVIEW}<section class="gb-preview" id="gb-preview" tabindex="-1"><h3>{'Preview — not published'|translate}</h3><p>{'Content preview; the gallery theme supplies the final page styling.'|translate}</p><iframe title="{'Entry preview'|translate|escape}" sandbox="" referrerpolicy="no-referrer" srcdoc="{$GB_PREVIEW|escape:'html':'UTF-8'}"></iframe></section>{/if}
@@ -16,10 +16,10 @@
   {foreach from=$GB_POSTS item=entry}
     <details class="gjallarblog-edit" id="entry-{$entry.id}" {if $GB_OPEN_ID==$entry.id}open{/if}>
       <summary><span class="gb-edit-cue">{'Edit'|translate}</span> {$entry.header|escape:'html':'UTF-8'} <small> · {$entry.display_date|escape}</small></summary>
-      <form method="post" action="{$GB_ADMIN|escape}" data-gb-form>
+      <form method="post" action="{$GB_ADMIN|escape}" data-gb-form data-upload-url="{$GB_ADMIN|escape}">
         <input type="hidden" name="pwg_token" value="{$PWG_TOKEN|escape}">
         <input type="hidden" name="edit_post_id" value="{$entry.id}">
-        {include file=$GB_EDITOR_TEMPLATE editor=$entry editor_id=$entry.id title_name='edit_post_header' body_name='edit_post_text' submit_label='Save changes'|translate}
+        {include file=$GB_EDITOR_TEMPLATE editor=$entry editor_id=$entry.id title_name='edit_post_header' body_name='edit_post_text' date_name='edit_post_date' submit_label='Save changes'|translate}
       </form>
       <form class="gb-delete-form" method="post" action="{$GB_ADMIN|escape}" data-confirm="{$entry.delete_confirm|escape:'html':'UTF-8'}">
         <input type="hidden" name="pwg_token" value="{$PWG_TOKEN|escape}">

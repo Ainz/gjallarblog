@@ -7,7 +7,7 @@
   <ul class="gjallarblog_posts">
   {foreach from=$row item=value}
     <li class="gjallarblog-post">
-      {if $show_number||$show_date}<div class="gjallarblog-meta">{if $show_number}{'Entry'|translate} {$value.id}{if $show_date} · {/if}{/if}{if $show_date}{$value.date|escape:'html':'UTF-8'}{/if}</div>{/if}
+      {if $show_date}<div class="gjallarblog-meta">{$value.date|escape:'html':'UTF-8'}</div>{/if}
       {if $GB_EMBEDDED}<h3>{else}<h2>{/if}<a href="{$ROOT_URL}?/blog/id/{$value.id}">{$value.header|escape:'html':'UTF-8'}</a>{if $GB_EMBEDDED}</h3>{else}</h2>{/if}
       <div class="post_description">{$value.text}</div>
       <a class="gjallarblog-permalink" href="{$ROOT_URL}?/blog/id/{$value.id}" aria-label="{$value.open_label|escape:'html':'UTF-8'}">{'Open entry'|translate} →</a>
