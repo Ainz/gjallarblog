@@ -1,7 +1,7 @@
 <?php
 // Static validation; never loads plugin code.
 $repoRoot = dirname(__DIR__);
-$root = $repoRoot.'/plugin';
+$root = $repoRoot.'/plugins/gjallarblog';
 $errors = [];
 require_once __DIR__.'/version.php';
 $required = ['main.inc.php','maintain.class.php','admin.php','manage.inc.php','template/manage.tpl','template/menubar_gjallarblog.tpl','config.inc.php','template/config.tpl','remove.inc.php','template/remove.tpl','blog.php','template/blog.tpl','post.php','template/post.tpl','feed.php','index.php','admin.css','editor.js','template/editor.tpl','posts.css','COPYING.txt','LICENSE.txt','include/functions.inc.php','language/en_UK/plugin.lang.php'];

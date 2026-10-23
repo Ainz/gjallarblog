@@ -35,8 +35,8 @@ Official source references: [Piwigo 16 core updater](https://github.com/Piwigo/P
 
 The source version **0.06-beta.1** is merged into GitHub `main`. It has no tag or downloadable GitHub release; the latest packaged release remains **0.04-alpha.1**. Do not treat a commit on `main` as a release. The next published version must use a new, unused version and matching tag, package name and release metadata.
 
-1. Update `plugin/main.inc.php`, current README/release notes and append the changelog; preserve historical version references.
-2. Run `php tools/check-package.php` and `python tools/build-package.py`. The package builder reads the version from `plugin/main.inc.php`, writes a ZIP with the required `gjallarblog/` install folder, and creates its SHA-256 file. It excludes local test evidence and the unused RSS image.
+1. Update `plugins/gjallarblog/main.inc.php`, current README/release notes and append the changelog; preserve historical version references.
+2. Run `php tools/check-package.php` and `python tools/build-package.py`. The package builder reads the version from `plugins/gjallarblog/main.inc.php`, writes a ZIP with the required `gjallarblog/` install folder, and creates its SHA-256 file. It excludes local test evidence and the unused RSS image.
 3. Test version ordering and core upgrade behavior on disposable Piwigo 15/16 galleries with `tools/test-versioning.php --upgrade` and `GJALLARBLOG_DISPOSABLE=1`. Keep raw results in the ignored local `docs/test-evidence/` folder; summarize outcomes in `docs/VALIDATION.md`.
 4. Commit, push and create a new `v<version>` tag at the exact tested commit. `python tools/publish-release.py publish` verifies this tag, metadata, archive contents, checksum and clean working tree before creating the GitHub release. It derives prerelease status from the suffix.
 5. Run `python tools/publish-release.py verify` to download published assets again and verify their hashes and metadata. Preserve older releases.

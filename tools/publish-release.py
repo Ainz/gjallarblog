@@ -6,7 +6,7 @@ Uses the configured Git credential helper without printing authentication data.
 import argparse, hashlib, json, pathlib, subprocess, urllib.request, urllib.parse, zipfile
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-REPO = 'Ainz/gjallarblog'
+REPO = 'Ainz/piwigo'
 
 def git(*args):
     return subprocess.check_output(['git', *args], cwd=ROOT, text=True).strip()
@@ -22,7 +22,7 @@ def validate_package(version):
             if relative.parts[0] != 'gjallarblog' or any(p in relative.parts for p in ['..','.git','.dev','dev','tools','dist']):
                 raise RuntimeError('Unexpected archive path: '+item.filename)
             repository_docs = ['LICENSE','NOTICE.md','README.md','CHANGELOG.md']
-            source = ROOT if relative.parts[1] in repository_docs else ROOT/'plugin'
+            source = ROOT if relative.parts[1] in repository_docs else ROOT/'plugins'/'gjallarblog'
             source = source.joinpath(*relative.parts[1:])
             if package.read(item) != source.read_bytes():
                 raise RuntimeError('Stale archive file: '+item.filename)

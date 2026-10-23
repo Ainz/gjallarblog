@@ -2,7 +2,7 @@
 // Isolated helper tests: no gallery/database is loaded.
 define('PHPWG_ROOT_PATH', './');
 function bad_request($message) { throw new InvalidArgumentException($message); }
-$pluginRoot = $argv[1] ?? dirname(__DIR__).'/plugin';
+$pluginRoot = $argv[1] ?? dirname(__DIR__).'/plugins/gjallarblog';
 require $pluginRoot.'/include/functions.inc.php';
 $checks = 0;
 function verify($ok, $message) { global $checks; if (!$ok) throw new RuntimeException($message); ++$checks; }

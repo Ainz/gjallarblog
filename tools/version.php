@@ -12,5 +12,5 @@ function gjallarblog_release_version($root)
     return $version;
 }
 if (realpath($_SERVER['SCRIPT_FILENAME'] ?? '') === __FILE__) {
-    echo gjallarblog_release_version(dirname(__DIR__).'/plugin')."\n";
+    echo gjallarblog_release_version(dirname(__DIR__).'/plugins/gjallarblog')."\n";
 }
