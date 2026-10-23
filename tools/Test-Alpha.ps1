@@ -1,4 +1,4 @@
-param([Parameter(Mandatory)][int]$Port,[Parameter(Mandatory)][string]$StateDirectory)
+﻿param([Parameter(Mandatory)][int]$Port,[Parameter(Mandatory)][string]$StateDirectory)
 $ErrorActionPreference='Stop'
 if($Port -notin @(8089,8090,8091,8092,8093,8094)){throw 'This suite only mutates the disposable alpha galleries.'}
 $base="http://127.0.0.1:$Port"
@@ -30,12 +30,12 @@ foreach($fields in @(@{del='1 OR 1=1'},@{'del[]'='1'},@{submit_post=1;'post_head
  $fields.pwg_token=$status.pwg_token;Assert ((Page $manage $fields $true).StatusCode -eq 400) 'Reject malformed administrative input'
 }
 $r=Page $config @{pwg_token=$status.pwg_token;posts_per_page=0} $true;Assert ($r.StatusCode -eq 400) 'Reject zero page size'
-$settings=@{pwg_token=$status.pwg_token;posts_per_page=3;blog_name='Field notes';blog_description='Alpha compatibility';date_format='j F Y';menu_label='Journal';home_display='before';album_display='hidden';show_menu='on';show_date='on'}
-Assert ((Page $config $settings $true).StatusCode -eq 200) 'Save settings and custom menu label'
+$settings=@{pwg_token=$status.pwg_token;posts_per_page=3;blog_name='Field notes';blog_description='Alpha compatibility';date_format='j F Y';home_display='before';album_display='hidden';show_menu='on';show_date='on'}
+Assert ((Page $config $settings $true).StatusCode -eq 200) 'Save unified journal name and settings'
 $invalidPlacement=$settings.Clone();$invalidPlacement.home_display='sideways';Assert ((Page $config $invalidPlacement $true).StatusCode -eq 400) 'Reject invalid placement choice';$null=Page $config $settings $true
 $invalidPlacement=$settings.Clone();$invalidPlacement.'album_display[]'='before';$invalidPlacement.Remove('album_display');Assert ((Page $config $invalidPlacement $true).StatusCode -eq 400) 'Reject array-shaped placement'
 $removalPage=Page $remove $null $true
-Assert ($removalPage.Content.Contains('Stored entries:') -and $removalPage.Content.Contains('Keep journal entries and settings')) 'Removal review provides a post count and a keep choice'
+Assert ($removalPage.Content.Contains('Stored entries:') -and $removalPage.Content.Contains('Keep journal entries, images and settings')) 'Removal review provides a post count and a keep choice'
 $badRemoval=Page $remove @{pwg_token=$status.pwg_token;entry_count='0';data_action='keep'} $true
 Assert ($badRemoval.StatusCode -eq 400) 'Removal needs an explicit checkbox confirmation'
 $readOnlyRemoval=Page $remove @{pwg_token=$status.pwg_token;entry_count='0';data_action='keep';confirm_remove='1'} $true
@@ -62,18 +62,18 @@ $ids=[Collections.Generic.List[string]]::new()
 try {
  foreach($n in 1..5){
   $title="Alpha $n <entry> & apostrophe's — 北 🌄"
-  $r=Page $manage @{pwg_token=$status.pwg_token;submit_post=1;post_header=$title;post_textarea="<p>Alpha body $n.</p>"} $true
-  Assert ($r.StatusCode -eq 200 -and $r.Content.Contains('&lt;entry&gt;')) "Create and escape UTF-8 title $n"
+  $r=Page $manage @{pwg_token=$status.pwg_token;submit_post=1;post_header=$title;post_textarea="<p>Alpha body $n.</p>";post_date=(Get-Date).AddDays(-1).ToString('yyyy-MM-ddTHH:mm')} $true
+  Assert ($r.StatusCode -eq 200 -and $r.Content.Contains('Alpha '+$n+'  &amp; apostrophe')) "Create UTF-8 plain-text title $n"
   $null=$r.BaseResponse.RequestMessage.RequestUri.Query -match '[?&]edit=(\d+)'
   $id=$Matches[1]
-  Assert ([Net.WebUtility]::HtmlDecode((Page "?/blog/id/$id").Content).Contains($title)) "Public Unicode round-trip $n"
+  Assert ([Net.WebUtility]::HtmlDecode((Page "?/blog/id/$id").Content).Contains("Alpha $n  & apostrophe's — 北 🌄")) "Public title formatting is stripped and Unicode preserved $n"
   $ids.Add($id)
  }
  foreach($path in @('','?/blog','?/blog/2',"?/blog/id/$($ids[0])")){$r=Page $path;Assert ($r.StatusCode -eq 200 -and $r.Content -notmatch 'Warning:|Fatal error|Uncaught|Deprecated:') "Clean populated public view: $path"}
- $r=Page $manage @{pwg_token=$status.pwg_token;edit_post_id=$ids[0];edit_post_header='Updated alpha';edit_post_text='<p>Edited alpha.</p>'} $true
+ $r=Page $manage @{pwg_token=$status.pwg_token;edit_post_id=$ids[0];edit_post_header='Updated alpha';edit_post_text='<p>Edited alpha.</p>';edit_post_date=(Get-Date).AddDays(-1).ToString('yyyy-MM-ddTHH:mm')} $true
  Assert ($r.StatusCode -eq 200 -and (Page "?/blog/id/$($ids[0])").Content.Contains('Edited alpha.')) 'Editing persists'
  foreach($action in @('deactivate','activate','deactivate','uninstall','install','activate')){$null=Api @{method='pwg.plugins.performAction';action=$action;plugin='gjallarblog';pwg_token=$status.pwg_token}}
- Assert ((Page $config $null $true).Content.Contains('value="Journal"')) 'Reinstall preserves menu settings'
+ Assert ((Page $config $null $true).Content.Contains('value="Field notes"')) 'Reinstall preserves the unified journal name'
  Assert ((Page "?/blog/id/$($ids[0])").Content.Contains('Edited alpha.')) 'Reinstall preserves posts'
  Assert ([regex]::Matches(((Page '?/blog').Content+(Page '?/blog/2').Content),'class="gjallarblog-post"').Count -eq 5) 'Exactly five authorized posts; rejected requests added none'
 } finally {foreach($id in $ids){$null=Page $manage @{pwg_token=$status.pwg_token;del=$id;confirm_delete='1'} $true}}

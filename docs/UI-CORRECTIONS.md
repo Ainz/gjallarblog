@@ -9,7 +9,7 @@
 | 03 Contrast | Explicit readable fields/help/errors in both core light and dark admin themes; dark fields use #f5f5f5 on #333. |
 | 04 Save context | HTTP 303 after successful writes; locate the saved entry's true list page; one-time success message. Refresh does not repeat the write. |
 | 05 Validation | Unicode character limits, field errors, preserved text, blank-menu fallback and JSON-safe Unicode settings. Malformed types and invalid characters rejected. |
-| 06 Menu discoverability | Separate Journal title/Menu label explanations and direct Configuration → Menus link. Existing core block manager controls visibility and position. |
+| 06 Menu discoverability | One plain-text Journal name is used for menu, heading and return links; visibility and position remain controlled separately. The menu hover keeps stable text weight. |
 | 07 Dates | Readable dates, localized default j F Y, numeric-format guidance, example and server timezone. Custom formats retain PHP behavior. |
 | 08 Authoring | Formatting buttons, collapsed HTML help and sandboxed unpublished preview. No new editor dependency or draft system. |
 | 09 Actions | Publish/Save primary actions; separate permanent-delete section, explicit checkbox and entry-specific confirmation. |

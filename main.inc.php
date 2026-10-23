@@ -1,6 +1,6 @@
 <?php
 /*
-Version: 0.04-alpha.1
+Version: 0.06-beta.1
 Plugin Name: Gjallarblog
 Author: EvilKant; Ainz (Gjallarblog fork)
 Description: A small journal for your Piwigo gallery.
@@ -11,6 +11,7 @@ global $prefixeTable;
 define('Gjallarblog_PATH', PHPWG_PLUGINS_PATH.basename(__DIR__).'/');
 define('Gjallarblog_Admin', get_root_url().'admin.php?page=plugin-'.basename(__DIR__));
 define('Gjallarblog_Table', $prefixeTable.'gjallarblog');
+define('Gjallarblog_Media_Table', $prefixeTable.'gjallarblog_media');
 require_once __DIR__.'/include/functions.inc.php';
 
 add_event_handler('loading_lang', 'Gjallarblog_loading_lang');
@@ -29,6 +30,7 @@ function Gjallarblog_main()
         foreach (['blog_name','blog_description'] as $key) $page['gjallarblog'][$key]=get_user_language_desc($page['gjallarblog'][$key]);
     }
     $section=$tokens[0]??'';
+    if ($section==='blog' && ($tokens[1]??'')==='media') { gjallarblog_serve_media($tokens[2]??null); return; }
     if ($section==='blog' && ($tokens[1]??'')==='feed') { include __DIR__.'/feed.php'; return; }
     if ($section==='blog' && ($tokens[1]??'')==='id') {
         gjallarblog_id($tokens[2]??null);
@@ -64,7 +66,7 @@ function gjallarblog_add_to_menu($refs)
     if ($block===null) return;
     $settings=gjallarblog_settings($conf['gjallarblog']??null);
     if (!$settings['show_menu']) return;
-    $block->data=['TITLE'=>$settings['blog_description'], 'NAME'=>$settings['menu_label'], 'URL'=>make_index_url(['section'=>'blog']), 'CURRENT'=>(($GLOBALS['page']['section']??'')==='blog')];
+    $block->data=['NAME'=>$settings['blog_name'], 'URL'=>make_index_url(['section'=>'blog'])];
     $block->template=__DIR__.'/menubar_gjallarblog.tpl';
 }
 

@@ -11,6 +11,7 @@ $result=gjallarblog_query('SELECT id,UNIX_TIMESTAMP(date) AS date,header,text FR
 $rows=[];
 while ($row=pwg_db_fetch_assoc($result)) {
     $row['date']=gjallarblog_date((int)$row['date'],$settings['date_format']);
+    $row['header']=gjallarblog_plain_title($row['header']);
     if ($ExDesc['state']==='active') $row['header']=get_user_language_desc($row['header']);
     $row['text']=gjallarblog_render_body($row['text']);
     $row['open_label']=l10n('Open entry: %s',$row['header']);
@@ -21,7 +22,7 @@ if (!$embedded) {
     $page['section_title']='<a href="'.gjallarblog_escape(get_gallery_home_url()).'">'.gjallarblog_escape(l10n('Home')).'</a> / '.gjallarblog_escape($settings['blog_name']);
 }
 $template->assign(['row'=>$rows,'npage'=>$npage,'pages'=>$pages,'pagi'=>gjallarblog_page_links($npage,$pages),
-    'show_number'=>$settings['show_number'],'show_date'=>$settings['show_date'],
+    'show_date'=>$settings['show_date'],
     'show_on_main_page'=>$settings['show_on_main_page'],'GB_EMBEDDED'=>$embedded,
     'GB_NAME'=>$settings['blog_name'],'GB_DESCRIPTION'=>$settings['blog_description']]);
 $template->set_filename('gjallarblog_list',__DIR__.'/blog.tpl');

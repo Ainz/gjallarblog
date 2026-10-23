@@ -6,11 +6,18 @@ $errors=[];
 if ($_SERVER['REQUEST_METHOD']==='POST') {
     check_pwg_token();
     if (isset($_POST['submit_config']) && $_POST['submit_config']!=='1') bad_request('Invalid settings action');
-    $fields=['blog_name'=>l10n('Journal title'),'menu_label'=>l10n('Menu label'),'blog_description'=>l10n('Description'),'date_format'=>l10n('Date format')];
-    foreach ($fields as $key=>$label) $settings[$key]=gjallarblog_input($key,$label,$key==='date_format'?80:255,$errors,$key==='blog_name'||$key==='date_format');
+    $fields=['blog_name'=>l10n('Journal name'),'blog_description'=>l10n('Description')];
+    foreach ($fields as $key=>$label) {
+        $value=gjallarblog_input($key,$label,255,$errors,$key==='blog_name');
+        $settings[$key]=$key==='blog_name'?gjallarblog_plain_title($value):$value;
+        if ($key==='blog_name' && $settings[$key]==='') $errors[$key]=l10n('%s is required.', $label);
+    }
     $perPage=gjallarblog_input('posts_per_page',l10n('Entries per page'),3,$errors,true);
-    if (!preg_match('/^[1-9][0-9]{0,2}$/D',$perPage) || (int)$perPage>100) $errors['posts_per_page']=l10n('Entries per page must be between 1 and 100.');
+    if (!preg_match('/^[1-5]$/D',$perPage)) $errors['posts_per_page']=l10n('Entries per page must be between 1 and 5.');
     $settings['posts_per_page']=$perPage;
+    $dateFormat=$_POST['date_format']??null;
+    if (!is_string($dateFormat) || !in_array($dateFormat,['j F Y','Y-m-d','d/m/Y'],true)) $errors['date_format']=l10n('Choose one of the available date formats.');
+    else $settings['date_format']=$dateFormat;
     foreach (['show_number','show_date','show_menu'] as $key) {
         if (isset($_POST[$key]) && (!is_string($_POST[$key]) || !in_array($_POST[$key],['on','1'],true))) $errors[$key]=l10n('Choose a valid checkbox value.');
         $settings[$key]=isset($_POST[$key]);
@@ -21,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
         else { $settings[$key]=$value; $settings[$legacy]=$value!=='hidden'; }
     }
     if (!$errors) {
-        if ($settings['menu_label']==='') $settings['menu_label']=$settings['blog_name'];
+        $settings['menu_label']=$settings['blog_name'];
         $settings['posts_per_page']=(int)$perPage;
         // ASCII JSON escapes preserve all Unicode in the core's three-byte UTF-8 table.
         conf_update_param('gjallarblog',json_encode($settings,JSON_THROW_ON_ERROR),true,'pwg_db_real_escape_string');

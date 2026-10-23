@@ -3,7 +3,7 @@
 .gjallarblog-admin.gb-theme-roma { --gb-paper:#222; --gb-ink:#f5f5f5; --gb-muted:#ddd; --gb-field:#333; --gb-line:#aaa; --gb-link:#a8d4ff; --gb-primary:#245b87; --gb-danger:#ffb5b5; }
 .gjallarblog-admin fieldset, .gjallarblog-admin .gb-new-entry, .gjallarblog-admin .gjallarblog-edit { box-sizing:border-box; min-width:0; padding:20px; margin:18px 0; border:1px solid var(--gb-line); border-radius:6px; color:inherit; }
 .gjallarblog-admin label { display:block; font-weight:600; margin:16px 0 6px; color:var(--gb-ink); }
-.gjallarblog-admin select, .gjallarblog-admin input[type=text], .gjallarblog-admin input[type=number], .gjallarblog-admin textarea { box-sizing:border-box; display:block; width:100%; max-width:100%; padding:10px; margin:0; background:var(--gb-field); color:var(--gb-ink); border:1px solid var(--gb-line); border-radius:3px; font-size:16px; }
+.gjallarblog-admin select, .gjallarblog-admin input[type=text], .gjallarblog-admin input[type=number], .gjallarblog-admin input[type=datetime-local], .gjallarblog-admin textarea { box-sizing:border-box; display:block; width:100%; max-width:100%; padding:10px; margin:0; background:var(--gb-field); color:var(--gb-ink); border:1px solid var(--gb-line); border-radius:3px; font-size:16px; }
 .gjallarblog-admin input[type=number] { max-width:120px; }
 .gjallarblog-admin textarea { font-family:ui-monospace,monospace; line-height:1.55; resize:vertical; }
 .gjallarblog-admin .gb-check, .gjallarblog-admin .gb-delete-form label { font-weight:400; }
@@ -23,6 +23,21 @@
 .gjallarblog-admin .gb-error-summary, .gjallarblog-admin .gb-notice { padding:14px; border:2px solid currentColor; }
 .gjallarblog-admin .gb-error-summary { color:var(--gb-danger); }
 .gjallarblog-admin .gb-actions, .gjallarblog-admin .gb-format-tools { display:flex; align-items:center; flex-wrap:wrap; gap:10px; }
+.gjallarblog-admin .gb-shortcuts { display:flex; align-items:center; flex-wrap:wrap; gap:10px; margin:14px 0; }
+.gjallarblog-admin .gb-shortcut { display:inline-flex; align-items:center; min-height:38px; padding:6px 12px; border:1px solid var(--gb-line); border-radius:4px; background:var(--gb-field); color:var(--gb-link); text-decoration:none; }
+.gjallarblog-admin .gb-shortcut:hover { text-decoration:underline; }
+.gjallarblog-admin .gb-image-tools { box-sizing:border-box; width:min(720px,calc(100vw - 32px)); max-width:none; max-height:calc(100vh - 32px); overflow:auto; margin:auto; padding:18px; border:1px solid var(--gb-line); border-radius:6px; color:var(--gb-ink); background:var(--gb-paper); }
+.gjallarblog-admin .gb-image-tools::backdrop { background:rgba(0,0,0,.58); }
+.gjallarblog-admin .gb-image-dialog-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.gjallarblog-admin .gb-image-dialog-heading strong { font-size:1.15em; }
+.gjallarblog-admin .gb-image-tools .gb-image-close { min-width:36px; min-height:36px; padding:2px 8px; font-size:1.5em; line-height:1; }
+.gjallarblog-admin .gb-existing-images[hidden], .gjallarblog-admin [data-image-size-label][hidden] { display:none; }
+.gjallarblog-admin .gb-image-preview { display:block; max-width:min(100%,520px); max-height:280px; width:auto; height:auto; margin:8px 0; object-fit:contain; }
+.gjallarblog-admin .gb-existing-images { margin:10px 0; padding:10px 0; border-top:1px solid var(--gb-line); }
+.gjallarblog-admin .gb-existing-images [data-image-list] { display:flex; flex-wrap:wrap; gap:8px; margin-top:6px; }
+.gjallarblog-admin .gb-existing-images button { min-height:34px; padding:5px 9px; }
+.gjallarblog-admin .gb-image-status { min-height:1.5em; margin:6px 0 0; }
+.gjallarblog-admin .gb-image-insert-status { min-height:1.5em; margin:6px 0; }
 .gjallarblog-admin .gb-format-tools[hidden] { display:none; }
 .gjallarblog-admin .gb-format-tools button { padding:5px 10px; min-height:34px; font-size:14px; }
 .gjallarblog-admin .gb-delete-form { border-top:1px solid var(--gb-line); margin-top:24px; padding-top:12px; }

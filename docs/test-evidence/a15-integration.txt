@@ -19,7 +19,7 @@ Reject malformed administrative input
 Reject malformed administrative input
 Reject malformed administrative input
 Reject zero page size
-Save settings and custom menu label
+Save unified journal name and settings
 Reject invalid placement choice
 Reject array-shaped placement
 Removal review provides a post count and a keep choice
@@ -30,22 +30,22 @@ Store configuration Unicode through ASCII JSON
 Permission test account is an ordinary user
 Ordinary user with valid token cannot administer the journal
 Ordinary user with valid token cannot administer the journal
-Create and escape UTF-8 title 1
-Public Unicode round-trip 1
-Create and escape UTF-8 title 2
-Public Unicode round-trip 2
-Create and escape UTF-8 title 3
-Public Unicode round-trip 3
-Create and escape UTF-8 title 4
-Public Unicode round-trip 4
-Create and escape UTF-8 title 5
-Public Unicode round-trip 5
+Create UTF-8 plain-text title 1
+Public title formatting is stripped and Unicode preserved 1
+Create UTF-8 plain-text title 2
+Public title formatting is stripped and Unicode preserved 2
+Create UTF-8 plain-text title 3
+Public title formatting is stripped and Unicode preserved 3
+Create UTF-8 plain-text title 4
+Public title formatting is stripped and Unicode preserved 4
+Create UTF-8 plain-text title 5
+Public title formatting is stripped and Unicode preserved 5
 Clean populated public view:
 Clean populated public view: ?/blog
 Clean populated public view: ?/blog/2
-Clean populated public view: ?/blog/id/46
+Clean populated public view: ?/blog/id/263
 Editing persists
-Reinstall preserves menu settings
+Reinstall preserves the unified journal name
 Reinstall preserves posts
 Exactly five authorized posts; rejected requests added none
 Delete leaves clean empty journal

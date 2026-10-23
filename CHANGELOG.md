@@ -1,5 +1,32 @@
 # Changelog
 
+## Unreleased
+
+- Insert pasted or selected images into the entry immediately with a safe default layout; open image layout controls only when requested from the image list, with both close and cancel controls.
+
+## 0.06-beta.1 — 2026-10-22
+
+- Use the theme's standard menu markup without a custom class, active-state styling, title tooltip or plugin menu stylesheet.
+- Hide database entry IDs from public pages; permanent entry URLs remain available by opening an entry.
+- Explain Piwigo Restore separately from plugin-folder removal and optional permanent data erasure.
+- Clarify where full recent entries appear and cap the shared home/album/journal count at five.
+- Replace free-form date format input with three common choices, show the current formatted date and timezone, and link to the PHP format reference.
+- Keep the beta channel and increment its prerelease counter for this replacement candidate.
+
+## 0.06-beta — 2026-10-22
+
+- Use one plain-text journal name for the menu item, journal headings and return link; strip attempted HTML formatting from journal and entry titles.
+- Add previous/next entry navigation, use button-style admin shortcuts, and move removal controls into a dedicated tab with clear Piwigo Restore behavior.
+- Prevent hover bolding from shifting the Gjallarblog menu item. Remove the obsolete draft-status sentence from formatting help.
+- Advance the local beta version without a prerelease counter, preserving the two-component version scheme and forward upgrade ordering.
+
+## 0.05-beta.1 — 2026-10-22
+
+- Add gallery-timezone date/time selection for historical entries; reject invalid and future dates.
+- Add clipboard paste and file upload for PNG, JPEG and WebP images, with server validation, metadata-stripping re-encoding, captions, alternative text, size and placement controls.
+- Serve media through Piwigo routes; preserve it on deactivation/reinstall and include it in explicit verified erasure.
+- Expand theme-aware image layout styling and safe formatting help for headings, rules, quotations and code.
+
 ## 0.04-alpha.1 — 2026-10-21
 
 - Group settings with consistent controls and help; add before/after home and album placement and journal link visibility.

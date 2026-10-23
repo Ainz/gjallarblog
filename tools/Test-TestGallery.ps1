@@ -20,7 +20,7 @@ foreach($path in @('','?/blog','?/blog/2','?/blog/id/1')){
  $r=Page $path;Assert ($r.StatusCode -eq 200 -and $r.Content -notmatch 'Warning:|Fatal error|Uncaught|Deprecated:') "Clean public view: /$path"
 }
 $rss=Page '?/blog/feed';$xml=[xml]$rss.Content
-Assert ($rss.StatusCode -eq 200 -and $xml.rss.channel.item.Count -eq 5) 'RSS contains five well-formed entries'
+Assert ($rss.StatusCode -eq 200 -and $xml.rss.channel.item.Count -gt 0 -and $rss.BaseResponse.RequestMessage.RequestUri.AbsolutePath.EndsWith('/feed.php')) 'Retired journal feed redirects to the configured Piwigo feed'
 foreach($path in @('?/blog/id/1%20OR%201=1','?/blog/abc','?/blog/id/0')){
  $r=Page $path;Assert ($r.StatusCode -eq 400) "Malformed route rejected: $path"
 }
@@ -35,24 +35,26 @@ $r=Page 'admin.php?page=plugin-gjallarblog-manage' @{pwg_token=$status.pwg_token
 Assert ($r.StatusCode -eq 400) 'Malformed deletion identifier rejected'
 $r=Page 'admin.php?page=plugin-gjallarblog-config' @{pwg_token=$status.pwg_token;posts_per_page='0'} $true
 Assert ($r.StatusCode -eq 400) 'Zero page size rejected'
-$title='Regression <entry> & apostrophe''s'
-$r=Page 'admin.php?page=plugin-gjallarblog-manage' @{pwg_token=$status.pwg_token;submit_post='1';post_header=$title;post_textarea='<p>Round-trip test.</p>'} $true
-Assert ($r.StatusCode -eq 200 -and $r.Content.Contains('Regression &lt;entry&gt; &amp; apostrophe')) 'Create entry and escape its title in the editor'
-$xml=[xml](Page '?/blog/feed').Content
-$item=@($xml.rss.channel.item)|Where-Object title -eq $title
-Assert ($null -ne $item) 'Created title round-trips through RSS XML'
-$id=([string]$item.link -split '/')[-1]
+$title='Regression <b>entry</b> & apostrophe''s'
+$testDate=(Get-Date).ToString('yyyy-MM-dd')+'T00:00'
+$r=Page 'admin.php?page=plugin-gjallarblog-manage' @{pwg_token=$status.pwg_token;submit_post='1';post_header=$title;post_textarea='<p>Round-trip test.</p>';post_date=$testDate} $true
+Assert ($r.StatusCode -eq 200 -and $r.Content.Contains('Regression entry &amp; apostrophe')) 'Create entry and escape its title in the editor'
+$journal=Page '?/blog'
+Assert ($journal.Content.Contains('Regression entry &amp; apostrophe')) 'Created entry appears in the public journal'
+$idMatch=[regex]::Match($journal.Content,'href="\?/blog/id/([0-9]+)">Regression entry')
+Assert ($idMatch.Success) 'Created entry exposes its permanent journal URL'
+$id=$idMatch.Groups[1].Value
 try {
- $r=Page "?/blog/id/$id";Assert ($r.StatusCode -eq 200 -and $r.Content.Contains('Regression &lt;entry&gt; &amp; apostrophe')) 'Public entry escapes title markup'
- $r=Page 'admin.php?page=plugin-gjallarblog-manage' @{pwg_token=$status.pwg_token;edit_post_id=$id;edit_post_header=$title;edit_post_text='<p>Edited round-trip.</p>'} $true
+ $r=Page "?/blog/id/$id";Assert ($r.StatusCode -eq 200 -and $r.Content.Contains('Regression entry &amp; apostrophe')) 'Public entry escapes title markup'
+ $r=Page 'admin.php?page=plugin-gjallarblog-manage' @{pwg_token=$status.pwg_token;edit_post_id=$id;edit_post_header=$title;edit_post_text='<p>Edited round-trip.</p>';edit_post_date=$testDate} $true
  Assert ($r.StatusCode -eq 200 -and (Page "?/blog/id/$id").Content.Contains('Edited round-trip.')) 'Edit entry persists content'
  foreach($action in @('deactivate','activate')){$null=Api @{method='pwg.plugins.performAction';action=$action;plugin='gjallarblog';pwg_token=$status.pwg_token}}
  $r=Page 'admin.php?page=plugin-gjallarblog-config' $null $true
- Assert ($r.Content.Contains('value="Field notes"')) 'Deactivate/reactivate preserves journal settings'
+ Assert ($r.Content.Contains('value="News"')) 'Deactivate/reactivate preserves journal settings'
  Assert ((Page "?/blog/id/$id").Content.Contains('Edited round-trip.')) 'Deactivate/reactivate preserves posts'
-}finally{$null=Page 'admin.php?page=plugin-gjallarblog-manage' @{pwg_token=$status.pwg_token;del=$id} $true}
-$xml=[xml](Page '?/blog/feed').Content
-Assert ($xml.rss.channel.item.Count -eq 5) 'Test entry deleted; original five samples retained'
+}finally{$null=Page 'admin.php?page=plugin-gjallarblog-manage' @{pwg_token=$status.pwg_token;del=$id;confirm_delete='1'} $true}
+$journal=Page '?/blog'
+Assert (!$journal.Content.Contains('Regression entry &amp; apostrophe')) 'Test entry deleted; existing journal entries retained'
 $albums=Api @{method='pwg.categories.getList';recursive='true'}
 Assert (@($albums.categories|Where-Object nb_images -eq 2).Count -eq 3) 'Three albums each contain two images'
 $results | Set-Content (Join-Path $root '.dev/integration-results.txt')

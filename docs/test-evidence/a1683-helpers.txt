@@ -1,1 +1,1 @@
-PASS: 21 helper checks on PHP 8.3.35
+PASS: 30 helper checks on PHP 8.3.36

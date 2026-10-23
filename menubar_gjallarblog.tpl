@@ -1,1 +1,1 @@
-<dt><a href="{$block->data.URL|escape:'html':'UTF-8'}" title="{$block->data.TITLE|escape:'html':'UTF-8'}" {if $block->data.CURRENT}aria-current="location"{/if}>{$block->data.NAME|escape:'html':'UTF-8'}</a></dt>
+<dt><a href="{$block->data.URL|escape:'html':'UTF-8'}">{$block->data.NAME|escape:'html':'UTF-8'}</a></dt>
