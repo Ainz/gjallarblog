@@ -6,7 +6,7 @@ A journal plugin for Piwigo, maintained by Ainz and derived from **Evil_Blog by 
 
 ## Installation
 
-1. For normal installation, download the latest published package from [Releases](https://github.com/Ainz/gjallarblog/releases). Version 0.06-beta.1 is not a published release package.
+1. For normal installation, download the latest published package from [Releases](https://github.com/Ainz/piwigo/releases). Version 0.06-beta.1 is not a published release package.
 2. Extract its single `gjallarblog/` directory into your gallery's `plugins/` directory. Use this release ZIP rather than GitHub's source archive.
 3. In Piwigo Administration → Plugins, install and activate **Gjallarblog**.
 4. Open the plugin settings and configure the journal name, description, page size and placement on gallery home/album pages.
@@ -16,7 +16,7 @@ The Blog menu block uses Piwigo's menu manager. Reorder or hide it in Administra
 
 ## Repository layout
 
-The installable plugin source is in [`plugin/`](plugin/). Its contents mirror the inside of Piwigo's `plugins/gjallarblog/` directory: `main.inc.php`, plugin PHP files, and `include/`, `language/` and `template/` directories. This follows Piwigo's [plugin development guide](https://github.com/Piwigo/Piwigo/wiki/Plugin-developpement) and [Skeleton plugin structure](https://github.com/Piwigo/Piwigo-Skeleton), which describe the plugin root and its common subfolders. Piwigo's [plugin documentation](https://doc.piwigo.org/piwigo-plugins/) explains installation, activation and configuration for gallery owners. Repository documentation and portable development checks stay outside `plugin/`. GitHub's source archive is not an installable plugin package; a release package places these source files under one `gjallarblog/` directory.
+The installable plugin source is in [`plugins/gjallarblog/`](plugins/gjallarblog/), matching the directory a gallery owner installs under Piwigo's `plugins/` folder. It contains `main.inc.php`, plugin PHP files, and `include/`, `language/` and `template/` directories. This follows Piwigo's [plugin development guide](https://github.com/Piwigo/Piwigo/wiki/Plugin-developpement) and [Skeleton plugin structure](https://github.com/Piwigo/Piwigo-Skeleton), which describe the plugin root and its common subfolders. Piwigo's [plugin documentation](https://doc.piwigo.org/piwigo-plugins/) explains installation, activation and configuration for gallery owners. Repository documentation and portable development checks stay outside `plugins/gjallarblog/`. GitHub's source archive is not an installable plugin package; a release package places this folder under one `gjallarblog/` directory.
 
 ## Versioning
 
@@ -70,7 +70,7 @@ Back up the database and existing plugin folder, replace `plugins/gjallarblog/` 
 
 The public `tools/` folder contains source checks, focused tests, and the package/release utilities. Run `python tools/build-package.py` to create `dist/gjallarblog-<version>.zip`; the archive contains the plugin under `gjallarblog/`. The Docker/WSL gallery setup, fixture seeding, local credentials and raw test logs stay in the maintainer's checkout and are ignored by Git. The compatibility matrix and its limits are summarized in [validation](docs/VALIDATION.md).
 
-See [changelog](CHANGELOG.md), [attribution/licensing](NOTICE.md), and [source provenance](docs/UPSTREAM.md). Report defects through [GitHub issues](https://github.com/Ainz/gjallarblog/issues); report sensitive security details privately to the maintainer before posting publicly.
+See [changelog](CHANGELOG.md), [attribution/licensing](NOTICE.md), and [source provenance](docs/UPSTREAM.md). Report defects through [GitHub issues](https://github.com/Ainz/piwigo/issues); report sensitive security details privately to the maintainer before posting publicly.
 
 ## Documentation guide
 

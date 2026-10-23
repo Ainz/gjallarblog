@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a Piwigo-ready Gjallarblog ZIP from plugin/ into dist/."""
+"""Build a Piwigo-ready Gjallarblog ZIP from plugins/gjallarblog/ into dist/."""
 
 import argparse
 import hashlib
@@ -10,7 +10,7 @@ import tempfile
 import zipfile
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-PLUGIN = ROOT / 'plugin'
+PLUGIN = ROOT / 'plugins' / 'gjallarblog'
 DIST = ROOT / 'dist'
 REPOSITORY_FILES = ('LICENSE', 'NOTICE.md', 'README.md', 'CHANGELOG.md')
 
@@ -45,7 +45,7 @@ def build(force=False):
     DIST.mkdir(exist_ok=True)
     files = release_files()
     if not any(destination.as_posix() == 'gjallarblog/main.inc.php' for _, destination in files):
-        raise RuntimeError('plugin/main.inc.php is missing')
+        raise RuntimeError('plugins/gjallarblog/main.inc.php is missing')
 
     temporary = None
     try:

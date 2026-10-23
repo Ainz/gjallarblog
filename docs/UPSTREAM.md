@@ -10,7 +10,7 @@ Recorded 20 October 2026.
 - Original 1.2.4 archive: https://piwigo.org/ext/download.php?rid=8046
 - Plugin archive SHA-256: 2c40c51f6d9fac19b3acabb39f8f3f72aca68f957f8e132587a1b08a9d6c071f
 
-The original restoration started as a real clone retaining the original 32 commits. The Gjallarblog alpha continues that history in Ainz/gjallarblog. Ainz/evileblogupdate is retained as the archived historical source, with a redirect to the maintained project.
+The original restoration started as a real clone retaining the original 32 commits. The Gjallarblog alpha continues that history in Ainz/piwigo (renamed from Ainz/gjallarblog). Ainz/evileblogupdate is retained as the archived historical source, with a redirect to the maintained project.
 
 All 79 private baseline files matched their Git blob hashes. All 47 common PHP files match SVN 32706 after comments/whitespace and line-ending normalization. Release 1.2.4 matches 77 files from that revision, changes the main version header, and adds packaging metadata. Current SVN adds four languages and a Polish key.
 

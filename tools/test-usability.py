@@ -2,7 +2,7 @@
 import urllib.request, urllib.parse, urllib.error, http.cookiejar, json, pathlib, sys, re, struct, zlib, binascii, uuid
 sys.stdout.reconfigure(encoding='utf-8')
 root=pathlib.Path(__file__).resolve().parents[1]
-plugin=root/'plugin'
+plugin=root/'plugins'/'gjallarblog'
 port=int(sys.argv[1]); fixture=sys.argv[2]
 assert port in range(8089,8095)
 base=f'http://127.0.0.1:{port}/'
