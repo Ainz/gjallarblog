@@ -2,7 +2,7 @@
 
 A journal plugin for Piwigo, maintained by Ainz and derived from **Evil_Blog by EvilKant**, with contributions from Piwigo translators. The original Git history is preserved.
 
-**Version 0.06-beta.1 is merged into the GitHub `main` branch, but has not been tagged or published as a downloadable release.** The latest packaged release remains 0.04-alpha.1. Treat `main` as development source; use a staging gallery and back up your database before testing it.
+**Release status:** 0.06-beta.1 was validated and merged into `main` on 23 October 2026, but it has not been tagged or published as a downloadable package. The latest packaged release remains 0.04-alpha.1. `main` also contains a newer image-insertion refinement recorded as unreleased in the changelog; that refinement is not covered by the 0.06-beta.1 validation results. Use `main` only on a staging gallery and back up your database before testing it.
 
 ## Installation
 
@@ -22,7 +22,7 @@ The installable plugin source is in [`plugins/gjallarblog/`](plugins/gjallarblog
 
 Versions use **Major.Minor**, with the minor displayed using at least two digits: `0.03`, `0.09`, `0.10`, eventually `1.00`. Prereleases append `-alpha.N`, `-beta.N` or `-rc.N` and are marked as prereleases on GitHub. The metadata version, tag (`v` prefix), package filename and release title share the same version string.
 
-The historical `0.1.0-alpha.1` and `0.1.0-alpha.2` releases remain unchanged. The convention was introduced in **0.03-alpha.1**. The current source version is **0.06-beta.1**, following **0.06-beta**. See [versioning and upgrade verification](docs/VERSIONING.md).
+The historical `0.1.0-alpha.1` and `0.1.0-alpha.2` releases remain unchanged. The convention was introduced in **0.03-alpha.1**. The metadata version on `main` is **0.06-beta.1**, following **0.06-beta**. The unreleased image-insertion refinement has not yet received a new version number. See [versioning and upgrade verification](docs/VERSIONING.md) and the [changelog](CHANGELOG.md).
 
 ## Compatibility
 
@@ -48,7 +48,7 @@ Small buttons insert paragraphs, bold, italic, headings, lists, quotes and links
 
 Successful saves return to the saved entry on its actual list page. Deletion has a separate confirmation checkbox and names the entry in the browser confirmation.
 
-Entries support a gallery-timezone publication date for historical republishing; future dates are rejected. Images can be pasted from the clipboard or selected as files. Supported PNG, JPEG and WebP uploads are bounded, decoded and re-encoded to remove embedded metadata, then stored separately from post markup. Images default to a centered block with no text wrap; authors can choose left/right blocks, inline placement, size, alternative text and captions. Existing image placement can be edited from the entry form. Media is served through a Piwigo route. This beta requires GD with WebP support for uploads.
+Entries support a gallery-timezone publication date for historical republishing; future dates are rejected. Images can be pasted from the clipboard or selected as files. Supported PNG, JPEG and WebP uploads are bounded, decoded and re-encoded to remove embedded metadata, then stored separately from post markup. In the unreleased `main` refinement, an image is inserted immediately using a centered block by default; use its image-list control to open layout options only when you want to change placement, size, alternative text or caption. Images do not wrap text unless inline placement is selected. Media is served through a Piwigo route. Uploads require GD with WebP support.
 
 ## Upgrading from alpha.1
 
